@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{%block title%}Reportes{%endblock%}
+{% block body %}
+<div class="row">
+    <div class="col-sm-12 col-md-6 col-lg-8 col-xl-8">
+        <h1>Reportes</h1>
+        <fom>
+            <div class="form-group">
+                <a href="{% url 'srea:p_reporte' %}" class="btn btn-info">Registrar</a>
+                <a href="r_lista_pdf/" class="btn btn-secondary">Descargar reporte</a>
+            </div>    
+        </form>
+        <div class="table-responsive py-2">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Titulo</th>
+                        <th>Descripción</th>
+                        <th>Estado</th>
+                        <th colspan="">Opciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{reporte.titulo}}
+                    {%for r in reporte%}
+                    <tr>
+                        <td>{{r.titulo}}</td>
+                        <td>{{r.descripcion}}</td>
+                        <td>{{r.estado}}</td>
+                        <td><a href="{{r.id}}" class="btn btn-info">Editar</a></td>
+                        <td><a href="{{r.id}}" class="btn btn-danger">Eliminar</a></td>
+                    </tr>
+                    {%endfor%}
+                </tbody>
+            </table>
+         </div>
+    </div>
+</div>
+{% endblock %}
