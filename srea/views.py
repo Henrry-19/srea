@@ -1,7 +1,7 @@
 from multiprocessing import context
 from django.shortcuts import get_object_or_404, render, redirect
 from django.views.generic import View, UpdateView,DeleteView
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 
 #from srea.util import render_to_pdf
 from .forms import CuentaCreateForm, UsuarioCreateForm, ReporteCreateForm, IndicacionCreateForm,FichaCreateForm, AsinaturaCreateForm, NivelCreateForm, TestCreateForm, PreguntaCreateForm  
@@ -160,19 +160,25 @@ class ReporteListView(View):
 #Reporte en pdf
 class ReporteListPdf(View):
     def get(self,request, *args, **kwargs):
-        template = get_template("reporte/reporte_imprimir.html")
-        context = {'title': 'Primer pdf'}
-        html=template.render(context)
-        response = HttpResponse(content_type='application/pdf')
-        response['Content-Disposition'] = 'attachment; filename="report.pdf"'
+        try:
+            template = get_template("reporte/reporte_imprimir.html")
+            reporte=Reporte.objects.all()
+            #reporte=Reporte.objects.get(pk=self.kwargs['pk'])
+            context = {
+                #'reporte': Reporte.objects.get(pk=self.kwargs['pk'])
+                'reporte': reporte
+            }
+            html=template.render(context)
+            response = HttpResponse(content_type='application/pdf')
+            response['Content-Disposition'] = 'attachment; filename="report.pdf"'
 
-        pisa_status = pisa.CreatePDF(
-        html, dest=response)
-        if pisa_status.err:
-            return HttpResponse('We had some errors <pre>' + html + '</pre>')
+            pisa_status = pisa.CreatePDF(
+                html, dest=response)
 
-        return response
-
+            return response
+        except:
+            pass
+        return HttpResponseRedirect(reverse_lazy('srea:p_reporte')) 
 
 
         #reportes=Reporte.objects.all()

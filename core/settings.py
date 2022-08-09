@@ -41,8 +41,7 @@ INSTALLED_APPS = [
 
     'core',
     'srea',
-    'tailwind',
-    'theme'
+    'tailwind'
 ]
 
 TAILWIND_APP_NAME = 'theme'
