@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{%block title%}Crear indicacion{%endblock%}
+{% block body %}
+<div class="row">
+    <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+        <h2>Gestión de Indicacion</h2>
+        <div class="card">
+            <div class="card-body">
+                <form action="" method="POST">{% csrf_token %}
+                    <div class="form-group">
+                        <h4>Titulo</h4>
+                        <!--<input type="text" id="txtCorreo" name="txtCorreo" class="form-control"
+                         placeholder="Correo" minlength="8" maxlength="15" required>-->
+                         {{form.titulo}}
+                    </div>
+                    <div class="form-group">
+                        <h4>Descripcion</h4>
+                        {{form.descripcion}}
+                    </div>
+                    <div class="form-group">
+                        <h4>User</h4>
+                        {{form.user}}
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-success btn-block text-white">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

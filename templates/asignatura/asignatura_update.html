@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{%block title%}Actualizar Asignatura{%endblock%}
+{% block body %}
+<div class="row">
+    <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+        <h2>Gestión de Asignatura</h2>
+        <div class="card">
+            <div class="card-body">
+                <form  method="POST">{% csrf_token %}
+                    <div class="form-group">
+                        <h4>Nombre</h4>
+                         {{form.nombre}}
+                    </div>
+                    <div class="form-group">
+                        <h4>Detalle</h4>
+                        {{form.detalle}}
+                    </div>
+                    <div class="form-group">
+                        <h4>Foto</h4>
+                        {{form.foto}}
+                    </div>
+                    <div class="form-group">
+                        <h4>Estado</h4>
+                        {{form.estado}}
+                    </div>
+                    <div class="form-group">
+                        <h4>User</h4>
+                        {{form.user}}
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-success btn-block text-white">Actualizar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

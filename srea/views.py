@@ -1,10 +1,11 @@
+from email import message
 from multiprocessing import context
 from django.shortcuts import get_object_or_404, render, redirect
 from django.views.generic import View, UpdateView,DeleteView
 from django.http import HttpResponse, HttpResponseRedirect
 
 #from srea.util import render_to_pdf
-from .forms import CuentaCreateForm, UsuarioCreateForm, ReporteCreateForm, IndicacionCreateForm,FichaCreateForm, AsinaturaCreateForm, NivelCreateForm, TestCreateForm, PreguntaCreateForm  
+from .forms import CuentaCreateForm, UsuarioCreateForm, ReporteCreateForm, IndicacionCreateForm,FichaCreateForm, AsignaturaCreateForm, NivelCreateForm, TestCreateForm, PreguntaCreateForm  
 from .models import Cuenta, Usuario, Reporte, FichaInformacion, Indicacion, Asignatura, Nivel, Test, Pregunta
 from django.urls import reverse_lazy
 
@@ -181,19 +182,6 @@ class ReporteListPdf(View):
         return HttpResponseRedirect(reverse_lazy('srea:p_reporte')) 
 
 
-        #reportes=Reporte.objects.all()
-        #data ={
-        #  'reportes':reportes
-        #}
-        #pdf=render_to_pdf('reporte/reporte_lista.html',data)
-        #return HttpResponse(pdf, content_type='application/pdf')
-
-
-
-
-
-
-
 class ReporteCreateView(View):
     def get(self, request, *args, **kwargs):
         form=ReporteCreateForm()
@@ -330,7 +318,7 @@ class IndicacionDeleteView(DeleteView):
 
 class IndicacionUpdateView(UpdateView):
     model=Indicacion
-    fields=['titulo','descripcion','tiempo', 'user']
+    fields=['titulo','descripcion', 'user']
     template_name='indicacion/indicacion_update.html'
 
     def get_success_url(self): #Me regresa a la ventana
@@ -347,9 +335,9 @@ class AsignaturaListView(View):
         }
         return render(request, 'asignatura/asignatura_lista.html', context)
 
-class AsinaturaCreateView(View):
+class AsignaturaCreateView(View):
     def get(self, request, *args, **kwargs):
-        form=AsinaturaCreateForm()
+        form=AsignaturaCreateForm()
         context={
             'form':form
         }
@@ -360,28 +348,30 @@ class AsinaturaCreateView(View):
 
     def post(self,request, *args, **kwargs):
         if request.method=="POST":#Si estámos enviando información a traves de un formulario
-            form=AsinaturaCreateForm(request.POST, request.FILES)
+            form=AsignaturaCreateForm(request.POST, request.FILES)
             if form.is_valid():
                 nombre=form.cleaned_data.get('nombre')
                 detalle=form.cleaned_data.get('detalle')
-                estado=form.cleaned_data.get(' estado')
                 foto=form.cleaned_data.get('foto')
+                estado=form.cleaned_data.get('estado')
                 user=form.cleaned_data.get('user')
                 form.save()
-                
-        context={
-            
-        }
-        return redirect('srea:p_asignatura')
-        #return render(request, 'usuario/usuario_create.html', context)
+                return redirect('srea:p_asignatura')
+        else:
+            form:AsignaturaCreateForm()   
+        return render(request, 'asignatura/asignatura_create.html',  {
+        'form': form
+        })   
+        #return redirect('srea:p_asignatura')
+        #return render(request, 'asignatura/asignatura_create.html', context)
 
-class AsinaturaDeleteView(DeleteView):
+class AsignaturaDeleteView(DeleteView):
     model=Asignatura
     template_name='asignatura/asignatura_delete.html'
     success_url=reverse_lazy('srea:p_asignatura')
 
 class AsignaturaUpdateView(UpdateView):
-
+    model=Asignatura
     fields=['nombre','detalle','foto', 'user', 'estado']
     template_name='asignatura/asignatura_update.html'
 

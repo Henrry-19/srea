@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{%block title%}Eliminar indicaciones{%endblock%}
+{% block body %}
+¿Desea eliminar la indicacion {{indicacion.id}}?
+<form method="POST">
+    {% csrf_token %}
+    {{form}}
+    <br>
+    <button type="submit">Eliminar</button>
+</form>
+{% endblock %}

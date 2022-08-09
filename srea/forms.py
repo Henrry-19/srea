@@ -30,7 +30,7 @@ class FichaCreateForm(ModelForm):
         model= FichaInformacion
         fields = ('descripcion','detalle_trabajo', 'detalle_ocupacion', 'genero', 'etnia', 'estado_civil','user')
 
-class AsinaturaCreateForm(ModelForm):
+class AsignaturaCreateForm(ModelForm):
     class Meta:
         model= Asignatura
         fields = ('nombre','detalle', 'foto', 'estado','user')
