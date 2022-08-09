@@ -77,7 +77,7 @@ class Asignatura(models.Model):
     nombre=models.CharField(max_length=50)
     detalle=models.TextField()
     foto=models.ImageField(upload_to="images/")
-    estado=models.BooleanField(default=True)
+    estado=models.BooleanField(default=False)
     user=models.ForeignKey(User, on_delete=models.CASCADE)
 
 class Nivel(models.Model):

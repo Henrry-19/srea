@@ -423,7 +423,7 @@ class NivelDeleteView(DeleteView):
     success_url=reverse_lazy('srea:p_nivel')
 
 class NivelUpdateView(UpdateView):
-
+    model=Nivel
     fields=['nombre','numero','descripcion', 'user', 'estado']
     template_name='nivel/nivel_update.html'
 
