@@ -57,7 +57,7 @@ class FichaInformacion(models.Model):
     descripcion=models.TextField()
     detalle_trabajo=models.TextField()
     detalle_ocupacion=models.TextField()
-    detalle_tecnica_estudio=models.TextField()
+    detalle_tecnicaE=models.TextField()
     genero=models.CharField(choices=genero_ficha_informacion, max_length=1)
     etnia=models.CharField(max_length=50)
     estado_civil= models.CharField(choices=estado_civil_ficha_informacion, max_length=1)

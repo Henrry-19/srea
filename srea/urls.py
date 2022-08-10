@@ -7,6 +7,7 @@ from .views import AsignaturaListView,AsignaturaCreateView, AsignaturaUpdateView
 from .views import NivelListView, NivelCreateView,NivelUpdateView,NivelDeleteView
 from .views import PreguntaListView, PreguntaCreateView, PreguntaDeleteView, PreguntaUpdateView
 from .views import TestListView, TestCreateView, TestDeleteView, TestUpdateView
+from .views import FichaCreateView, FichaUpdateView, FichaDeleteView, FichaListView
 
 app_name="srea"
 
@@ -36,6 +37,12 @@ urlpatterns = [
     path('asignatura/',AsignaturaCreateView.as_view(), name="asignatura"), #crear asignatura
     path('a_lista/updateA/<int:pk>/', AsignaturaUpdateView.as_view(), name="update_asignatura"),
     path('a_lista/deleteA/<int:pk>', AsignaturaDeleteView.as_view(), name="delete_asignatura"),
+
+#-------------------------Ficha-----------------------------------------
+    path('f_lista/',FichaListView.as_view(), name="p_ficha"), #principal_ficha
+    path('ficha/',FichaCreateView.as_view(), name="ficha"), #crear ficha
+    path('f_lista/updateF/<int:pk>/',FichaUpdateView.as_view(), name="update_ficha"),
+    path('f_lista/deleteF/<int:pk>',FichaDeleteView.as_view(), name="delete_ficha"),
 #-------------------------Nivel-----------------------------------------
     path('n_lista/',NivelListView.as_view(), name="p_nivel"), #principal_nivel
     path('nivel/',NivelCreateView.as_view(), name="nivel"), #crear nivel

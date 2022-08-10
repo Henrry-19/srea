@@ -1,7 +1,7 @@
 {% extends "base.html" %}
-{%block title%}Eliminar indicaciones{%endblock%}
+{%block title%}Eliminar ficha{%endblock%}
 {% block body %}
-¿Desea eliminar la indicacion {{indicacion.id}}?
+¿Desea eliminar la ficha {{ficha.id}}?
 <form method="POST">
     {% csrf_token %}
     {{form}}

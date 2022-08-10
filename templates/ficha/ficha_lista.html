@@ -1,33 +1,43 @@
 {% extends "base.html" %}
-{%block title%}Indicaciones{%endblock%}
+{%block title%}Ficha{%endblock%}
 {% block body %}
 <div class="row">
     <div class="col-sm-12 col-md-6 col-lg-8 col-xl-8">
-        <h1>Indicaciones</h1>
+        <h1>Ficha</h1>
         <fom>
             <div class="form-group">
-                <a href="{% url 'srea:indicacion' %}" class="btn btn-info">Registrar</a>
+                <a href="{% url 'srea:ficha' %}" class="btn btn-info">Registrar</a>
             </div>    
         </form>
         <div class="table-responsive py-2">
             <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th>Titulo</th>
                         <th>Descripción</th>
-                        <th>Tiempo</th>
+                        <th>Detalle del trabajo</th>
+                        <th>Detalle de la ocupación</th>
+                        <th>Detalle de la técnica de estudio</th>
+                        <th>Genero</th>
+                        <th>Etnia</th>
+                        <th>Estado civil</th>
+                        <th>User</th>
                         <th colspan="">Opciones</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {{indicacion.titulo}}
-                    {%for i in indicacion%}
+                    {{ficha.descripcion}}
+                    {%for f in ficha%}
                     <tr>
-                        <td>{{i.titulo}}</td>
-                        <td>{{i.descripcion}}</td>
-                        <td>{{i.tiempo}}</td>
-                        <td><a href="updateI/{{i.id}}" class="btn btn-info">Editar</a></td>
-                        <td><a href="deleteI/{{i.id}}" class="btn btn-danger">Eliminar</a></td>
+                        <td>{{f.descripcion}}</td>
+                        <td>{{f.detalle_trabajo}}</td>
+                        <td>{{f.detalle_ocupacion}}</td>
+                        <td>{{f.detalle_tecnicaE}}</td>
+                        <td>{{f.genero}}</td>
+                        <td>{{f.etnia}}</td>
+                        <td>{{f.estado_civil}}</td>
+                        <td>{{f.user}}</td>
+                        <td><a href="updateF/{{f.id}}" class="btn btn-info">Editar</a></td>
+                        <td><a href="deleteF/{{f.id}}" class="btn btn-danger">Eliminar</a></td>
                     </tr>
                     {%endfor%}
                 </tbody>

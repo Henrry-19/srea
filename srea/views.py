@@ -248,7 +248,7 @@ class FichaCreateView(View):
                 descripcion = form.cleaned_data.get('descripcion')
                 detalle_trabajo = form.cleaned_data.get('detalle_trabajo')
                 detalle_ocupacion = form.cleaned_data.get('detalle_ocupacion')
-                detalle_tecnica_estudio = form.cleaned_data.get('detalle_tecnica_estudio')
+                detalle_tecnicaE = form.cleaned_data.get('detalle_tecnicaE')
                 genero= form.cleaned_data.get('genero')
                 etnia=form.cleaned_data.get('etnia')
                 estado_civil=form.cleaned_data.get('estado_civil')
@@ -260,7 +260,7 @@ class FichaCreateView(View):
         return redirect('srea:p_ficha')
 
 class FichaDeleteView(DeleteView):
-    model=Test
+    model=FichaInformacion
     template_name='ficha/ficha_delete.html'
     success_url=reverse_lazy('srea:p_ficha')
 class FichaUpdateView(UpdateView):

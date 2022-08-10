@@ -28,7 +28,7 @@ class IndicacionCreateForm(ModelForm):
 class FichaCreateForm(ModelForm):
     class Meta:
         model= FichaInformacion
-        fields = ('descripcion','detalle_trabajo', 'detalle_ocupacion', 'genero', 'etnia', 'estado_civil','user')
+        fields = ('descripcion','detalle_trabajo','detalle_ocupacion','detalle_tecnicaE', 'genero', 'etnia', 'estado_civil','user')
 
 class AsignaturaCreateForm(ModelForm):
     class Meta:
