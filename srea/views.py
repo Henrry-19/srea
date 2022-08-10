@@ -476,7 +476,7 @@ class TestDeleteView(DeleteView):
     success_url=reverse_lazy('srea:p_test')
 
 class TestUpdateView(UpdateView):
-
+    model=Test
     fields=['nombre', 'user', 'estado']
     template_name='test/test_update.html'
 

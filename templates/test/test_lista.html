@@ -1,33 +1,33 @@
 {% extends "base.html" %}
-{%block title%}Indicaciones{%endblock%}
+{%block title%}Test{%endblock%}
 {% block body %}
 <div class="row">
     <div class="col-sm-12 col-md-6 col-lg-8 col-xl-8">
-        <h1>Indicaciones</h1>
+        <h1>Test</h1>
         <fom>
             <div class="form-group">
-                <a href="{% url 'srea:indicacion' %}" class="btn btn-info">Registrar</a>
+                <a href="{% url 'srea:test' %}" class="btn btn-info">Registrar</a>
             </div>    
         </form>
         <div class="table-responsive py-2">
             <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th>Titulo</th>
-                        <th>Descripción</th>
-                        <th>Tiempo</th>
+                        <th>Nombre</th>
+                        <th>Estado</th>
+                        <th>User</th>
                         <th colspan="">Opciones</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {{indicacion.titulo}}
-                    {%for i in indicacion%}
+                    {{test.nombre}}
+                    {%for t in test%}
                     <tr>
-                        <td>{{i.titulo}}</td>
-                        <td>{{i.descripcion}}</td>
-                        <td>{{i.tiempo}}</td>
-                        <td><a href="updateI/{{i.id}}" class="btn btn-info">Editar</a></td>
-                        <td><a href="deleteI/{{i.id}}" class="btn btn-danger">Eliminar</a></td>
+                        <td>{{t.nombre}}</td>
+                        <td>{{t.estado}}</td>
+                        <td>{{t.user}}</td>
+                        <td><a href="updateT/{{t.id}}" class="btn btn-info">Editar</a></td>
+                        <td><a href="deleteT/{{t.id}}" class="btn btn-danger">Eliminar</a></td>
                     </tr>
                     {%endfor%}
                 </tbody>
