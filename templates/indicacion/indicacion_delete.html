@@ -1,6 +1,6 @@
-{% extends "base.html" %}
+{% extends "home.html" %}
 {%block title%}Eliminar indicaciones{%endblock%}
-{% block body %}
+{% block content %}
 ¿Desea eliminar la indicacion {{indicacion.id}}?
 <form method="POST">
     {% csrf_token %}

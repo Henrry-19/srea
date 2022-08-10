@@ -1,6 +1,6 @@
-{% extends "base.html" %}
+{% extends "home.html" %}
 {%block title%}Eliminar preguntas{%endblock%}
-{% block body %}
+{% block content %}
 ¿Desea eliminar la pregunta {{pregunta.id}}?
 <form method="POST">
     {% csrf_token %}

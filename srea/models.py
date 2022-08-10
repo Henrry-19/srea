@@ -27,7 +27,7 @@ class Usuario(models.Model):
         return self.nombre
     
 class Cuenta(models.Model):
-    correo=models.EmailField(max_length=254)
+    correo=models.EmailField()
     clave=models.CharField(max_length=8)
     estado=models.BooleanField(default=False)
     user=models.ForeignKey(User, on_delete=models.CASCADE)

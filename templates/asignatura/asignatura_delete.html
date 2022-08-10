@@ -1,6 +1,6 @@
-{% extends "base.html" %}
+{% extends "home.html" %}
 {%block title%}Eliminar asignaturas{%endblock%}
-{% block body %}
+{% block content %}
 ¿Desea eliminar la asignatura {{asignatura.id}}?
 <form method="POST">
     {% csrf_token %}

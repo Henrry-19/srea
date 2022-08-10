@@ -1,3 +1,4 @@
+from audioop import reverse
 from email import message
 from multiprocessing import context
 from django.shortcuts import get_object_or_404, render, redirect
@@ -39,22 +40,18 @@ class CuentaCreateView(View):
 #Método para crear cuenta    
 
     def post(self,request, *args, **kwargs):
-        if request.method=="POST":#Si estámos enviando información a traves de un formulario
+        if request.method=="POST":#Si el usuario está enviando el formulario con datos
             form=CuentaCreateForm(request.POST)
             if form.is_valid():
                 correo = form.cleaned_data.get('correo')
                 clave = form.cleaned_data.get('clave')
                 estado =form.cleaned_data.get('estado')
                 user = form.cleaned_data.get('user')
-
-                C, created=Cuenta.objects.get_or_create(correo=correo,clave=clave,estado=estado, user=user)
-                C.save()
+                form.save() #Guardar los datos en la base de datos
                 return redirect('srea:home')
-        context={
-            
-        }
-        
-        return render(request, 'cuenta/cuenta_create.html', context)
+        else: 
+            form=CuentaCreateForm()  #Formulario sin completar
+        return render(request, 'cuenta/cuenta_create.html', {'form':form})
 
 #Método para presentar la información
 
@@ -124,12 +121,10 @@ class UsuarioCreateView(View):
                 foto=form.cleaned_data.get('foto')
                 id_usuario=form.cleaned_data.get('id_usuario')
                 form.save()
-                
-        context={
-            
-        }
-        return redirect('srea:principal')
-        #return render(request, 'usuario/usuario_create.html', context)
+                return redirect('srea:principal')
+        else: 
+            form=UsuarioCreateForm()  #Formulario sin completar
+        return render(request, 'usuario/usuario_create.html', {'form':form})
 
 # Método para eliminar usuario
 class UsuarioDeleteView(DeleteView):

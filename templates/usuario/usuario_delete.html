@@ -1,6 +1,6 @@
-{% extends "base.html" %}
+{% extends "home.html" %}
 {%block title%}Eliminar usuario{%endblock%}
-{% block body %}
+{% block content %}
 ¿Desea eliminar el usuario {{usuario.id}}?
 <form method="POST">
     {% csrf_token %}
