@@ -5,6 +5,7 @@ from .views import ReporteListView,ReporteListPdf,ReporteUpdateView,ReporteDelet
 from .views import IndicacionListView,IndicacionCreateView,IndicacionUpdateView,IndicacionDeleteView
 from .views import AsignaturaListView,AsignaturaCreateView, AsignaturaUpdateView, AsignaturaDeleteView
 from .views import NivelListView, NivelCreateView,NivelUpdateView,NivelDeleteView
+from .views import PreguntaListView, PreguntaCreateView, PreguntaDeleteView, PreguntaUpdateView
 
 app_name="srea"
 
@@ -34,11 +35,16 @@ urlpatterns = [
     path('asignatura/',AsignaturaCreateView.as_view(), name="asignatura"), #crear asignatura
     path('a_lista/updateA/<int:pk>/', AsignaturaUpdateView.as_view(), name="update_asignatura"),
     path('a_lista/deleteA/<int:pk>', AsignaturaDeleteView.as_view(), name="delete_asignatura"),
-#-------------------------Asignatura-----------------------------------------
-    path('n_lista/',NivelListView.as_view(), name="p_nivel"), #principal_asignatura
-    path('nivel/',NivelCreateView.as_view(), name="nivel"), #crear asignatura
+#-------------------------Nivel-----------------------------------------
+    path('n_lista/',NivelListView.as_view(), name="p_nivel"), #principal_nivel
+    path('nivel/',NivelCreateView.as_view(), name="nivel"), #crear nivel
     path('n_lista/updateN/<int:pk>/',NivelUpdateView.as_view(), name="update_nivel"),
     path('n_lista/deleteN/<int:pk>',NivelDeleteView.as_view(), name="delete_nivel"),
+#-------------------------Pregunta-----------------------------------------
+    path('p_lista/',PreguntaListView.as_view(), name="p_pregunta"), #principal_pregunta
+    path('pregunta/',PreguntaCreateView.as_view(), name="pregunta"), #crear pregunta
+    path('p_lista/updateP/<int:pk>/',PreguntaUpdateView.as_view(), name="update_pregunta"),
+    path('p_lista/deleteP/<int:pk>',PreguntaDeleteView.as_view(), name="delete_pregunta"),
 
 
     

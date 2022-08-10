@@ -1,7 +1,7 @@
 {% extends "base.html" %}
-{%block title%}Eliminar indicaciones{%endblock%}
+{%block title%}Eliminar preguntas{%endblock%}
 {% block body %}
-¿Desea eliminar la indicacion {{indicacion.id}}?
+¿Desea eliminar la pregunta {{pregunta.id}}?
 <form method="POST">
     {% csrf_token %}
     {{form}}

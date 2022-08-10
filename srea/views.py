@@ -528,7 +528,7 @@ class PreguntaDeleteView(DeleteView):
 
 
 class PreguntaUpdateView(UpdateView):
-
+    model=Pregunta
     fields=['pregunta', 'user', 'estado']
     template_name='pregunta/pregunta_update.html'
 
