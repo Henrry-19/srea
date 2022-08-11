@@ -1,13 +1,13 @@
 from django.urls import path
-from .views import CuentaDetailView, ReporteCreateView, sreaListView, CuentaCreateView, CuentaUpdateView, CuentaDeleteView
-from .views import UsuarioCreateView,UsuarioListView, UsuarioDeleteView,UsuarioUpdateView
-from .views import ReporteListView,ReporteListPdf,ReporteUpdateView,ReporteDeleteView
-from .views import IndicacionListView,IndicacionCreateView,IndicacionUpdateView,IndicacionDeleteView
-from .views import AsignaturaListView,AsignaturaCreateView, AsignaturaUpdateView, AsignaturaDeleteView
-from .views import NivelListView, NivelCreateView,NivelUpdateView,NivelDeleteView
-from .views import PreguntaListView, PreguntaCreateView, PreguntaDeleteView, PreguntaUpdateView
-from .views import TestListView, TestCreateView, TestDeleteView, TestUpdateView
-from .views import FichaCreateView, FichaUpdateView, FichaDeleteView, FichaListView
+from .vistas.cuenta import sreaListView, CuentaCreateView, CuentaUpdateView, CuentaDeleteView
+from .vistas.usuario import UsuarioCreateView,UsuarioListView, UsuarioDeleteView,UsuarioUpdateView
+from .vistas.reporte import ReporteListView,ReporteListPdf,ReporteUpdateView,ReporteDeleteView,ReporteCreateView
+from .vistas.indicacion import IndicacionListView,IndicacionCreateView,IndicacionUpdateView,IndicacionDeleteView
+from .vistas.asignatura import AsignaturaListView,AsignaturaCreateView, AsignaturaUpdateView, AsignaturaDeleteView
+from .vistas.nivel import NivelListView, NivelCreateView,NivelUpdateView,NivelDeleteView
+from .vistas.pregunta import PreguntaListView, PreguntaCreateView, PreguntaDeleteView, PreguntaUpdateView
+from .vistas.test import TestListView, TestCreateView, TestDeleteView, TestUpdateView
+from .vistas.ficha import FichaCreateView, FichaUpdateView, FichaDeleteView, FichaListView
 
 app_name="srea"
 

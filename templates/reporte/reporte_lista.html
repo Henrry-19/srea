@@ -1,4 +1,4 @@
-{% extends "home.html" %}
+{% extends "body.html" %}
 {%block title%}Reportes{%endblock%}
 {% block content %}
 <div class="row">
@@ -6,8 +6,8 @@
         <h1>Reportes</h1>
         <fom>
             <div class="form-group">
-                <a href="{% url 'srea:reporte' %}" class="btn btn-info">Registrar</a>
-                <a href="r_lista_pdf/" class="btn btn-secondary">Descargar reporte</a>
+                <a href="{% url 'srea:reporte' %}" class="btn btn-info"><i class="fas fa-pen-square"></i > Registrar</a>
+                <a href="r_lista_pdf/" class="btn btn-secondary"><i class="	fa fa-file" > PDF</i></a>
             </div>    
         </form>
         <div class="table-responsive py-2">
