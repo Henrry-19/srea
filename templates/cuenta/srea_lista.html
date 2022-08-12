@@ -2,27 +2,31 @@
 {%block title%}Lista de cuentas{%endblock%}
 
 {%block colums%}
-<tr>
+  <tr>
     <th>Correo</th>
     <th>Clave</th>
     <th>Estado</th>
     <th>Usuario</th>
     <th colspan="">Opciones</th>
-</tr>
+  </tr>
 {%endblock%}
 
 {%block rows%}
-<tr>
-    {%for cuenta in cuenta%}               
-    <td>{{cuenta.correo}}</td>
-    <td>{{cuenta.clave}}</td>
-    <td>{{cuenta.estado}}</td>
-    <td>{{cuenta.user}}</td>
-    <td>
-      <a href="update/{{cuenta.id}}" class="btn btn-info btn-xs"><i class="fas fa-edit"></i></a>
-      <a href="delete/{{cuenta.id}}" class="btn btn-danger btn-xs"><i class="fas fa-trash-alt"></i></a>
-    </td>
-    {%endfor%}
-</tr>
-
+  {%for cuenta in cuenta%} 
+      <tr>           
+        <td>{{cuenta.correo}}</td>
+        <td>{{cuenta.clave}}</td>
+        <td>{{cuenta.estado}}</td>
+        <td>{{cuenta.user}}</td>
+        <td>
+        <a href="update/{{cuenta.id}}" class="btn btn-info btn-xs"><i class="fas fa-edit"></i></a>
+        <a href="delete/{{cuenta.id}}" class="btn btn-danger btn-xs"><i class="fas fa-trash-alt"></i></a>
+        </td>
+      </tr>
+  {%endfor%}
+<div>
+  <div class="card-footer">
+      <a href="{% url 'srea:cuenta' %}" class="btn btn-info"><i class="fas fa-pen-square"></i>Registrar</a>  
+  </div>
+</div>
 {%endblock%}

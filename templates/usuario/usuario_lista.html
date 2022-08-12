@@ -1,5 +1,4 @@
 {% extends "base_list.html" %}
-
 {%block title%}Lista de usuarios{%endblock%}
 
 {%block colums%}
@@ -14,14 +13,18 @@
 
 {%block rows%}
 {%for u in usuario%}
-<tr>
-    <td>{{u.cedula}}</td>
-    <td>{{u.apellido}}</td>
-    <td>{{u.nombre}}</td>
-    <td>{{u.direccion}}</td>
-
-    <td><a href="u_usuario/{{u.id}}" class="btn btn-info">Editar</a></td>
-    <td><a href="d_usuario/{{u.id}}" class="btn btn-danger">Eliminar</a></td>
-</tr>
+    <tr>
+        <td>{{u.cedula}}</td>
+        <td>{{u.apellido}}</td>
+        <td>{{u.nombre}}</td>
+        <td>{{u.direccion}}</td>
+        <td><a href="u_usuario/{{u.id}}" class="btn btn-info">Editar</a></td>
+        <td><a href="d_usuario/{{u.id}}" class="btn btn-danger">Eliminar</a></td>
+    </tr>
 {%endfor%}
+<div>
+    <div class="card-footer">
+        <a href="{% url 'srea:usuario' %}" class="btn btn-info"><i class="fas fa-pen-square"></i>Registrar</a>  
+    </div>
+</div>
 {%endblock%}
