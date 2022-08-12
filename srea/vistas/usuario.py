@@ -22,8 +22,8 @@ class UsuarioListView(View):
     def get(self,request, *args, **kwargs):
         usuario = Usuario.objects.all()
         context={
-            'usuario':usuario
-
+            'usuario':usuario,
+            'title' :'Lista de usuarios'
             
         }
         print(context)

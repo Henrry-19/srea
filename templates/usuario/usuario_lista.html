@@ -1,41 +1,27 @@
-{% extends "body.html" %}
-{%block title%}Lista de usuarios{%endblock%}
-{% block content %}
-<div class="row">
-    <div class="col-sm-12 col-md-6 col-lg-8 col-xl-8">
-        <h1>Listado de usuarios</h1>
-        <fom>
-            <div class="form-group">
-                <a href="{% url 'srea:usuario' %}" class="btn btn-info">Registrar</a>
-            </div>         
-        </form>
-        <div class="table-responsive py-2">
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Cedula</th>
-                        <th>Apellido</th>
-                        <th>Nombre</th>
-                        <th>Dirección</th>
-                        <th colspan="">Opciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {{usuario.nombre}}
-                    {%for u in usuario%}
-                    <tr>
-                        <td>{{u.cedula}}</td>
-                        <td>{{u.apellido}}</td>
-                        <td>{{u.nombre}}</td>
-                        <td>{{u.direccion}}</td>
+{% extends "base_list.html" %}
 
-                        <td><a href="u_usuario/{{u.id}}" class="btn btn-info">Editar</a></td>
-                        <td><a href="d_usuario/{{u.id}}" class="btn btn-danger">Eliminar</a></td>
-                    </tr>
-                    {%endfor%}
-                </tbody>
-            </table>
-         </div>
-    </div>
-</div>
-{% endblock %}
+{%block title%}Lista de usuarios{%endblock%}
+
+{%block colums%}
+<tr>
+    <th>Cedula</th>
+    <th>Apellido</th>
+    <th>Nombre</th>
+    <th>Dirección</th>
+    <th colspan="">Opciones</th>
+</tr>
+{%endblock%}
+
+{%block rows%}
+{%for u in usuario%}
+<tr>
+    <td>{{u.cedula}}</td>
+    <td>{{u.apellido}}</td>
+    <td>{{u.nombre}}</td>
+    <td>{{u.direccion}}</td>
+
+    <td><a href="u_usuario/{{u.id}}" class="btn btn-info">Editar</a></td>
+    <td><a href="d_usuario/{{u.id}}" class="btn btn-danger">Eliminar</a></td>
+</tr>
+{%endfor%}
+{%endblock%}

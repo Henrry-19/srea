@@ -1,0 +1,33 @@
+{% extends "body.html" %}
+{% block content %}
+<div class="card card-default">
+    <div class="card-header">
+      <h3 class="card-title">
+        <i class="fas fa-search"></i>
+        {{title}}
+      </h3>
+    </div>
+    <!-- /.card-header -->
+        <div class="card-body">
+            <div class="table-responsive py-2">
+                <table class="table table-striped">
+                    <thead>
+                        {%block colums%}
+                        {%endblock%}
+                    </thead>
+                    <tbody>
+                        {%block rows%}
+                        {%endblock%}
+                    </tbody>
+                    <div class="card-footer">
+                        <fom>
+                            <div class="form-group">
+                                <a href="cuenta/" class="btn btn-info"><i class="fas fa-pen-square"></i>Registrar</a>
+                            </div>         
+                        </form>
+                    </div>
+                </table>
+             </div>
+        </div>
+  </div>
+{% endblock %}

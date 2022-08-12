@@ -1,47 +1,28 @@
-{% extends "body.html" %}
+{% extends "base_list.html" %}
 {%block title%}Lista de cuentas{%endblock%}
-{% block content %}
-<div class="card card-default">
-    <div class="card-header">
-      <h3 class="card-title">
-        <i class="fas fa-search"></i>
-        {{title}}
-      </h3>
-    </div>
-    <!-- /.card-header -->
-        <div class="card-body">
-            <fom>
-                <div class="form-group">
-                    <a href="cuenta/" class="btn btn-info"><i class="fas fa-pen-square"></i>Registrar</a>
-                </div>         
-            </form>
-            <div class="table-responsive py-2">
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>Correo</th>
-                            <th>Clave</th>
-                            <th>Estado</th>
-                            <th>Usuario</th>
-                            <th colspan="">Opciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {%for cuenta in cuenta%}
-                        <tr>
-                            <td>{{cuenta.correo}}</td>
-                            <td>{{cuenta.clave}}</td>
-                            <td>{{cuenta.estado}}</td>
-                            <td>{{cuenta.user}}</td>
-                            <td>
-                              <a href="update/{{cuenta.id}}" class="btn btn-info btn-xs"><i class="fas fa-edit"></i></a>
-                              <a href="delete/{{cuenta.id}}" class="btn btn-danger btn-xs"><i class="fas fa-trash-alt"></i></a>
-                            </td>
-                        </tr>
-                        {%endfor%}
-                    </tbody>
-                </table>
-             </div>
-        </div>
-  </div>
-{% endblock %}
+
+{%block colums%}
+<tr>
+    <th>Correo</th>
+    <th>Clave</th>
+    <th>Estado</th>
+    <th>Usuario</th>
+    <th colspan="">Opciones</th>
+</tr>
+{%endblock%}
+
+{%block rows%}
+<tr>
+    {%for cuenta in cuenta%}               
+    <td>{{cuenta.correo}}</td>
+    <td>{{cuenta.clave}}</td>
+    <td>{{cuenta.estado}}</td>
+    <td>{{cuenta.user}}</td>
+    <td>
+      <a href="update/{{cuenta.id}}" class="btn btn-info btn-xs"><i class="fas fa-edit"></i></a>
+      <a href="delete/{{cuenta.id}}" class="btn btn-danger btn-xs"><i class="fas fa-trash-alt"></i></a>
+    </td>
+    {%endfor%}
+</tr>
+
+{%endblock%}
