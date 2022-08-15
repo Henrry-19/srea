@@ -32,7 +32,8 @@ class CuentaCreateView(View):
     def get(self, request, *args, **kwargs):
         form=CuentaCreateForm()
         context={
-            'form':form
+            'form':form,
+            'title' :'Creación de una cuenta'
         }
         return render(request, './cuenta/cuenta_create.html', context)
 

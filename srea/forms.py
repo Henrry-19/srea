@@ -1,6 +1,8 @@
+from cProfile import label
 from dataclasses import field, fields
+from tkinter import Widget
 from turtle import mode
-from django.forms import  ModelForm 
+from django.forms import *
 
 from .models import Asignatura, Cuenta, Nivel, Reporte,Usuario, Reporte, Indicacion, Test, Pregunta, FichaInformacion
 
@@ -8,7 +10,19 @@ from .models import Asignatura, Cuenta, Nivel, Reporte,Usuario, Reporte, Indicac
 class CuentaCreateForm(ModelForm):
     class Meta: 
         model = Cuenta
-        fields = ('user','correo','clave','estado')
+        #fields = ('user','correo','clave','estado')
+        fields =('user','correo','clave','estado',)
+        Widgets ={
+            'correo': TextInput(
+                attrs={
+                    'class':'form-control',
+                    'placeholder':'Ingrese el correo',
+                    'autocomplete':'off'
+                }
+            )  
+        }
+
+        
 
 class UsuarioCreateForm(ModelForm):
     class Meta:

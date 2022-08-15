@@ -3,6 +3,7 @@
 
 {%block colums%}
   <tr>
+    <th>Nro</th>
     <th>Correo</th>
     <th>Clave</th>
     <th>Estado</th>
@@ -12,8 +13,9 @@
 {%endblock%}
 
 {%block rows%}
-  {%for cuenta in cuenta%} 
+{%for cuenta in cuenta%} 
       <tr>           
+        <td>{{cuenta.id}}</td>
         <td>{{cuenta.correo}}</td>
         <td>{{cuenta.clave}}</td>
         <td>{{cuenta.estado}}</td>

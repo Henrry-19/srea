@@ -10,28 +10,27 @@
 {% endblock  %}
 
 {% block content %}
-  <div class="card card-default">
-      <div class="card-header">
-          <h3 class="card-title">
-            <i class="fas fa-search"></i>
-            {{title}}
-          </h3>
-      </div>
-      <div class="card-body">
-          <table class="table" id="data">
-            <thead>
-            {%block colums%}
-
-            {%endblock%}
-            </thead>
-            <tbody>
-            {%block rows%}
-
-            {%endblock%}
-            </tbody>
-          </table>
-      </div>
+<div class="card card-default">
+  <div class="card-header">
+      <h3 class="card-title">
+        <i class="fas fa-search"></i>
+        {{title}}
+      </h3>
   </div>
+  <div class="card-body">
+      <table class="table" id="data">
+        <thead>
+        {%block colums%}
+
+        {%endblock%}
+        </thead>
+        <tbody>
+        {%block rows%}
+        {%endblock%}
+        </tbody>
+      </table>
+  </div>
+</div>
 {% endblock %}
 
 {% block javascript %}
