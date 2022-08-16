@@ -1,4 +1,4 @@
-{% extends "body.html" %}
+{% extends 'layout.html' %}
 {% load static %}
 {% block head %}
   <link rel="stylesheet" href="{% static 'lib/datatables-1.10.20/css/dataTables.bootstrap4.min.css' %}"/>
@@ -7,7 +7,10 @@
   <script src="{% static 'lib/datatables-1.10.20/js/dataTables.bootstrap4.min.js' %}"></script>
   <script src="{% static 'lib/datatables-1.10.20/plugins/responsive-2.2.3/js/dataTables.responsive.min.js' %}"></script>
   <script src="{% static 'lib/datatables-1.10.20/plugins/responsive-2.2.3/js/responsive.bootstrap4.min.js' %}"></script>
-{% endblock  %}
+  {% block head_list %}
+  {% endblock %}
+  
+  {% endblock  %}
 
 {% block content %}
 <div class="card card-default">

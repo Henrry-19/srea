@@ -44,14 +44,11 @@ class UsuarioCreateView(View):
         if request.method=="POST":#Si estámos enviando información a traves de un formulario
             form=UsuarioCreateForm(request.POST, request.FILES)
             if form.is_valid():
-                cedula=form.cleaned_data.get('cedula')
                 apellido=form.cleaned_data.get('apellido')
                 nombre=form.cleaned_data.get('nombre')
+                correo=form.cleaned_data.get('correo')
+                clave=form.cleaned_data.get('clave')
                 fecha_nacimiento=form.cleaned_data.get('fecha_nacimiento')
-                edad=form.cleaned_data.get('edad')
-                direccion=form.cleaned_data.get('direccion')
-                foto=form.cleaned_data.get('foto')
-                id_usuario=form.cleaned_data.get('id_usuario')
                 form.save()
                 return redirect('srea:principal')
         else: 
@@ -66,7 +63,7 @@ class UsuarioDeleteView(DeleteView):
 
 class UsuarioUpdateView(UpdateView):
     model=Usuario
-    fields=['cedula','apellido','nombre', 'direccion']
+    fields=['nombre','apellido','correo','clave','fecha_nacimiento']
     template_name='usuario/usuario_update.html'
 
     def get_success_url(self): #Me regresa a la ventana

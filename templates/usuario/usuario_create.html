@@ -1,4 +1,4 @@
-{% extends "body.html" %}
+{% extends 'layout.html' %}
 {%block title%}Crear usuario{%endblock%}
 {% block content %}
 <div class="row">
@@ -8,42 +8,34 @@
             <div class="card-body">
                 <form  method="POST" enctype="multipart/form-data"> {% csrf_token %}
                     <div class="form-group">
-                        <h4>Cedula</h4>
-                        <!--<input type="text" id="txtCorreo" name="txtCorreo" class="form-control"
-                         placeholder="Correo" minlength="8" maxlength="15" required>-->
-                         {{form.cedula}}
+                        <h4>Nombre</h4>
+                        {{form.nombre}}
                     </div>
                     <div class="form-group">
                         <h4>Apellido</h4>
                         {{form.apellido}}
                     </div>
                     <div class="form-group">
-                        <h4>Nombre</h4>
-                        {{form.nombre}}
+                        <h4>Correo</h4>
+                        {{form.correo}}
+                    </div>
+                    <div class="form-group">
+                        <h4>Clave</h4>
+                        {{form.clave}}
                     </div>
                     <div class="form-group">
                         <h4>Fecha de nacimiento</h4>
                         {{form.fecha_nacimiento}}
                     </div>
                     <div class="form-group">
-                        <h4>Edad</h4>
-                        {{form.edad}}
+                        <button type="submit" class="btn btn-success text-white">
+                            <i class="fas fa-save"></i>Guardar
+                        </button>
+                        <a href="{% url 'srea:principal' %}" class="btn btn-info btn-flat">
+                            <i class="fas fa-times"></i> Cancelar
+                        </a>
                     </div>
-                    <div class="form-group">
-                        <h4>Dirección</h4>
-                        {{form.direccion}}
-                    </div>
-                    <div class="form-group">
-                        <h4>Foto</h4>
-                        {{form.foto}}
-                    </div>
-                    <div class="form-group">
-                        <h4>Usuario</h4>
-                        {{form.id_usuario}}
-                    </div>
-                    <div class="form-group">
-                        <button type="submit" class="btn btn-success btn-block text-white">Guardar</button>
-                    </div>
+
                 </form>
             </div>
         </div>

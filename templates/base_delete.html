@@ -1,0 +1,19 @@
+{% extends 'layout.html' %}
+{% block content %}
+<form method="POST">
+    {% csrf_token %}
+    {{form}}
+    <div class="alert alert-danger alert-dismissible">
+        <h5><i class="icon fas fa-ban"></i> Notificación!</h5>
+        ¿Desea eliminar el registro?
+    </div>
+    <div class="card-footer">
+        <button type="submit" class="btn btn-primary btn-flat">
+            <i class="fas fa-save"></i> Si, aceptar
+        </button>
+        <a href="{% url 'srea:principal' %}" class="btn btn-info btn-flat">
+            <i class="fas fa-times"></i> Cancelar
+        </a>
+    </div>
+</form>
+{% endblock %}

@@ -3,10 +3,10 @@
 
 {%block colums%}
 <tr>
-    <th>Cedula</th>
-    <th>Apellido</th>
     <th>Nombre</th>
-    <th>Dirección</th>
+    <th>Apellido</th>
+    <th>Correo</th>
+    <th>fecha_nacimiento</th>
     <th colspan="">Opciones</th>
 </tr>
 {%endblock%}
@@ -14,12 +14,14 @@
 {%block rows%}
 {%for u in usuario%}
     <tr>
-        <td>{{u.cedula}}</td>
-        <td>{{u.apellido}}</td>
         <td>{{u.nombre}}</td>
-        <td>{{u.direccion}}</td>
-        <td><a href="u_usuario/{{u.id}}" class="btn btn-info">Editar</a></td>
-        <td><a href="d_usuario/{{u.id}}" class="btn btn-danger">Eliminar</a></td>
+        <td>{{u.apellido}}</td>
+        <td>{{u.correo}}</td>
+        <td>{{u.fecha_nacimiento}}</td>
+        <td>
+        <a href="u_usuario/{{u.id}}" class="btn btn-info btn-xs"><i class="fas fa-edit"></i></a>
+        <a href="d_usuario/{{u.id}}" class="btn btn-danger btn-xs"><i class="fas fa-trash-alt"></i></a>
+        </td>
     </tr>
 {%endfor%}
 <div>

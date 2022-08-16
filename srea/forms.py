@@ -10,24 +10,60 @@ from .models import Asignatura, Cuenta, Nivel, Reporte,Usuario, Reporte, Indicac
 class CuentaCreateForm(ModelForm):
     class Meta: 
         model = Cuenta
-        #fields = ('user','correo','clave','estado')
-        fields =('user','correo','clave','estado',)
-        Widgets ={
-            'correo': TextInput(
-                attrs={
-                    'class':'form-control',
-                    'placeholder':'Ingrese el correo',
-                    'autocomplete':'off'
-                }
-            )  
-        }
+        fields= '__all__'
+        #exclude = ['user']
 
+        widgets = {
+            'correo': TextInput(attrs={
+                'class':'col-auto',
+                'placeholder':'Ingrese el correo',
+                'autocomplete':'off',
+                 }),
+            'clave': TextInput(attrs={
+                'class':'col-auto',
+                'placeholder':'Ingrese la clave',
+                'autocomplete':'off',
+                'type':'password'
+                 }),         
+        }
+      
         
 
 class UsuarioCreateForm(ModelForm):
     class Meta:
         model= Usuario
-        fields = ('cedula','apellido','nombre','fecha_nacimiento','edad','direccion', 'foto', 'id_usuario')
+        fields= '__all__'
+        widgets = {
+            'nombre': TextInput(attrs={
+                'class':'col-auto',
+                'placeholder':'Nombre',
+                'autocomplete':'off',
+                 }),  
+
+            'apellido': TextInput(attrs={
+                'class':'col-auto',
+                'placeholder':'Apellido',
+                'autocomplete':'off',
+                 }),
+            
+            'correo': TextInput(attrs={
+                'class':'col-auto',
+                'placeholder':'Correo electrónico',
+                'autocomplete':'off',
+                 }),
+
+            'clave': TextInput(attrs={
+                'class':'col-auto',
+                'placeholder':'Contraseña nueva',
+                'autocomplete':'off',
+                'type':'password',
+                 }),
+
+            'fecha_nacimiento': TextInput(attrs={
+                'type':'date',
+                 }),
+                     
+        }
 
 class ReporteCreateForm(ModelForm):
     class Meta:
