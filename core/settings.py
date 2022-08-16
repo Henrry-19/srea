@@ -41,9 +41,12 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     #libs
     'widget_tweaks',
+    #Apps
+    'apps.srea',
+    'apps.homepage',
+    'apps.login',
 
-    'core',
-    'srea',
+   
 
 ]
 
@@ -146,3 +149,8 @@ AUTHENTICATION_BACKENDS = [
 
 SITE_ID = 1 
 AUTH_USER_MODEL = 'srea.User'
+
+LOGIN_REDIRECT_URL ='/srea/u_lista/'
+
+LOGOUT_REDIRECT_URL ='/login/'
+
