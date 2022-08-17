@@ -33,6 +33,7 @@ class UsuarioCreateForm(ModelForm):
     class Meta:
         model= Usuario
         fields= '__all__'
+        exclude = ['estado']
         widgets = {
             'nombre': TextInput(attrs={
                 'class':'col-auto',
