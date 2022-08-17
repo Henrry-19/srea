@@ -8,10 +8,12 @@ from .vistas.nivel import NivelListView, NivelCreateView,NivelUpdateView,NivelDe
 from .vistas.pregunta import PreguntaListView, PreguntaCreateView, PreguntaDeleteView, PreguntaUpdateView
 from .vistas.test import TestListView, TestCreateView, TestDeleteView, TestUpdateView
 from .vistas.ficha import FichaCreateView, FichaUpdateView, FichaDeleteView, FichaListView
+from .vistas.index import Index1View
 
 app_name="apps.srea"
 
 urlpatterns = [
+    path('index1/',Index1View.as_view(), name="index1"),
     path('cuenta/', CuentaCreateView.as_view(), name="cuenta"),
     path('update/<int:pk>/', CuentaUpdateView.as_view(), name="update"),
     path('delete/<int:pk>', CuentaDeleteView.as_view(), name="delete"),

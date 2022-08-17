@@ -1,3 +1,5 @@
+from django.contrib.auth.decorators import login_required #Importación de decoradores
+from django.utils.decorators import method_decorator #Importación del método decorador
 from multiprocessing import context
 from django.shortcuts import get_object_or_404, render, redirect
 from django.views.generic import View, UpdateView,DeleteView
@@ -19,6 +21,8 @@ from django.contrib.staticfiles import finders
 
 
 class UsuarioListView(View):
+    @method_decorator(login_required)
+
     def get(self,request, *args, **kwargs):
         usuario = Usuario.objects.all()
         context={
@@ -30,6 +34,7 @@ class UsuarioListView(View):
         return render(request, 'usuario/usuario_lista.html', context)
 
 class UsuarioCreateView(View):
+    @method_decorator(login_required)
     def get(self, request, *args, **kwargs):
         form=UsuarioCreateForm()
         context={
@@ -39,7 +44,7 @@ class UsuarioCreateView(View):
         return render(request, './usuario/usuario_create.html', context)
 
 #Método para crear usuario  
-
+        
     def post(self,request, *args, **kwargs):
         if request.method=="POST":#Si estámos enviando información a traves de un formulario
             form=UsuarioCreateForm(request.POST, request.FILES)
@@ -61,10 +66,21 @@ class UsuarioDeleteView(DeleteView):
     template_name='usuario/usuario_delete.html'
     success_url=reverse_lazy('srea:principal')
 
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        return super().dispatch(request, *args, **kwargs)
+
+
 class UsuarioUpdateView(UpdateView):
     model=Usuario
     fields=['nombre','apellido','correo','clave','fecha_nacimiento']
     template_name='usuario/usuario_update.html'
+    
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        return super().dispatch(request, *args, **kwargs)
 
     def get_success_url(self): #Me regresa a la ventana
         pk = self.kwargs['pk']
