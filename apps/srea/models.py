@@ -3,6 +3,7 @@ from msilib.schema import Class
 from pydoc import describe
 from pyexpat import model
 from turtle import up
+
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
@@ -44,6 +45,17 @@ genero_ficha_informacion = (
     ('F', 'Masculino')
 )
 
+etnia_ficha={
+    ('A', 'Afroecuatoriano'),
+    ('B', 'Blanco'),
+    ('C', 'Cholo'),
+    ('I', 'Indigena'),
+    ('Mo', 'Montubio'),
+    ('Mu', 'Mulato'),
+    ('N', 'Negro'),
+    ('O', 'Otro')
+}
+
 estado_civil_ficha_informacion=(
     ('S','Soltero/a'),
     ('C','Casado/a'),
@@ -52,17 +64,24 @@ estado_civil_ficha_informacion=(
 )
 class FichaInformacion(models.Model):
     cedula=models.CharField(max_length=10)
-    foto = models.ImageField(upload_to='cars')
-    descripcion=models.TextField()
-    edad=models.IntegerField()
-    direccion=models.TextField()
-    detalle_trabajo=models.TextField()
-    detalle_ocupacion=models.TextField()
-    detalle_tecnicaE=models.TextField()
-    genero=models.CharField(choices=genero_ficha_informacion, max_length=1)
-    etnia=models.CharField(max_length=50)
-    estado_civil= models.CharField(choices=estado_civil_ficha_informacion, max_length=1)
     user=models.ForeignKey(Usuario, on_delete=models.CASCADE)
+    foto = models.ImageField(upload_to='cars',null=True, blank=True)
+    edad=models.IntegerField()
+    direccion=models.CharField(max_length=50)
+    ocupacion=models.CharField(max_length=1) #Ingresar como lista-clase ocupación
+    tecnica_estudio=models.CharField(max_length=50,null=True)
+    genero=models.CharField(choices=genero_ficha_informacion, max_length=1)
+    etnia=models.CharField(choices=etnia_ficha,max_length=2)
+    estado_civil= models.CharField(choices=estado_civil_ficha_informacion, max_length=1)
+    
+
+    def __str__(self):
+        return self.cedula
+
+    def __str__(self):
+        if self.foto:
+            return '{}{}'.format(MEDIA_URL, self.foto)
+        return '{}{}'.format(STATIC_URL, 'img/user_png')
 
 
 class Indicacion(models.Model):

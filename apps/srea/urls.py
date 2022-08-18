@@ -36,14 +36,14 @@ urlpatterns = [
 #-------------------------Asignatura-----------------------------------------
     path('a_lista/',AsignaturaListView.as_view(), name="p_asignatura"), #principal_asignatura
     path('asignatura/',AsignaturaCreateView.as_view(), name="asignatura"), #crear asignatura
-    path('a_lista/updateA/<int:pk>/', AsignaturaUpdateView.as_view(), name="update_asignatura"),
-    path('a_lista/deleteA/<int:pk>', AsignaturaDeleteView.as_view(), name="delete_asignatura"),
+    path('a_lista/updateA/<int:pk>/', AsignaturaUpdateView.as_view(), name="u_asignatura"),
+    path('a_lista/deleteA/<int:pk>', AsignaturaDeleteView.as_view(), name="d_asignatura"),
 
 #-------------------------Ficha-----------------------------------------
     path('f_lista/',FichaListView.as_view(), name="p_ficha"), #principal_ficha
     path('ficha/',FichaCreateView.as_view(), name="ficha"), #crear ficha
-    path('f_lista/updateF/<int:pk>/',FichaUpdateView.as_view(), name="update_ficha"),
-    path('f_lista/deleteF/<int:pk>',FichaDeleteView.as_view(), name="delete_ficha"),
+    path('f_lista/d_ficha/<int:pk>',FichaDeleteView.as_view(), name="u_ficha"),
+     path('f_lista/u_ficha/<int:pk>/',FichaUpdateView.as_view(), name="u_ficha"),
 #-------------------------Nivel-----------------------------------------
     path('n_lista/',NivelListView.as_view(), name="p_nivel"), #principal_nivel
     path('nivel/',NivelCreateView.as_view(), name="nivel"), #crear nivel

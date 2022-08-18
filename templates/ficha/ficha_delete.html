@@ -1,11 +1,2 @@
-{% extends "body.html" %}
-{%block title%}Eliminar ficha{%endblock%}
-{% block content %}
-¿Desea eliminar la ficha {{ficha.id}}?
-<form method="POST">
-    {% csrf_token %}
-    {{form}}
-    <br>
-    <button type="submit">Eliminar</button>
-</form>
-{% endblock %}
+{% extends "base_delete.html" %}
+{%block title%}Eliminar ficha {%endblock%}

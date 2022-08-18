@@ -1,42 +1,34 @@
-{% extends "body.html" %}
-{%block title%}Asignaturas{%endblock%}
-{% block content%}
-<div class="row">
-    <div class="col-sm-12 col-md-6 col-lg-8 col-xl-8">
-        <h1>Asignaturas</h1>
-        <fom>
-            <div class="form-group">
-                <a href="{% url 'srea:asignatura' %}" class="btn btn-info">Registrar</a>
-            </div>    
-        </form>
-        <div class="table-responsive py-2">
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Nombre</th>
-                        <th>Detalle</th>
-                        <th>Foto</th>
-                        <th>Estado</th>
-                        <th>User</th>
-                        <th colspan="">Opciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {{asignatura.nombre}}
-                    {%for a in asignatura%}
-                    <tr>
-                        <td>{{a.nombre}}</td>
-                        <td>{{a.detalle}}</td>
-                        <td>{{a.foto}}</td>
-                        <td>{{a.estado}}</td>
-                        <td>{{a.user}}</td>
-                        <td><a href="updateA/{{a.id}}" class="btn btn-info">Editar</a></td>
-                        <td><a href="deleteA/{{a.id}}" class="btn btn-danger">Eliminar</a></td>
-                    </tr>
-                    {%endfor%}
-                </tbody>
-            </table>
-         </div>
+{% extends "b_list.html" %}
+{%block title%}Lista de usuarios{%endblock%}
+
+{%block colums%}
+<tr>
+    <th>Usuario</th>
+    <th>nombre</th>
+    <th>Detalle</th>
+    <th>Foto</th>
+    <th colspan="">Opciones</th>
+</tr>
+{%endblock%}
+
+{%block rows%}
+{%for a in asignatura%}
+    <tr>
+        <td>{{a.user}}</td>
+        <td>{{a.nombre}}</td>
+        <td>{{a.detalle}}</td>
+        <td>{{a.foto}}</td>
+        <td>
+        <a href="u_usuario/{{u.id}}" class="btn btn-info btn-xs"><i class="fas fa-edit"></i></a>
+        <a href="d_usuario/{{u.id}}" class="btn btn-danger btn-xs"><i class="fas fa-trash-alt"></i></a>
+        </td>
+    </tr>
+{%endfor%}
+<div>
+    <div class="card-footer">
+        <a href="{% url 'srea:asignatura' %}" class="btn btn-info"><i class="fas fa-pen-square"></i>Registrar</a>  
     </div>
 </div>
-{% endblock %}
+
+
+{%endblock%}

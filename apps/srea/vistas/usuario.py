@@ -75,7 +75,7 @@ class UsuarioDeleteView(DeleteView):
 class UsuarioUpdateView(UpdateView):
     model=Usuario
     fields=['nombre','apellido','correo','clave','fecha_nacimiento']
-    template_name='usuario/usuario_update.html'
+    template_name='usuario/usuario_create.html'
     
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):

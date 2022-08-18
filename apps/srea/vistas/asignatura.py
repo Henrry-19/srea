@@ -21,7 +21,8 @@ class AsignaturaListView(View):
     def get(self,request, *args, **kwargs):
         asignatura = Asignatura.objects.all()
         context={
-            'asignatura':asignatura
+            'asignatura':asignatura,
+            'title':'Lista de asignaturas'
             
         }
         return render(request, 'asignatura/asignatura_lista.html', context)
@@ -63,7 +64,7 @@ class AsignaturaDeleteView(DeleteView):
 
 class AsignaturaUpdateView(UpdateView):
     model=Asignatura
-    fields=['nombre','detalle','foto', 'user', 'estado']
+    fields='__all__'
     template_name='asignatura/asignatura_update.html'
 
     def get_success_url(self): #Me regresa a la ventana

@@ -1,48 +1,50 @@
-{% extends "body.html" %}
-{%block title%}Ficha{%endblock%}
-{% block content %}
-<div class="row">
-    <div class="col-sm-12 col-md-6 col-lg-8 col-xl-8">
-        <h1>Ficha</h1>
-        <fom>
-            <div class="form-group">
-                <a href="{% url 'srea:ficha' %}" class="btn btn-info">Registrar</a>
-            </div>    
-        </form>
-        <div class="table-responsive py-2">
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Descripción</th>
-                        <th>Detalle del trabajo</th>
-                        <th>Detalle de la ocupación</th>
-                        <th>Detalle de la técnica de estudio</th>
-                        <th>Genero</th>
-                        <th>Etnia</th>
-                        <th>Estado civil</th>
-                        <th>User</th>
-                        <th colspan="">Opciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {{ficha.descripcion}}
-                    {%for f in ficha%}
-                    <tr>
-                        <td>{{f.descripcion}}</td>
-                        <td>{{f.detalle_trabajo}}</td>
-                        <td>{{f.detalle_ocupacion}}</td>
-                        <td>{{f.detalle_tecnicaE}}</td>
-                        <td>{{f.genero}}</td>
-                        <td>{{f.etnia}}</td>
-                        <td>{{f.estado_civil}}</td>
-                        <td>{{f.user}}</td>
-                        <td><a href="updateF/{{f.id}}" class="btn btn-info">Editar</a></td>
-                        <td><a href="deleteF/{{f.id}}" class="btn btn-danger">Eliminar</a></td>
-                    </tr>
-                    {%endfor%}
-                </tbody>
-            </table>
-         </div>
+{% extends "b_list.html" %}
+{%block title%}Ficha de Usuario{%endblock%}
+
+{%block colums%}
+<tr>
+    <th>Cedula</th>
+    <th>User</th>
+    <th>Foto</th>
+    <th>Edad</th>
+    <th>Dirección</th>
+    <th>Ocupación</th>
+    <th>Técnica de estudio</th>
+    <th>Genero</th>
+    <th>Etnia</th>
+    <th>Estado Civil</th>
+    
+    <th colspan="">Opciones</th>
+</tr>
+{%endblock%}
+
+{%block rows%}
+{%for f in ficha%}
+    <tr>
+        <td>{{f.cedula}}</td>
+        <td>{{f.user}}</td>
+        <td class="text-center">
+           {{f.foto}}
+           <!--- <img src="{{f.foto}}" class="img-fluid d-block mx auto"  style="width: 20px; height: 20px;">-->
+        </td>
+        <td>{{f.edad}}</td>
+        <td>{{f.direccion}}</td>
+        <td>{{f.ocupacion}}</td>
+        <td>{{f.tecnica_estudio}}</td>
+        <td>{{f.genero}}</td>
+        <td>{{f.etnia}}</td>
+        <td>{{f.estado_civil}}</td>
+        <td>
+        <a href="u_ficha/{{u.id}}" class="btn btn-info btn-xs"><i class="fas fa-edit"></i></a>
+        <a href="d_ficha/{{u.id}}" class="btn btn-danger btn-xs"><i class="fas fa-trash-alt"></i></a>
+        </td>
+    </tr>
+{%endfor%}
+<div>
+    <div class="card-footer">
+        <a href="{% url 'srea:ficha' %}" class="btn btn-info"><i class="fas fa-pen-square"></i>Registrar</a>  
     </div>
 </div>
-{% endblock %}
+
+
+{%endblock%}
