@@ -1,3 +1,6 @@
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
+from django.http import JsonResponse
 from multiprocessing import context
 from django.shortcuts import get_object_or_404, render, redirect
 from django.views.generic import View, UpdateView,DeleteView
@@ -54,19 +57,41 @@ class AsignaturaCreateView(View):
         return render(request, 'asignatura/asignatura_create.html',  {
         'form': form
         })   
-        #return redirect('srea:p_asignatura')
-        #return render(request, 'asignatura/asignatura_create.html', context)
+
 
 class AsignaturaDeleteView(DeleteView):
     model=Asignatura
     template_name='asignatura/asignatura_delete.html'
     success_url=reverse_lazy('srea:p_asignatura')
 
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        return super().dispatch(request, *args, **kwargs)
+
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Eliminación de una Asignatura'
+        context['entity'] = 'Asignatura'
+        context['url_lista'] = reverse_lazy('srea:p_asignatura')
+        return context
+
 class AsignaturaUpdateView(UpdateView):
     model=Asignatura
-    fields='__all__'
-    template_name='asignatura/asignatura_update.html'
+    fields=['nombre','detalle','foto','user']
+    template_name='asignatura/asignatura_create.html'
+    success_url = reverse_lazy('srea:p_asignatura')
 
-    def get_success_url(self): #Me regresa a la ventana
-        pk = self.kwargs['pk']
-        return reverse_lazy('srea:p_asignatura')
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        return super().dispatch(request, *args, **kwargs)
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Actualización de una Asignatura'
+        context['entity'] = 'Asignatura'
+        context['url_lista'] = reverse_lazy('srea:p_asignatura')
+        context['action'] = 'edit'
+        return context

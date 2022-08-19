@@ -71,18 +71,30 @@ class UsuarioDeleteView(DeleteView):
         self.object = self.get_object()
         return super().dispatch(request, *args, **kwargs)
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Eliminación de un Usuario'
+        context['entity'] = 'Usuario'
+        context['url_lista'] = reverse_lazy('srea:principal')
+        return context
+
 
 class UsuarioUpdateView(UpdateView):
     model=Usuario
     fields=['nombre','apellido','correo','clave','fecha_nacimiento']
     template_name='usuario/usuario_create.html'
+    success_url = reverse_lazy('srea:principal')
     
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         self.object = self.get_object()
         return super().dispatch(request, *args, **kwargs)
 
-    def get_success_url(self): #Me regresa a la ventana
-        pk = self.kwargs['pk']
-        return reverse_lazy('srea:principal')
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Actualización de un usuario'
+        context['entity'] = 'Usuario'
+        context['url_lista'] = reverse_lazy('srea:principal')
+        context['action'] = 'edit'
+        return context
 
