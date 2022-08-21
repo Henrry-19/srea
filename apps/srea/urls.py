@@ -1,14 +1,14 @@
 from django.urls import path
-from .vistas.cuenta import sreaListView, CuentaCreateView, CuentaUpdateView, CuentaDeleteView
-from .vistas.usuario import UsuarioCreateView,UsuarioListView, UsuarioDeleteView,UsuarioUpdateView
-from .vistas.reporte import ReporteListView,ReporteListPdf,ReporteUpdateView,ReporteDeleteView,ReporteCreateView
-from .vistas.indicacion import IndicacionListView,IndicacionCreateView,IndicacionUpdateView,IndicacionDeleteView
-from .vistas.asignatura import AsignaturaListView,AsignaturaCreateView, AsignaturaUpdateView, AsignaturaDeleteView
-from .vistas.nivel import NivelListView, NivelCreateView,NivelUpdateView,NivelDeleteView
-from .vistas.pregunta import PreguntaListView, PreguntaCreateView, PreguntaDeleteView, PreguntaUpdateView
-from .vistas.test import TestListView, TestCreateView, TestDeleteView, TestUpdateView
-from .vistas.ficha import FichaCreateView, FichaUpdateView, FichaDeleteView, FichaListView
-from .vistas.index import Index1View
+from .vistas.cuenta import *
+from .vistas.usuario import *
+from .vistas.reporte import *
+from .vistas.indicacion import *
+from .vistas.asignatura import *
+from .vistas.nivel import *
+from .vistas.pregunta import *
+from .vistas.test import *
+from .vistas.ficha import *
+from .vistas.index import *
 
 app_name="apps.srea"
 

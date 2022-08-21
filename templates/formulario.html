@@ -5,11 +5,11 @@
         <div class="card card-primary">
             <div class="card-header">
                 <h3 class="card-title">
-                    {% if action == 'add' %}
+                   <!-- {% if action == 'add' %}
                         <i class="fas fa-plus"></i>
                     {% else %}
                         <i class="fas fa-edit"></i>
-                    {% endif %}
+                    {% endif %}-->
 
                     {{ title }}
                 </h3>
@@ -38,17 +38,17 @@
                 {% endfor %}
             </div>
             <div class="card-footer">
-                <button type="submit" class="btn btn-primary btn-flat">
+                <button type="submit" class="btn btn-info">
                     <i class="fas fa-save"></i> Guardar registro
                 </button>
-                <a href='{{ url_lista }}' class="btn btn-danger btn-flat">
+                <a href='{{ url_lista }}' class="btn btn-danger">
                     <i class="fas fa-times"></i> Cancelar
                 </a>
             </div>
         </div>
     </form>
     <script>
-        {% if form.errors %}
+       {% if form.errors %}
             var errors = '';
             {% for field in form %}
                 {% for error in field.errors %}
@@ -65,12 +65,27 @@
             });
         {% endif %}
 
-       /*$('form').on('submit', function (e) {
+    
+        $('form').on('submit',function(e){
             e.preventDefault();
-            var parameters = $(this).serializeArray();
-            ajax_alert_jqueryconfirm(window.location.pathname, parameters, function () {
-                location.href = '{{ principal }}';
-            });
-        });*/
+            var parametros=$(this).serializeArray();
+            $.ajax({
+                url:window.location.pathname, 
+                type: 'POST',
+                data: parametros,
+                dataType: 'json'
+              }).done(function(data){
+                if(!data.hasOwnProperty('error')){
+                    location.href='{{url_lista}}';
+                    return false;
+               }
+                message_error(data.error);
+              }).fail(function(jqXHR,textStatus,errorThrown){
+                alert(textStatus+':'+errorThrown)
+              }).always(function(data){
+                
+              });
+        });
+
     </script>
 {% endblock %}

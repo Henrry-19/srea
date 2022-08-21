@@ -13,7 +13,7 @@
   {% endblock  %}
 
 {% block content %}
-<div class="card card-default">
+<div class="card card-primary">
   <div class="card-header">
       <h3 class="card-title">
         <i class="fas fa-search"></i>
@@ -33,6 +33,12 @@
         </tbody>
       </table>
   </div>
+  <div class="card-footer">
+    <a href="{{url_create}}" class="btn btn-info btnTest">
+       <i class="fas fa-pen-square"></i>Nuevo registro
+    </a>
+
+  </div>
 </div>
 {% endblock %}
 
@@ -42,6 +48,22 @@
               $('#data').DataTable({
                 responsive: true,
                 autoWidth: false
+              });
+
+              $('.btnTest').on('click',function () { 
+                $.ajax({
+                  url:'{% url 'srea:principal' %}', 
+                  type: 'POST',
+                  data: {id:30},
+                  dataType: 'json'
+                }).done(function(data){
+                  console.log(data)
+
+                }).fail(function(jqXHR,textStatus,errorThrown){
+                  alert(textStatus+':'+errorThrown)
+                }).always(function(data){
+                  
+                });
               });
           });
     </script>

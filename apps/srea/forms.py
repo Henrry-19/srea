@@ -30,6 +30,11 @@ class CuentaCreateForm(ModelForm):
         
 
 class UsuarioCreateForm(ModelForm):
+    def _init_(self,*args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for form in self.visible_fields(): #Recorrer los componentes de mi formulario
+            form.field.widget.attrs['class']= 'form-control'
+            form.field.widget.attrs['autocomplete']= 'off'
     class Meta:
         model= Usuario
         fields= '__all__'
@@ -38,13 +43,11 @@ class UsuarioCreateForm(ModelForm):
             'nombre': TextInput(attrs={
                 'class':'col-auto',
                 'placeholder':'Nombre',
-                'autocomplete':'off',
                  }),  
 
             'apellido': TextInput(attrs={
                 'class':'col-auto',
                 'placeholder':'Apellido',
-                'autocomplete':'off',
                  }),
             
             'correo': TextInput(attrs={
@@ -65,7 +68,20 @@ class UsuarioCreateForm(ModelForm):
                  }),
                      
         }
-
+    
+    def save(self, commit=True):
+        data = {}
+        form = super()
+        try:
+            if form.is_valid():
+                form.save()
+            else:
+                data['error'] = form.errors
+        except Exception as e:
+            data['error'] = str(e)
+        return data
+# 'rows':3,
+# 'cols':3}
 class ReporteCreateForm(ModelForm):
     class Meta:
         model= Reporte

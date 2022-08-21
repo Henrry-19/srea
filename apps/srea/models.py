@@ -4,6 +4,8 @@ from pydoc import describe
 from pyexpat import model
 from turtle import up
 
+from django.forms import model_to_dict
+
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
@@ -24,6 +26,11 @@ class Usuario(models.Model):
 
     def __str__(self):
         return self.nombre
+
+    def toJSON(self): #Método para devolver un diccionario de los atributos del modelo
+        item=model_to_dict(self, exclude='estado,correo,clave')
+
+        return item
     
 class Cuenta(models.Model):
     correo=models.EmailField()
