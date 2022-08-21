@@ -9,8 +9,7 @@
   <script src="{% static 'lib/datatables-1.10.20/plugins/responsive-2.2.3/js/responsive.bootstrap4.min.js' %}"></script>
   {% block head_list %}
   {% endblock %}
-  
-  {% endblock  %}
+{% endblock  %}
 
 {% block content %}
 <div class="card card-primary">
@@ -29,6 +28,7 @@
         </thead>
         <tbody>
         {%block rows%}
+
         {%endblock%}
         </tbody>
       </table>

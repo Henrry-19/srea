@@ -1,27 +1,24 @@
 {% extends "b_list.html" %}
+{% load static %}
 {%block title%}Lista de usuarios{%endblock%}
 
+{% block head_list %}
+<script src="{% static '/usuario/js/lista1.js' %}"></script>
+{% endblock %}
 {%block colums%}
 <tr>
-    <th>Nombre</th>
-    <th>Apellido</th>
-    <th>Correo</th>
-    <th>fecha_nacimiento</th>
-    <th colspan="">Opciones</th>
+    <th scope="col" style="width: 20%;">id</th>
+    <th scope="col" style="width: 20%;">Nombre</th>
+    <th scope="col" style="width: 20%;">Apellido</th>
+    <th scope="col" style="width: 20%;">Correo</th>
+    <th scope="col" style="width: 20%;">fecha_nacimiento</th>
+    <th scope="col" style="width: 20%;">Opciones</th>
 </tr>
 {%endblock%}
 
 {%block rows%}
-{%for u in usuario%}
-    <tr>
-        <td>{{u.nombre}}</td>
-        <td>{{u.apellido}}</td>
-        <td>{{u.correo}}</td>
-        <td>{{u.fecha_nacimiento}}</td>
-        <td>
-        <a href="u_usuario/{{u.id}}" class="btn btn-info btn-xs"><i class="fas fa-edit"></i></a>
-        <a href="d_usuario/{{u.id}}" class="btn btn-danger btn-xs"><i class="fas fa-trash-alt"></i></a>
-        </td>
-    </tr>
-{%endfor%}
+
 {%endblock%}
+
+{% block javascript %}
+{% endblock  %}

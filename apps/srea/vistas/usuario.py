@@ -1,3 +1,4 @@
+from pickle import FALSE
 from re import template
 import re
 from urllib import request
@@ -20,43 +21,36 @@ import os
 from django.conf import settings
 from django.template.loader import get_template
 from xhtml2pdf import pisa
-from django.contrib.staticfiles import finders
-
-
-########################USUARIO#############################
-
 
 class UsuarioListView(ListView): 
     model = Usuario
-    template_name='usuario/usuario_lista.html'
+    template_name = 'usuario/usuario_lista.html'
 
-    #@method_decorator(login_required) #Funciones que permite determinar si un usuario está logueado
     @method_decorator(csrf_exempt)
-
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
-        data ={}                                     #Diccionario
+        data = {}
         try:
-            data=Usuario.objects.get(pk=request.POST['id']).toJSON()
+            action = request.POST['action']
+            if action == 'searchdata':
+                data = []
+                for i in Usuario.objects.all():
+                    data.append(i.toJSON())
+            else:
+                data['error'] = 'Ha ocurrido un error'
         except Exception as e:
-            data['error']=str(e)
+            data['error'] = str(e)
+        return JsonResponse(data, safe=False)
 
-        return JsonResponse(data)
-
-    def get(self,request, *args, **kwargs):
-        usuario = Usuario.objects.all()
-        context={
-            'usuario':usuario,
-            'title' :'Lista de usuarios',
-            'url_create':reverse_lazy('srea:usuario'),
-            'modelo':'Usuarios',
-            'url_lista':reverse_lazy('srea:principal') 
-            
-        }
-        #print(context)
-        return render(request, './usuario/usuario_lista.html', context)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Lista de usuarios'
+        context['url_create'] = reverse_lazy('srea:usuario')
+        context['url_lista'] = reverse_lazy('srea:principal')
+        context['modelo'] = 'Usuarios'
+        return context
 
 class UsuarioCreateView(View):
     model: Usuario  #Indicar el modelo con el cual se va ha trabajar
@@ -93,19 +87,27 @@ class UsuarioCreateView(View):
         return JsonResponse(data)
 
 class UsuarioDeleteView(DeleteView):
-    model=Usuario
-    template_name='usuario/usuario_delete.html'
+    model = Usuario
+    template_name = 'usuario/usuario_delete.html'
     success_url=reverse_lazy('srea:principal')
 
-    @method_decorator(login_required)
+    #@method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         self.object = self.get_object()
         return super().dispatch(request, *args, **kwargs)
 
+    def post(self, request, *args, **kwargs):
+        data = {}
+        try:
+            self.object.delete()
+        except Exception as e:
+            data['error'] = str(e)
+        return JsonResponse(data)
+            
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Eliminación de un Usuario'
-        context['entity'] = 'Usuario'
+        context['modelo'] = 'Usuario'
         context['url_lista'] = reverse_lazy('srea:principal')
         return context
 

@@ -28,7 +28,7 @@ class Usuario(models.Model):
         return self.nombre
 
     def toJSON(self): #Método para devolver un diccionario de los atributos del modelo
-        item=model_to_dict(self, exclude='estado,correo,clave')
+        item= model_to_dict(self, exclude='clave, estado')
 
         return item
     
