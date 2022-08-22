@@ -4,9 +4,14 @@ from tkinter import Widget
 from turtle import mode
 from django.forms import *
 
-from .models import Asignatura, Cuenta, Nivel, Reporte,Usuario, Reporte, Indicacion, Test, Pregunta, FichaInformacion
+from django import forms
 
- 
+from .models import *
+
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import get_user_model, authenticate, login
+User2 = get_user_model()
+
 class CuentaCreateForm(ModelForm):
     class Meta: 
         model = Cuenta
@@ -106,7 +111,6 @@ class AsignaturaCreateForm(ModelForm):
         exclude = ['estado']
 
 
-
 class NivelCreateForm(ModelForm):
     class Meta:
         model= Nivel
@@ -117,7 +121,53 @@ class TestCreateForm(ModelForm):
         model= Test
         fields = ('nombre', 'estado','user')
 
-class PreguntaCreateForm(ModelForm):
+class ElegirInlineFormset(forms.BaseInlineFormSet):
+    def clean(self):#
+        super(ElegirInlineFormset, self).clean() #
+        respuesta_correcta=0
+        for formulario in self.forms:
+            if not formulario.is_valid(): #Si nuestro formulario no es valido
+                return 
+            if formulario.cleaned_data and formulario.cleaned_data.get('correcta') is True:
+                respuesta_correcta +=1
+        try:
+                assert respuesta_correcta==Pregunta.NUMER_DE_RESPUESTAS_PERMITIDAS
+        except: AssertionError
+
+        raise forms.ValidationError('Solo se permite una respuesta')
+        
+
+class UsuarioLoginFormulario(forms.Form):
+    username = forms.CharField()
+    password= forms.CharField(widget=forms.PasswordInput)
+
+    def clean(self,*args, **kwargs):
+        username = self.cleaned_data.get('username')
+        password = self.cleaned_data.get('password')
+
+        if username and password:
+            user2= authenticate(username=username, password=password) 
+            if not user2:
+                raise forms.ValidationError('No existe el usuario')
+            if not user2.check_password(password):
+                raise forms.ValidationError('Contraseña incorrecta')
+            if not user2.is_active:
+                raise forms.ValidationError('El usuario no está activo')
+        return super(UsuarioLoginFormulario, self).clean(*args,**kwargs)
+
+    
+class RegistroFormulario(UserCreationForm):
+    email=forms.EmailField(required=True)
+    first_name=forms.CharField(required=True)
+    last_name = forms.CharField(required=True)
+
     class Meta:
-        model= Pregunta
-        fields = ('pregunta', 'estado','user')
+        model = User2
+        fields = [
+            'first_name',
+            'last_name',
+            'username',
+            'email',
+            'password1',
+            'password2'
+        ]

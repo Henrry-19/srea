@@ -1,67 +1,73 @@
 from multiprocessing import context
-from django.shortcuts import get_object_or_404, render, redirect
-from django.views.generic import View, UpdateView,DeleteView
-from django.http import HttpResponse, HttpResponseRedirect
+from urllib import request
+from venv import create
+from django.shortcuts import render, redirect
+from apps.srea.forms import RegistroFormulario, UsuarioLoginFormulario
+from django.contrib.auth import authenticate, login, logout
 
-from apps.srea.forms import PreguntaCreateForm
-from apps.srea.models import Pregunta
+from apps.srea.models import Pregunta, PreguntasRespondidas, Usuario2
+def inicio(request):
+    context={
+        'bienvenido':'Bienvenido'
+    }
 
-from django.urls import reverse_lazy
-
-import os
-from django.conf import settings
-from django.template.loader import get_template
-from xhtml2pdf import pisa
-from django.contrib.staticfiles import finders
+    return render(request, 'pregunta/pregunta_lista.html',context)
 
 
-########################Pregunta##############################################
+def HomeUsuario(request):
+    return render(request, 'pregunta/pregunta_lista.html')
 
-class PreguntaListView(View):
-    def get(self,request, *args, **kwargs):
-        pregunta = Pregunta.objects.all()
-        context={
+
+def evaluar(request):
+    evalUsuario, create = Usuario2.objects.get_or_create(usuario=request.user)
+    if request.method =='POST': #Si nuestro método de petición es igual a POST
+        pregunta_pk = request.POST.get('pregunta_pk')
+        pregunta_respondida= evalUsuario.intentos.select_related('pregunta').get(pregunta_pk=pregunta_pk) 
+        respuesta_pk = request.POST.get('respuesta_pk')
+    else:
+        respondidas= PreguntasRespondidas.objects.filter(quizUsuario=evalUsuario).values_list('pregunta__pk', flat=True) #Filtramos todas preguntas que ya han sido respondidas
+        pregunta = Pregunta.objects.exclude(pk__in=respondidas) #Excluimos la pregunta
+        context ={
             'pregunta':pregunta
-            
         }
-        return render(request, 'pregunta/pregunta_lista.html', context)
 
-class PreguntaCreateView(View):
-    def get(self, request, *args, **kwargs):
-        form=PreguntaCreateForm()
-        context={
-            'form':form
-        }
-        
-        return render(request, './pregunta/pregunta_create.html', context)
+    return render(request, 'pregunta/pregunta_lista.html', context) 
 
-#Método para crear pregunta
-    def post(self,request, *args, **kwargs):
-        if request.method=="POST":#Si estámos enviando información a traves de un formulario
-            form=PreguntaCreateForm(request.POST)
-            if form.is_valid():
-                pregunta=form.cleaned_data.get('pregunta')
-                user=form.cleaned_data.get('user')
-                estado=form.cleaned_data.get('estado')
-                form.save()
-                
-        context={
-            
-        }
-        return redirect('srea:p_pregunta')
+def login2(request):
+    titulo = 'login'
+    form = UsuarioLoginFormulario(request.POST or None)
+    if form.is_valid():
+        username = form.cleaned_data.get("username")
+        password = form.cleaned_data.get("password")
+        usuario = authenticate(username=username, password=password)
+        login(request, usuario)
+        return redirect('srea:HomeUsuario')
+
+    context = {
+        'form':form,
+        'title' : 'titulo' 
+
+    }
+    return render(request, 'usuario2/login.html', context)
+
+def registro(request):
+    titulo = 'Crea una cuenta'
+    if request.method == 'POST':
+        form = RegistroFormulario(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('srea:login2')
+    else:
+        form = RegistroFormulario()
+    
+    context={
+         'form':form,
+         'title':'titulo'
+    }
+
+    return render(request, 'usuario2/registro.html', context)
 
 
-class PreguntaDeleteView(DeleteView):
-    model=Pregunta
-    template_name='pregunta/pregunta_delete.html'
-    success_url=reverse_lazy('srea:p_pregunta')
-
-
-class PreguntaUpdateView(UpdateView):
-    model=Pregunta
-    fields=['pregunta', 'user', 'estado']
-    template_name='pregunta/pregunta_update.html'
-
-    def get_success_url(self): #Me regresa a la ventana
-        pk = self.kwargs['pk']
-        return reverse_lazy('srea:p_pregunta')
+def logout_vista(request):
+    logout(request)
+    return redirect('login')

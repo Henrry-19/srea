@@ -2,7 +2,10 @@ from distutils.command.upload import upload
 from msilib.schema import Class
 from pydoc import describe
 from pyexpat import model
+from statistics import mode
 from turtle import up
+
+from django.contrib.auth.models import User
 
 from django.forms import model_to_dict
 
@@ -120,15 +123,31 @@ class Test(models.Model):
     user=models.ForeignKey(Nivel, on_delete=models.CASCADE)
 
 class Pregunta(models.Model):
-    pregunta=models.CharField(max_length=50)
-    estado=models.BooleanField(default=False)
-    user=models.ForeignKey(Test, on_delete=models.CASCADE)
+    NUMER_DE_RESPUESTAS_PERMITIDAS = 1
+    texto=models.TextField(verbose_name='Texto de la pregunta')
 
-class Respuesta(models.Model):
-    respuesta=models.CharField(max_length=50)
-    estado=models.BooleanField(default=False)
-    user=models.ForeignKey(Pregunta, on_delete=models.CASCADE)
+    def __str__(self):
+        return self.texto
 
 
 
+class ElegirRespuesta(models.Model): #ElegirRespuesta
+    MAXIMO_RESPUESTA=4
+    pregunta=models.ForeignKey(Pregunta, related_name='preguntas', on_delete=models.CASCADE) #Pregunta conectada con posible respuesta
+    correcta=models.BooleanField(verbose_name='Respuesta correcta', default=False,null= False)
+    respuesta=models.TextField(verbose_name='Texto de la respuesta')
+    
+    def __str__(self):
+        return self.respuesta
+
+class Usuario2(models.Model): #QuizUsuario
+    usuario = models.OneToOneField(User, on_delete=models.CASCADE)
+    puntaje_total = models.DecimalField(verbose_name='Puntaje total',default=0,decimal_places=2,max_digits=10)
+
+class PreguntasRespondidas(models.Model):
+    quizUsuario= models.ForeignKey(Usuario2, on_delete=models.CASCADE)
+    pregunta = models.ForeignKey(Pregunta, on_delete=models.CASCADE)
+    respuesta = models.ForeignKey(ElegirRespuesta, on_delete=models.CASCADE, related_name='intentos')
+    correcta = models.BooleanField(default=False, null=False)
+    puntaje_obtenido = models.DecimalField(default=0, decimal_places=2, max_digits=6)
 

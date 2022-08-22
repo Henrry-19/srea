@@ -1,33 +1,37 @@
-{% extends "body.html" %}
+{% extends "b_list.html" %}
 {%block title%}Preguntas{%endblock%}
 {% block content %}
+<h1>Bienvenido {{user}}</h1>
 <div class="row">
     <div class="col-sm-12 col-md-6 col-lg-8 col-xl-8">
         <h1>Preguntas</h1>
         <fom>
             <div class="form-group">
-                <a href="{% url 'srea:pregunta' %}" class="btn btn-info">Registrar</a>
+                <a href="#" class="btn btn-info">Registrar</a>
             </div>    
         </form>
         <div class="table-responsive py-2">
             <table class="table table-striped">
                 <thead>
                     <tr>
+                        <th>Id</th>
                         <th>Pregunta</th>
-                        <th>Estado</th>
-                        <th>User</th>
                         <th colspan="">Opciones</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {{pregunta.titulo}}
                     {%for p in pregunta%}
                     <tr>
-                        <td>{{p.pregunta}}</td>
-                        <td>{{p.estado}}</td>
-                        <td>{{p.user}}</td>
-                        <td><a href="updateP/{{p.id}}" class="btn btn-info">Editar</a></td>
-                        <td><a href="deleteP/{{p.id}}" class="btn btn-danger">Eliminar</a></td>
+                        <td>{{p.id}}</td>
+                        <td>{{p.texto}}</td>
+                        <td>
+                        <a href="updateP/{{p.id}}" class="btn btn-info btn-xs btn-flat">
+                            <i class="fas fa-edit"></i> 
+                        </a>
+                        <a href="deleteP/{{p.id}}" class="btn btn-danger btn-xs btn-flat">
+                            <i class="fas fa-trash-alt"></i>
+                        </a>
+                        </td>
                     </tr>
                     {%endfor%}
                 </tbody>

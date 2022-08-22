@@ -55,10 +55,15 @@ urlpatterns = [
     path('t_lista/updateT/<int:pk>/',TestUpdateView.as_view(), name="update_test"),
     path('t_lista/deleteT/<int:pk>/',TestDeleteView.as_view(), name="delete_test"),
 #-------------------------Pregunta-----------------------------------------
-    path('p_lista/',PreguntaListView.as_view(), name="p_pregunta"), #principal_pregunta
-    path('pregunta/',PreguntaCreateView.as_view(), name="pregunta"), #crear pregunta
-    path('p_lista/updateP/<int:pk>/',PreguntaUpdateView.as_view(), name="update_pregunta"),
-    path('p_lista/deleteP/<int:pk>/',PreguntaDeleteView.as_view(), name="delete_pregunta"),
+    path('p_lista/',inicio, name="inicio"), #principal_pregunta
+    path('registro/',registro, name="registro"), #crear usuario
+    path('login2/',login2, name="login2"), #crear login
+    path('logout_vista/',logout_vista, name="logout_vista"), #salir de login
+    path('HomeUsuario/',HomeUsuario, name="HomeUsuario"), #salir de login
+    path('evaluar/',evaluar, name="evaluar"), #evaluar preguntas
+
+    #path('p_lista/updateP/<int:pk>/',PreguntaUpdateView.as_view(), name="update_pregunta"),
+    #path('p_lista/deleteP/<int:pk>/',PreguntaDeleteView.as_view(), name="delete_pregunta"),
 
 
     
