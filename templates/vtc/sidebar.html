@@ -52,19 +52,19 @@
                         </a>
                             <u> 
                                 <ol>
-                                    <a href="{% url 'srea:p_test'%}" class="dropdown-item">
+                                    <a href="{% url 'srea:inicio'%}" class="dropdown-item">
                                         <i class="far fa-folder"></i>
                                         Unidad I
                                     </a>
-                                    <a href="{% url 'srea:p_test'%}" class="dropdown-item">
+                                    <a href="{% url 'srea:inicio'%}" class="dropdown-item">
                                         <i class="far fa-folder"></i>
                                         Unidad II
                                     </a>
-                                    <a href="{% url 'srea:p_test'%}" class="dropdown-item">
+                                    <a href="{% url 'srea:inicio'%}" class="dropdown-item">
                                         <i class="far fa-folder"></i>
                                         Unidad III
                                     </a>
-                                    <a href="{% url 'srea:p_test'%}" class="dropdown-item">
+                                    <a href="{% url 'srea:inicio'%}" class="dropdown-item">
                                         <i class="far fa-folder"></i>
                                         Unidad IV
                                     </a>
@@ -80,8 +80,12 @@
                     <a href="{% url 'srea:p_ficha'%}" class="nav-link">
                         <i class="fas fa-poll" aria-hidden="true"></i>
                         <p>
-                            Reporte
+                            Ficha     
                         </p>
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a href="{% url 'srea:p_reporte'%}" class="dropdown-item">
+                        <i class="fas fa-folder"></i> Generar reporte                           
                     </a>
                 </li>
             </ul>

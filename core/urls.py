@@ -11,9 +11,9 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('login/',include('apps.login.urls'),  name='login1'),
+    path('',include('apps.login.urls'),  name='login1'),
     path('srea/',include('apps.srea.urls', namespace='srea')),
-    path('',IndexView.as_view(), name="index"),
+    path('index/',IndexView.as_view(), name="index"), #Presentar ventana del Login
     #path('accounts/', include('allauth.urls')),
 
 ]

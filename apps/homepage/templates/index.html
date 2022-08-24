@@ -24,9 +24,9 @@
   <link href="{% static 'vendor/venobox/venobox.css' %}" rel="stylesheet">
   <link href="{% static 'vendor/owl.carousel/assets/owl.carousel.min.css' %}assets/" rel="stylesheet">
   <link href="{% static 'vendor/aos/aos.css' %}" rel="stylesheet">
-
+  <script src="https://code.iconify.design/iconify-icon/1.0.0-beta.3/iconify-icon.min.js"></script>
   <!-- Template Main CSS File -->
-  <link href="{% static 'css/style.css' %}" rel="stylesheet">
+  <link href="{% static 'css/style1.css' %}" rel="stylesheet">
 
   <!-- =======================================================
   * Template Name: iPortfolio - v1.2.0
@@ -34,6 +34,49 @@
   * Author: BootstrapMade.com
   * License: https://bootstrapmade.com/license/
   ======================================================== -->
+  <nav class="main-header navbar navbar-expand navbar-light bg-info">
+    <ul class="navbar-nav">
+        <li class="nav-item">
+            <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+            <!--<a href="#" class="nav-link">Home</a>-->
+            <iconify-icon icon="ant-design:home-filled"></iconify-icon>
+        </li>
+    </ul>
+    <ul class="navbar-nav ml-auto">
+        <li class="nav-item dropdown">
+            <a class="nav-link" data-toggle="dropdown" href="#">
+              <iconify-icon icon="clarity:administrator-solid"></iconify-icon>
+                <i class="fas fa-users-cog"></i>{{request.user.username}}
+            </a>
+            <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                    <span class="dropdown-header">
+                        Último Acceso: 24 de Agosto de 2022
+                    </span>
+                <div class="dropdown-divider"></div>
+                <a href="#" class="dropdown-item">
+                    <i class="fas fa-edit mr-2"></i> Editar perfil
+                    <span class="float-right text-muted text-sm">3 mins</span>
+                </a>
+                <div class="dropdown-divider"></div>
+                <a href="#" class="dropdown-item">
+                    <i class="fas fa-lock mr-2"></i> Editar password
+                    <span class="float-right text-muted text-sm">12 hours</span>
+                </a>
+                <div class="dropdown-divider"></div>
+                <a href="#" class="dropdown-item dropdown-footer">
+                    <p>SREA</p>
+                </a>
+            </div>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'logout' %}">
+              <iconify-icon icon="bx:power-off"></iconify-icon> 
+            </a>
+        </li>
+    </ul>
+</nav>
 </head>
 
 <body>
@@ -57,7 +100,7 @@
       <nav class="nav-menu">
         <ul>
           <li class="active"><a href="/"><i class="bx bx-home"></i> <span>Inicio</span></a></li>
-          <li><a href="{% url 'srea:index1'%}"><i class="bx bx-user"></i> <span>Principal</span></a></li>
+          <li><a href="{% url 'srea:index2'%}"><i class="bx bx-user"></i> <span>Principal</span></a></li>
           <li><a href="#resume"><i class="bx bx-file-blank"></i> <span>Cursos</span></a></li>
           <li><a href="#portfolio"><i class="bx bx-book-content"></i> Reporte</a></li>
           <!--<li><a href="#services"><i class="bx bx-server"></i> Services</a></li>-->
@@ -81,23 +124,36 @@
   </header><!-- End Header -->
 
   <!-- ======= Hero Section ======= -->
+<section  id="hero2" class="d-flex flex-column justify-content-center align-items-center">
+    <div class="hero-container" data-aos="fade-in">
+      <h2>Software de Recolección de los</h2>
+      <h2>Estilos de Aprendizaje </h2>
+      <p><span class="typed" data-typed-items="SREA"></span></p>
+    </div>
+</section><!-- End Hero -->
 
   <main id="main">
 
     <!-- ======= About Section ======= -->
     <section id="about" class="about">
-      <div class="container">
+      <div id="div_about" class="container">
   
         <div class="section-title">
-          <h2>SREA 1.0</h2>
+          <h2>(SREA 1.0)</h2>
           <p>
-            
+
+           <!-- <a href="/login" class="btn btn-info btn-xs btn-flat">
+              <i class="fas fa-edit"></i> Iniciar sesión
+            </a>
+            <a href="srea/registro/" class="btn btn-primary btn-xs btn-flat">
+              <i class="fas fa-edit"></i> Registrarse
+            </a>-->
           </p>
         </div>
   
         <div class="row">
           <div class="col-lg-4" data-aos="fade-right">
-            <img src="{% static 'img/profile-img2.jpg' %}" class="img-fluid" alt=""> <!--profile-img.jpg-->
+            <img src="{% static 'img/1.jpg' %}" class="img-fluid" alt=""> <!--profile-img.jpg-->
         </div>
   
       </div>

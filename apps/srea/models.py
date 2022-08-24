@@ -5,11 +5,13 @@ from pyexpat import model
 from statistics import mode
 from turtle import up
 
+
 from django.contrib.auth.models import User
 
 from django.forms import model_to_dict
 
 from django.db import models
+
 from django.contrib.auth.models import AbstractUser
 
 class User(AbstractUser):
@@ -122,8 +124,10 @@ class Test(models.Model):
     estado=models.BooleanField(default=False)
     user=models.ForeignKey(Nivel, on_delete=models.CASCADE)
 
+#Trabajando con las preguntas y respuestas
+
 class Pregunta(models.Model):
-    NUMER_DE_RESPUESTAS_PERMITIDAS = 1
+    NUMER_DE_RESPUESTAS_PERMITIDAS = 1 #Número de respuestas permitidas igual a 1
     texto=models.TextField(verbose_name='Texto de la pregunta')
 
     def __str__(self):
@@ -132,7 +136,7 @@ class Pregunta(models.Model):
 
 
 class ElegirRespuesta(models.Model): #ElegirRespuesta
-    MAXIMO_RESPUESTA=4
+    MAXIMO_RESPUESTA=4 #Máximo número de respuestas
     pregunta=models.ForeignKey(Pregunta, related_name='preguntas', on_delete=models.CASCADE) #Pregunta conectada con posible respuesta
     correcta=models.BooleanField(verbose_name='Respuesta correcta', default=False,null= False)
     respuesta=models.TextField(verbose_name='Texto de la respuesta')
@@ -141,13 +145,13 @@ class ElegirRespuesta(models.Model): #ElegirRespuesta
         return self.respuesta
 
 class Usuario2(models.Model): #QuizUsuario
-    usuario = models.OneToOneField(User, on_delete=models.CASCADE)
+    usuario = models.OneToOneField(User, on_delete=models.CASCADE) # Usuario tiene que estar logueado para responder las preguntas
     puntaje_total = models.DecimalField(verbose_name='Puntaje total',default=0,decimal_places=2,max_digits=10)
 
 class PreguntasRespondidas(models.Model):
-    quizUsuario= models.ForeignKey(Usuario2, on_delete=models.CASCADE)
+    quizUsuario= models.ForeignKey(Usuario2, on_delete=models.CASCADE) #Mandamos al usuario en preguntas respondidas
     pregunta = models.ForeignKey(Pregunta, on_delete=models.CASCADE)
     respuesta = models.ForeignKey(ElegirRespuesta, on_delete=models.CASCADE, related_name='intentos')
-    correcta = models.BooleanField(default=False, null=False)
+    correcta = models.BooleanField(default=False, null=False) 
     puntaje_obtenido = models.DecimalField(default=0, decimal_places=2, max_digits=6)
 

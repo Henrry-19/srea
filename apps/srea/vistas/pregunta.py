@@ -1,4 +1,9 @@
 from multiprocessing import context
+from django.views.generic import View, UpdateView,DeleteView
+from django.contrib.auth.decorators import login_required #Importación de decoradores
+from django.utils.decorators import method_decorator #Importación del método decorador
+from django.urls import reverse_lazy
+
 from urllib import request
 from venv import create
 from django.shortcuts import render, redirect
@@ -6,6 +11,7 @@ from apps.srea.forms import RegistroFormulario, UsuarioLoginFormulario
 from django.contrib.auth import authenticate, login, logout
 
 from apps.srea.models import Pregunta, PreguntasRespondidas, Usuario2
+
 def inicio(request):
     context={
         'bienvenido':'Bienvenido'
@@ -13,9 +19,24 @@ def inicio(request):
 
     return render(request, 'pregunta/pregunta_lista.html',context)
 
+class PreguntaListView(View):
+    
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
 
-def HomeUsuario(request):
-    return render(request, 'pregunta/pregunta_lista.html')
+    def get(self,request, *args, **kwargs):
+        pregunta = Pregunta.objects.all()
+        context={
+            'pregunta':pregunta
+            
+        }
+        return render(request, 'pregunta/pregunta_lista.html', context)
+
+
+def HomeUsuario(self,request,*args, **kwargs):
+   
+        return render(request, 'pregunta/pregunta_lista.html')
 
 
 def evaluar(request):
@@ -32,7 +53,7 @@ def evaluar(request):
         }
 
     return render(request, 'pregunta/pregunta_lista.html', context) 
-
+#Método de Inicio de sesión
 def login2(request):
     titulo = 'login'
     form = UsuarioLoginFormulario(request.POST or None)
@@ -50,24 +71,27 @@ def login2(request):
     }
     return render(request, 'usuario2/login.html', context)
 
+#Creación de una cuenta
+
+
 def registro(request):
     titulo = 'Crea una cuenta'
     if request.method == 'POST':
         form = RegistroFormulario(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('srea:login2')
+            return redirect('login')
     else:
         form = RegistroFormulario()
     
     context={
          'form':form,
-         'title':'titulo'
+         'title':'Creación de un usuario',
     }
 
     return render(request, 'usuario2/registro.html', context)
 
-
+#Método para salir del login
 def logout_vista(request):
     logout(request)
     return redirect('login')

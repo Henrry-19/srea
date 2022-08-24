@@ -1,10 +1,13 @@
 {% extends "b_list.html" %}
 {%block title%}Preguntas{%endblock%}
 {% block content %}
-<h1>Bienvenido {{user}}</h1>
+<center>
+    <h2>Bienvenido {{user}}</h2>
+</center>
+
 <div class="row">
     <div class="col-sm-12 col-md-6 col-lg-8 col-xl-8">
-        <h1>Preguntas</h1>
+        <h2>Preguntas</h2>
         <fom>
             <div class="form-group">
                 <a href="#" class="btn btn-info">Registrar</a>
@@ -16,16 +19,20 @@
                     <tr>
                         <th>Id</th>
                         <th>Pregunta</th>
-                        <th colspan="">Opciones</th>
+                        <th>Respuesta</th>
+                        <th colspan="" >Opciones</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {%for p in pregunta%}
-                    <tr>
+                    {%for p in pregunta%} 
                         <td>{{p.id}}</td>
                         <td>{{p.texto}}</td>
+                    {%for respuesta in p.preguntas.all%} 
+                        <td>{{respuesta}}</td>
+                    
+                    {%endfor%}
                         <td>
-                        <a href="updateP/{{p.id}}" class="btn btn-info btn-xs btn-flat">
+                        <a href="#" class="btn btn-info btn-xs btn-flat">
                             <i class="fas fa-edit"></i> 
                         </a>
                         <a href="deleteP/{{p.id}}" class="btn btn-danger btn-xs btn-flat">

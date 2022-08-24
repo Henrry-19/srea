@@ -25,7 +25,7 @@
 <body class="hold-transition login-page">
 <div class="login-box">
   <div class="login-logo">
-    <a href="{% url 'index'%}"><b>SREA</b></a>
+    <a href="{% url 'login'%}"><b>SREA</b></a>
   </div>
   <!-- /.login-logo -->
   <div class="card">
@@ -63,7 +63,7 @@
           <!-- /.col -->
           <div class="col-4">
             <button type="submit" class="btn btn-primary btn-block">
-                <i class="fas fa-sign-in-alt"></i> Ingresar
+                <i class="fas fa-sign-in-alt"></i>
             </button>
           </div>
           <!-- /.col -->
@@ -85,7 +85,7 @@
         <a href="#">¿Olvidaste tu contraseña?</a>
       </p>
       <p class="mb-0">
-        <a href="#" class="text-center">Crear cuenta nueva</a>
+        <a href="{% url 'srea:registro'%}" class="text-center">Crear cuenta nueva</a>
       </p>
     </div>
     <!-- /.login-card-body -->

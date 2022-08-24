@@ -25,8 +25,9 @@ from xhtml2pdf import pisa
 class UsuarioListView(ListView): 
     model = Usuario
     template_name = 'usuario/usuario_lista.html'
-
+    @method_decorator(login_required)
     @method_decorator(csrf_exempt)
+
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
@@ -57,7 +58,7 @@ class UsuarioCreateView(View):
     form= UsuarioCreateForm() # Indicar el formulario con el que se va ha trabajar
     template_name='./usuario/usuario_create.html' #Indicar cual es el template para crear el registro 
     success_url= reverse_lazy('srea:principal') #Me redirecciona la URL y reverse_lazy->devuelve la ruta de la URL
-
+    @method_decorator(login_required)
     def get(self, request, *args, **kwargs):
         form=UsuarioCreateForm() 
         context={ #Diccionario
@@ -91,7 +92,7 @@ class UsuarioDeleteView(DeleteView):
     template_name = 'usuario/usuario_delete.html'
     success_url=reverse_lazy('srea:principal')
 
-    #@method_decorator(login_required)
+    @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         self.object = self.get_object()
         return super().dispatch(request, *args, **kwargs)
@@ -117,9 +118,11 @@ class UsuarioUpdateView(UpdateView):
     form_class = UsuarioCreateForm
     template_name = 'usuario/usuario_create.html'
     success_url = reverse_lazy('srea:usuario')
- #  @method_decorator(login_required)
+    
+    @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         self.object = self.get_object()
+
         return super().dispatch(request, *args, **kwargs)
     def post(self, request, *args, **kwargs):
         data ={}                                     

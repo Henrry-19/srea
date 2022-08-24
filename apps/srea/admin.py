@@ -1,6 +1,7 @@
 from django.contrib import admin
 from .models import *
 from .forms import  ElegirInlineFormset
+
 admin.site.register(PreguntasRespondidas)
 admin.site.register(ElegirRespuesta)
 
@@ -18,7 +19,9 @@ admin.site.register(Asignatura)
 admin.site.register(User)
 
 
-class ElegirRespuestaInline(admin.TabularInline):
+
+#Heredar desde elegir respuesta los campos del texto y observarlo en nuestra pregunta 
+class ElegirRespuestaInline(admin.TabularInline):#Instanciar nuestro método Elegir respuesta
     model= ElegirRespuesta
     can_delete = False
     max_num= ElegirRespuesta.MAXIMO_RESPUESTA
@@ -26,14 +29,12 @@ class ElegirRespuestaInline(admin.TabularInline):
     formset = ElegirInlineFormset
     
 
-
-
-
 class PreguntaAdmin(admin.ModelAdmin):
     model= Pregunta
     inlines=(ElegirRespuestaInline,)
     list_display = ['texto',]
-    search_fields = ['texto','preguntas_texto']
+    search_fields = ['texto','preguntas__texto'] #Campos de búsqueda, una posible respuesta
+
 
 class PreguntasRespondidasAmin(admin.ModelAdmin):
     list_display = ['pregunta', 'respuesta', 'correcta', 'puntaje_obtenido']

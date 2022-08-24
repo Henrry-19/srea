@@ -13,7 +13,8 @@ from .vistas.index import *
 app_name="apps.srea"
 
 urlpatterns = [
-    path('index1/',Index1View.as_view(), name="index1"),
+    path('index1/',Index1View.as_view(), name="index1"),#Presenta primera vista de Inicio
+    path('index2/',Index2View.as_view(), name="index2"),#Presenta segunda vista de Inicio
     path('cuenta/', CuentaCreateView.as_view(), name="cuenta"),
     path('update/<int:pk>/', CuentaUpdateView.as_view(), name="update"),
     path('delete/<int:pk>/', CuentaDeleteView.as_view(), name="delete"),
@@ -55,7 +56,7 @@ urlpatterns = [
     path('t_lista/updateT/<int:pk>/',TestUpdateView.as_view(), name="update_test"),
     path('t_lista/deleteT/<int:pk>/',TestDeleteView.as_view(), name="delete_test"),
 #-------------------------Pregunta-----------------------------------------
-    path('p_lista/',inicio, name="inicio"), #principal_pregunta
+    path('p_lista/',PreguntaListView.as_view(), name="inicio"), #principal_pregunta
     path('registro/',registro, name="registro"), #crear usuario
     path('login2/',login2, name="login2"), #crear login
     path('logout_vista/',logout_vista, name="logout_vista"), #salir de login

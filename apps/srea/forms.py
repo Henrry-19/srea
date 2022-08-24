@@ -8,7 +8,7 @@ from django import forms
 
 from .models import *
 
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm #Importanto los formularios de Django
 from django.contrib.auth import get_user_model, authenticate, login
 User2 = get_user_model()
 
@@ -121,20 +121,22 @@ class TestCreateForm(ModelForm):
         model= Test
         fields = ('nombre', 'estado','user')
 
+
+#
+
 class ElegirInlineFormset(forms.BaseInlineFormSet):
-    def clean(self):#
+    def clean(self):#Función limpiar
         super(ElegirInlineFormset, self).clean() #
         respuesta_correcta=0
         for formulario in self.forms:
             if not formulario.is_valid(): #Si nuestro formulario no es valido
                 return 
             if formulario.cleaned_data and formulario.cleaned_data.get('correcta') is True:
-                respuesta_correcta +=1
+                respuesta_correcta +=1 #Vamos  a ir iterando la respuesta
         try:
                 assert respuesta_correcta==Pregunta.NUMER_DE_RESPUESTAS_PERMITIDAS
-        except: AssertionError
-
-        raise forms.ValidationError('Solo se permite una respuesta')
+        except AssertionError:
+                raise forms.ValidationError('Solo se permite una respuesta')
         
 
 class UsuarioLoginFormulario(forms.Form):
@@ -156,6 +158,7 @@ class UsuarioLoginFormulario(forms.Form):
         return super(UsuarioLoginFormulario, self).clean(*args,**kwargs)
 
     
+#Clase para registrar el formulario de un usuario 
 class RegistroFormulario(UserCreationForm):
     email=forms.EmailField(required=True)
     first_name=forms.CharField(required=True)

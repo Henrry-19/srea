@@ -2,13 +2,14 @@ from django.contrib.auth.views import LoginView,LogoutView
 from django.shortcuts import redirect
 from django.views.generic import RedirectView
 from django.contrib.auth import logout
+from django.conf import settings
 
 class LoginFormView(LoginView):
     template_name='login.html'
 
     def dispatch(self, request, *args, **kwargs):
         if request.user.is_authenticated:
-            return redirect(setting.LOGIN_REDIRECT_URL) #Enviado esa dirección
+            return redirect(settings.LOGIN_REDIRECT_URL) #Enviado esa dirección
         return super().dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
