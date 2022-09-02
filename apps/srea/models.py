@@ -2,6 +2,10 @@ from distutils.command.upload import upload
 from msilib.schema import Class
 from pydoc import describe
 from pyexpat import model
+#from random import random
+#import random as random
+import random
+
 from statistics import mode
 from turtle import up
 
@@ -90,10 +94,10 @@ class FichaInformacion(models.Model):
     def __str__(self):
         return self.cedula
 
-    def __str__(self):
-        if self.foto:
-            return '{}{}'.format(MEDIA_URL, self.foto)
-        return '{}{}'.format(STATIC_URL, 'img/user_png')
+#    def __str__(self):
+#        if self.foto:
+#            return '{}{}'.format(MEDIA_URL, self.foto)
+#        return '{}{}'.format(STATIC_URL, 'img/user_png')
 
 
 class Indicacion(models.Model):
@@ -124,11 +128,12 @@ class Test(models.Model):
     estado=models.BooleanField(default=False)
     user=models.ForeignKey(Nivel, on_delete=models.CASCADE)
 
-#Trabajando con las preguntas y respuestas
+########Trabajando con las preguntas y respuestas##########
 
 class Pregunta(models.Model):
     NUMER_DE_RESPUESTAS_PERMITIDAS = 1 #Número de respuestas permitidas igual a 1
     texto=models.TextField(verbose_name='Texto de la pregunta')
+    max_puntaje=models.DecimalField(verbose_name='Máximo Puntaje', default=3, decimal_places=2,max_digits=6)
 
     def __str__(self):
         return self.texto
@@ -137,7 +142,7 @@ class Pregunta(models.Model):
 
 class ElegirRespuesta(models.Model): #ElegirRespuesta
     MAXIMO_RESPUESTA=4 #Máximo número de respuestas
-    pregunta=models.ForeignKey(Pregunta, related_name='preguntas', on_delete=models.CASCADE) #Pregunta conectada con posible respuesta
+    pregunta=models.ForeignKey(Pregunta, related_name='opciones', on_delete=models.CASCADE) #Pregunta conectada con posible respuesta
     correcta=models.BooleanField(verbose_name='Respuesta correcta', default=False,null= False)
     respuesta=models.TextField(verbose_name='Texto de la respuesta')
     
@@ -148,10 +153,34 @@ class Usuario2(models.Model): #QuizUsuario
     usuario = models.OneToOneField(User, on_delete=models.CASCADE) # Usuario tiene que estar logueado para responder las preguntas
     puntaje_total = models.DecimalField(verbose_name='Puntaje total',default=0,decimal_places=2,max_digits=10)
 
+    def crear_intentos(self, pregunta):
+        intento = PreguntasRespondidas(pregunta=pregunta,quizUsuario=self)
+        intento.save()
+
+    def obtener_nuevas_preguntas(self):
+        respondidas=PreguntasRespondidas.objects.filter(quizUsuario=self).values_list('pregunta__pk', flat=True)
+        preguntas_restantes=Pregunta.objects.exclude(pk__in=respondidas)
+        if not preguntas_restantes.exists():
+            return None
+        return random.choice(preguntas_restantes)
+
+    def validar_intento(self, pregunta_respondida, respuesta_seleccionada):
+        if pregunta_respondida.pregunta__id!=respuesta_seleccionada.pregunta__id:
+            return
+        
+        pregunta_respondida.respuesta_seleccionada = respuesta_seleccionada
+
+        if respuesta_seleccionada.correcta is True:
+            pregunta_respondida.correcta = True
+            pregunta_respondida.puntaje_obtenido = respuesta_seleccionada.pregunta.max_puntaje  
+            pregunta_respondida.respuesta=respuesta_seleccionada
+
+        pregunta_respondida.save()
+
 class PreguntasRespondidas(models.Model):
-    quizUsuario= models.ForeignKey(Usuario2, on_delete=models.CASCADE) #Mandamos al usuario en preguntas respondidas
+    quizUsuario= models.ForeignKey(Usuario2, on_delete=models.CASCADE, related_name='intentos') #Mandamos al usuario en preguntas respondidas
     pregunta = models.ForeignKey(Pregunta, on_delete=models.CASCADE)
-    respuesta = models.ForeignKey(ElegirRespuesta, on_delete=models.CASCADE, related_name='intentos')
+    respuesta = models.ForeignKey(ElegirRespuesta, on_delete=models.CASCADE, null=True)
     correcta = models.BooleanField(default=False, null=False) 
     puntaje_obtenido = models.DecimalField(default=0, decimal_places=2, max_digits=6)
 

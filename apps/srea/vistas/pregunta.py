@@ -4,13 +4,19 @@ from django.contrib.auth.decorators import login_required #Importación de decor
 from django.utils.decorators import method_decorator #Importación del método decorador
 from django.urls import reverse_lazy
 
+from django.http import Http404
+from django.core.exceptions import ObjectDoesNotExist
+
 from urllib import request
 from venv import create
 from django.shortcuts import render, redirect
 from apps.srea.forms import RegistroFormulario, UsuarioLoginFormulario
 from django.contrib.auth import authenticate, login, logout
 
-from apps.srea.models import Pregunta, PreguntasRespondidas, Usuario2
+from apps.srea.models import *
+
+from django.conf import settings
+from django.template.loader import get_template
 
 def inicio(request):
     context={
@@ -19,35 +25,29 @@ def inicio(request):
 
     return render(request, 'pregunta/pregunta_lista.html',context)
 
-class PreguntaListView(View):
-    
-    @method_decorator(login_required)
-    def dispatch(self, request, *args, **kwargs):
-        return super().dispatch(request, *args, **kwargs)
 
-    def get(self,request, *args, **kwargs):
-        pregunta = Pregunta.objects.all()
-        context={
-            'pregunta':pregunta
-            
-        }
-        return render(request, 'pregunta/pregunta_lista.html', context)
-
-
-def HomeUsuario(self,request,*args, **kwargs):
-   
+def HomeUsuario(request):
         return render(request, 'pregunta/pregunta_lista.html')
 
-
-def evaluar(request):
-    evalUsuario, create = Usuario2.objects.get_or_create(usuario=request.user)
+def evaluar(request): #Jugar
+    QuizUser, created = Usuario2.objects.get_or_create(usuario=request.user)
     if request.method =='POST': #Si nuestro método de petición es igual a POST
-        pregunta_pk = request.POST.get('pregunta_pk')
-        pregunta_respondida= evalUsuario.intentos.select_related('pregunta').get(pregunta_pk=pregunta_pk) 
-        respuesta_pk = request.POST.get('respuesta_pk')
+        pregunta__pk = request.POST.get('pregunta__pk')
+        pregunta_respondida= QuizUser.intentos.select_related('pregunta').get(pregunta__pk=pregunta__pk) 
+        respuesta__pk = request.POST.get('respuesta__pk')
+        try:
+            opcion_seleccionada = pregunta_respondida.pregunta.opciones.get(pk=respuesta__pk)
+        except ObjectDoesNotExist:
+            raise Http404
+
+        QuizUser.validar_intento(pregunta_respondida,opcion_seleccionada) #Creando el intento
+        
+        return redirect(pregunta_respondida)
+
     else:
-        respondidas= PreguntasRespondidas.objects.filter(quizUsuario=evalUsuario).values_list('pregunta__pk', flat=True) #Filtramos todas preguntas que ya han sido respondidas
-        pregunta = Pregunta.objects.exclude(pk__in=respondidas) #Excluimos la pregunta
+        pregunta=QuizUser.obtener_nuevas_preguntas() #Revisar este método
+        if pregunta is not None:
+            QuizUser.crear_intentos(pregunta)
         context ={
             'pregunta':pregunta
         }
@@ -72,7 +72,6 @@ def login2(request):
     return render(request, 'usuario2/login.html', context)
 
 #Creación de una cuenta
-
 
 def registro(request):
     titulo = 'Crea una cuenta'
