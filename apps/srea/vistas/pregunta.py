@@ -1,3 +1,4 @@
+from gc import get_objects
 from multiprocessing import context
 from django.views.generic import View, UpdateView,DeleteView
 from django.contrib.auth.decorators import login_required #Importación de decoradores
@@ -7,9 +8,12 @@ from django.urls import reverse_lazy
 from django.http import Http404
 from django.core.exceptions import ObjectDoesNotExist
 
+from apps.srea.forms import *
+
+
 from urllib import request
 from venv import create
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from apps.srea.forms import RegistroFormulario, UsuarioLoginFormulario
 from django.contrib.auth import authenticate, login, logout
 
@@ -27,13 +31,51 @@ def inicio(request):
 
 
 def HomeUsuario(request):
-        return render(request, 'pregunta/pregunta_lista.html')
+    return render(request, 'pregunta/pregunta_lista.html')
+
+#ListarPregunta
+########################Pregunta#############################
+class PreguntaListView(View):
+    def get(self,request, *args, **kwargs):
+        pregunta = Pregunta.objects.all()
+        context={
+            'pregunta':pregunta,
+            'title' :'Pregunta'
+            
+        }
+        return render(request, 'pregunta/pregunta_lista.html', context)
+
+
+class PreguntaView(View):
+    def get(self, request, *args, **kwargs):
+        form=PreguntaCreateForm
+        context={
+            'form':form
+        }
+        
+        return render(request, './pregunta/pregunta_create.html', context)
+
+#Método para crear pregunta
+
+    def post(self,request, *args, **kwargs):
+        if request.method=="POST":#Si estámos enviando información a traves de un formulario
+            form=PreguntaCreateForm(request.POST, request.FILES)
+            if form.is_valid():
+                form.save()
+                return redirect('srea:p_pregunta')
+        else:
+            form:PreguntaCreateForm()   
+        return render(request, 'pregunta/pregunta_create.html',  {
+        'form': form
+        })   
+
+
 
 def evaluar(request): #Jugar
     QuizUser, created = Usuario2.objects.get_or_create(usuario=request.user)
     if request.method =='POST': #Si nuestro método de petición es igual a POST
         pregunta__pk = request.POST.get('pregunta__pk')
-        pregunta_respondida= QuizUser.intentos.select_related('pregunta').get(pregunta__pk=pregunta__pk) 
+        pregunta_respondida = QuizUser.intentos.select_related('pregunta').get(pregunta__pk=pregunta__pk) 
         respuesta__pk = request.POST.get('respuesta__pk')
         try:
             opcion_seleccionada = pregunta_respondida.pregunta.opciones.get(pk=respuesta__pk)
@@ -42,10 +84,10 @@ def evaluar(request): #Jugar
 
         QuizUser.validar_intento(pregunta_respondida,opcion_seleccionada) #Creando el intento
         
-        return redirect(pregunta_respondida)
+        return redirect('resultado', pregunta_respondida.pk)
 
     else:
-        pregunta=QuizUser.obtener_nuevas_preguntas() #Revisar este método
+        pregunta=QuizUser.obtener_nuevas_preguntas() #
         if pregunta is not None:
             QuizUser.crear_intentos(pregunta)
         context ={
@@ -53,7 +95,16 @@ def evaluar(request): #Jugar
         }
 
     return render(request, 'pregunta/pregunta_lista.html', context) 
+
+def resultado_pregunta(request, pregunta_respondida_pk):
+    respondida = get_object_or_404(PreguntasRespondidas, pk=pregunta_respondida_pk)
+    context = {
+        'respondida':respondida
+    }
+
+    return render(request, 'pregunta/resultado.html', context) 
 #Método de Inicio de sesión
+
 def login2(request):
     titulo = 'login'
     form = UsuarioLoginFormulario(request.POST or None)
@@ -85,7 +136,7 @@ def registro(request):
     
     context={
          'form':form,
-         'title':'Creación de un usuario',
+         'title':titulo
     }
 
     return render(request, 'usuario2/registro.html', context)

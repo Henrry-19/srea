@@ -140,8 +140,8 @@ class Pregunta(models.Model):
 
 
 
-class ElegirRespuesta(models.Model): #ElegirRespuesta
-    MAXIMO_RESPUESTA=4 #Máximo número de respuestas
+class ElegirRespuesta(models.Model): #ElegirRespuesta, conectada con la respuesta
+    MAXIMO_RESPUESTA=4 #Máximo número de respuestas  #opciones #Cuatro campos
     pregunta=models.ForeignKey(Pregunta, related_name='opciones', on_delete=models.CASCADE) #Pregunta conectada con posible respuesta
     correcta=models.BooleanField(verbose_name='Respuesta correcta', default=False,null= False)
     respuesta=models.TextField(verbose_name='Texto de la respuesta')
@@ -165,15 +165,14 @@ class Usuario2(models.Model): #QuizUsuario
         return random.choice(preguntas_restantes)
 
     def validar_intento(self, pregunta_respondida, respuesta_seleccionada):
-        if pregunta_respondida.pregunta__id!=respuesta_seleccionada.pregunta__id:
+        if pregunta_respondida.pregunta_id!=respuesta_seleccionada.pregunta_id: 
             return
-        
         pregunta_respondida.respuesta_seleccionada = respuesta_seleccionada
 
         if respuesta_seleccionada.correcta is True:
             pregunta_respondida.correcta = True
             pregunta_respondida.puntaje_obtenido = respuesta_seleccionada.pregunta.max_puntaje  
-            pregunta_respondida.respuesta=respuesta_seleccionada
+            pregunta_respondida.respuesta = respuesta_seleccionada
 
         pregunta_respondida.save()
 

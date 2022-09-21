@@ -122,6 +122,15 @@ class TestCreateForm(ModelForm):
         fields = ('nombre', 'estado','user')
 
 
+class PreguntaCreateForm(ModelForm):
+    class Meta:
+        model= ElegirRespuesta
+        fields= '__all__'
+
+class ElegirRespuestaCreateForm(ModelForm):
+    class Meta:
+        model= ElegirRespuesta
+        fields= '__all__'
 #
 
 class ElegirInlineFormset(forms.BaseInlineFormSet):
@@ -134,9 +143,9 @@ class ElegirInlineFormset(forms.BaseInlineFormSet):
             if formulario.cleaned_data and formulario.cleaned_data.get('correcta') is True:
                 respuesta_correcta +=1 #Vamos  a ir iterando la respuesta
         try:
-                assert respuesta_correcta==Pregunta.NUMER_DE_RESPUESTAS_PERMITIDAS
+            assert respuesta_correcta==Pregunta.NUMER_DE_RESPUESTAS_PERMITIDAS
         except AssertionError:
-                raise forms.ValidationError('Solo se permite una respuesta')
+            raise forms.ValidationError('Solo se permite una respuesta')
         
 
 class UsuarioLoginFormulario(forms.Form):

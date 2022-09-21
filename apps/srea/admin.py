@@ -33,7 +33,7 @@ class PreguntaAdmin(admin.ModelAdmin):
     model= Pregunta
     inlines=(ElegirRespuestaInline,)
     list_display = ['texto',]
-    search_fields = ['texto','preguntas__texto'] #Campos de búsqueda, una posible respuesta
+    search_fields = ['texto','opciones__respuesta'] #Campos de búsqueda, una posible respuesta
 
 
 class PreguntasRespondidasAmin(admin.ModelAdmin):

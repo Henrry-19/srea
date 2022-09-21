@@ -61,7 +61,10 @@ urlpatterns = [
     path('login2/',login2, name="login2"), #crear login
     path('logout_vista/',logout_vista, name="logout_vista"), #salir de login
     path('HomeUsuario/',HomeUsuario, name="HomeUsuario"), #salir de login
-    path('p_lista/',evaluar, name="inicio"), #evaluar preguntas
+    path('p_lista/',PreguntaListView.as_view(), name="p_pregunta"), #Listar preguntas
+    path('pregunta/',PreguntaView.as_view(), name="pregunta"), #crear ficha
+    #path('p_lista/',evaluar, name="inicio"), #evaluar preguntas
+    path('resultado/<int:pregunta_respondida_pk>/',resultado_pregunta, name='resultado')
 
     #path('p_lista/updateP/<int:pk>/',PreguntaUpdateView.as_view(), name="update_pregunta"),
     #path('p_lista/deleteP/<int:pk>/',PreguntaDeleteView.as_view(), name="delete_pregunta"),

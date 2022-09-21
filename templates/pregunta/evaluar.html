@@ -1,16 +1,49 @@
 
- {% for pregunta  in pregunta  %}
-
-    <p>
-        {{pregunta}}
-    </p>
- {% for respuesta in pregunta.preguntas.all %}
-    <p>
-        <strong>
-            {{respuesta}}
-        </strong>
-        
-    </p>
- {% endfor %}
-
- {% endfor %}
+ {% extends "b_list.html" %}
+ {%block title%}Preguntas{%endblock%}
+ <center>
+     <h2>Bienvenido {{user}}</h2>
+ </center>
+ {% if pregunta is None %}
+ <div class="container">
+     <div class="jumbotron my-4">
+         <h1>Evaluación completada. Mira los resultados</h1>
+         <a href="">Ver resultados</a>
+     </div>
+ </div>
+ {% else %}
+ <div class="container">
+     <div class="jumbotron my-4">
+         <h3>
+              
+             {%block colums%}
+             <tr>
+                 <th>{{pregunta.texto}}</th>
+                 <th colspan="">Opciones</th>
+             </tr>
+             {%endblock%}
+ 
+         </h3>
+         <form method="POST" class="form">
+             {% csrf_token %}
+             <input type="hidden" name="pregunta_pk" value="{{pregunta.pk}}">
+             {% for opciones in pregunta.opciones.all %}
+             <p>
+             <input class="form-check-input" type="radio" name="respuesta__pk" value="{{opciones.pk}}" id="choice-{{forloop.counter}}">
+             <label class="form-check-label" for="choice-{{ forloop.counter }}">
+             {{opciones.respuesta}}  
+             </label>
+             </p>
+             {% endfor %}
+ 
+             <button type="submit" class="btn btn-success">
+                 Enviar
+             </button>
+ 
+         </form>
+ 
+     </div>
+ 
+ </div>
+ {% endif %}
+ 
