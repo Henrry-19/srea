@@ -10,6 +10,7 @@ from django.core.exceptions import ObjectDoesNotExist
 
 from apps.srea.forms import *
 
+from django.http import JsonResponse, HttpResponseRedirect
 
 from urllib import request
 from venv import create
@@ -46,28 +47,104 @@ class PreguntaListView(View):
         return render(request, 'pregunta/pregunta_lista.html', context)
 
 
-class PreguntaView(View):
+
+class PreguntaCreateView(View):
+    model: Pregunta #Indicar el modelo con el cual se va ha trabajar
+    form= PreguntaCreateForm() # Indicar el formulario con el que se va ha trabajar
+    template_name='./pregunta/pregunta_create.html' #Indicar cual es el template para crear el registro 
+    success_url= reverse_lazy('srea:p_pregunta') #Me redirecciona la URL y reverse_lazy->devuelve la ruta de la URL
+    @method_decorator(login_required)
     def get(self, request, *args, **kwargs):
-        form=PreguntaCreateForm
-        context={
-            'form':form
+        form=PreguntaCreateForm() 
+        context={ #Diccionario
+          'form':form,
+          'title':'Creación de una pregunta',
+          'modelo':'Pregunta',
+          'url_lista':reverse_lazy('srea:p_pregunta'), 
+         'action':'add'
         }
         
         return render(request, './pregunta/pregunta_create.html', context)
 
-#Método para crear pregunta
+    def post(self, request, *args,**kwargs):
+        data ={}                                     #Diccionario
+        try:
+            action= request.POST['action']
+            if action =='add':
+                form = PreguntaCreateForm(request.POST)
+                if form.is_valid():
+                    form.save()
+                else:
+                    data['error']=form.errors 
+            else:
+                data['error']='No realiza ninguna opción'
+        except Exception as e:
+            data['error']=str(e)
+        return JsonResponse(data)
 
-    def post(self,request, *args, **kwargs):
-        if request.method=="POST":#Si estámos enviando información a traves de un formulario
-            form=PreguntaCreateForm(request.POST, request.FILES)
-            if form.is_valid():
-                form.save()
-                return redirect('srea:p_pregunta')
-        else:
-            form:PreguntaCreateForm()   
-        return render(request, 'pregunta/pregunta_create.html',  {
-        'form': form
-        })   
+
+class PreguntaDeleteView(DeleteView):
+    model = Pregunta
+    template_name = 'pregunta/pregunta_delete.html'
+    success_url=reverse_lazy('srea:pregunta')
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        return super().dispatch(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        data = {}
+        try:
+            self.object.delete()
+        except Exception as e:
+            data['error'] = str(e)
+        return JsonResponse(data)
+            
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Eliminación de una pregunta'
+        context['modelo'] = 'Pregunta'
+        context['url_lista'] = reverse_lazy('srea:p_pregunta')
+        return context
+
+
+class PreguntaUpdateView(UpdateView):
+    model = Pregunta
+    form_class = PreguntaCreateForm
+    template_name = 'pregunta/pregunta_create.html'
+    success_url = reverse_lazy('srea:pregunta')
+    
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        self.object = self.get_object()
+
+        return super().dispatch(request, *args, **kwargs)
+    def post(self, request, *args, **kwargs):
+        data ={}                                     
+        try:
+            action= request.POST['action']
+            if action =='edit':
+                form = self.get_form()
+                data=form.save()
+            else:
+                data['error']='No realiza ninguna acción'
+        except Exception as e:
+            data['error']=str(e)
+        return JsonResponse(data)
+        
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Actualización de una pregunta'
+        context['entity'] = 'Pregunta'
+        context['url_lista'] = reverse_lazy('srea:p_pregunta')
+        context['action'] = 'edit'
+        return context
+
+
+
+
+
 
 
 

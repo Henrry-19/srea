@@ -124,7 +124,7 @@ class TestCreateForm(ModelForm):
 
 class PreguntaCreateForm(ModelForm):
     class Meta:
-        model= ElegirRespuesta
+        model= Pregunta
         fields= '__all__'
 
 class ElegirRespuestaCreateForm(ModelForm):
