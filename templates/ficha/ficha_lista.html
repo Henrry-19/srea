@@ -1,50 +1,28 @@
 {% extends "b_list.html" %}
-{%block title%}Ficha de Usuario{%endblock%}
+{% load static %}
+{%block title%}Ficha de usuario{%endblock%}
 
+{% block head_list %}
+<script src="{% static '/ficha/lista1.js' %}"></script>
+{% endblock %}
 {%block colums%}
 <tr>
-    <th>Cedula</th>
-    <th>User</th>
-    <th>Foto</th>
-    <th>Edad</th>
-    <th>Dirección</th>
-    <th>Ocupación</th>
-    <th>Técnica de estudio</th>
-    <th>Genero</th>
-    <th>Etnia</th>
-    <th>Estado Civil</th>
-    
-    <th colspan="">Opciones</th>
+    <th scope="col" style="width: 20%;">id</th>
+    <th scope="col" style="width: 20%;">Cedula</th>
+    <th scope="col" style="width: 20%;">User</th>
+    <th scope="col" style="width: 20%;">Dirección</th>
+    <th scope="col" style="width: 20%;">Ocupación</th>
+    <th scope="col" style="width: 20%;">Técnica de estudio</th>
+    <th scope="col" style="width: 20%;">Genero</th>
+    <th scope="col" style="width: 20%;">Estado Civil</th>
+    <th scope="col" style="width: 20%;">Etnia</th>
+    <th scope="col" style="width: 20%;">Opciones</th>
 </tr>
 {%endblock%}
 
 {%block rows%}
-{%for f in ficha%}
-    <tr>
-        <td>{{f.cedula}}</td>
-        <td>{{f.user}}</td>
-        <td class="text-center">
-           {{f.foto}}
-           <!--- <img src="{{f.foto}}" class="img-fluid d-block mx auto"  style="width: 20px; height: 20px;">-->
-        </td>
-        <td>{{f.edad}}</td>
-        <td>{{f.direccion}}</td>
-        <td>{{f.ocupacion}}</td>
-        <td>{{f.tecnica_estudio}}</td>
-        <td>{{f.genero}}</td>
-        <td>{{f.etnia}}</td>
-        <td>{{f.estado_civil}}</td>
-        <td>
-        <a href="u_ficha/{{u.id}}" class="btn btn-info btn-xs"><i class="fas fa-edit"></i></a>
-        <a href="d_ficha/{{u.id}}" class="btn btn-danger btn-xs"><i class="fas fa-trash-alt"></i></a>
-        </td>
-    </tr>
-{%endfor%}
-<div>
-    <div class="card-footer">
-        <a href="{% url 'srea:ficha' %}" class="btn btn-info"><i class="fas fa-pen-square"></i>Registrar</a>  
-    </div>
-</div>
-
 
 {%endblock%}
+
+{% block javascript %}
+{% endblock  %}

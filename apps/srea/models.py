@@ -94,6 +94,12 @@ class FichaInformacion(models.Model):
     def __str__(self):
         return self.cedula
 
+
+    def toJSON(self): #Método para devolver un diccionario de los atributos del modelo
+        item= model_to_dict(self, exclude='edad,foto')
+
+        return item
+
 #    def __str__(self):
 #        if self.foto:
 #            return '{}{}'.format(MEDIA_URL, self.foto)

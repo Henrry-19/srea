@@ -112,7 +112,6 @@ class UsuarioDeleteView(DeleteView):
         context['url_lista'] = reverse_lazy('srea:principal')
         return context
 
-
 class UsuarioUpdateView(UpdateView):
     model = Usuario
     form_class = UsuarioCreateForm
@@ -122,10 +121,10 @@ class UsuarioUpdateView(UpdateView):
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         self.object = self.get_object()
-
         return super().dispatch(request, *args, **kwargs)
+
     def post(self, request, *args, **kwargs):
-        data ={}                                     
+        data={}                                     
         try:
             action= request.POST['action']
             if action =='edit':

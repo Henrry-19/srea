@@ -102,14 +102,26 @@ class FichaCreateForm(ModelForm):
         model= FichaInformacion
         #fields = ('descripcion','detalle_trabajo','detalle_ocupacion','detalle_tecnicaE', 'genero', 'etnia', 'estado_civil','user')
         fields= '__all__'
-        #exclude = ['estado']
+        exclude = ['foto']
+
+    def save(self, commit=True):
+        data = {}
+        form = super()
+        try:
+            if form.is_valid():
+                form.save()
+            else:
+                data['error'] = form.errors
+        except Exception as e:
+            data['error'] = str(e)
+        return data
 
 class AsignaturaCreateForm(ModelForm):
     class Meta:
         model= Asignatura
         fields='__all__'
         exclude = ['estado']
-
+            
 
 class NivelCreateForm(ModelForm):
     class Meta:
