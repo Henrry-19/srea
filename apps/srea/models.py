@@ -18,6 +18,9 @@ from django.db import models
 
 from django.contrib.auth.models import AbstractUser
 
+from django.conf import settings
+
+
 class User(AbstractUser):
     pass
 
@@ -121,6 +124,13 @@ class Asignatura(models.Model):
     foto=models.ImageField(upload_to="images/")
     estado=models.BooleanField(default=False)
     user=models.ForeignKey(Usuario, on_delete=models.CASCADE)
+
+    def toJSON(self): #Método para devolver un diccionario de los atributos del modelo
+        item = model_to_dict(self, exclude='foto,estado')
+        return item
+
+    
+
 
 class Nivel(models.Model):
     nombre=models.CharField(max_length=50)

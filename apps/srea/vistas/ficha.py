@@ -142,19 +142,3 @@ class FichaUpdateView(UpdateView):
         context['action'] = 'edit'
         return context
 
-
-
-
-#class FichaUpdateView(UpdateView):
-#    model=FichaInformacion
-#    fields='__all__'
-#    template_name='ficha/ficha_create.html'
-    
-#    @method_decorator(login_required)
-#    def dispatch(self, request, *args, **kwargs):
-#        self.object = self.get_object()
-#        return super().dispatch(request, *args, **kwargs)
-
-#    def get_success_url(self): #Me regresa a la ventana
-#        pk = self.kwargs['pk']
- #       return reverse_lazy('srea:p_ficha')
