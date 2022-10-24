@@ -15,7 +15,7 @@ from django.http import JsonResponse, HttpResponseRedirect
 from urllib import request
 from venv import create
 from django.shortcuts import render, redirect, get_object_or_404
-from apps.srea.forms import RegistroFormulario, UsuarioLoginFormulario
+
 from django.contrib.auth import authenticate, login, logout
 
 from apps.srea.models import *
@@ -195,7 +195,6 @@ def login2(request):
     context = {
         'form':form,
         'title' : 'titulo' 
-
     }
     return render(request, 'usuario2/login.html', context)
 

@@ -1,13 +1,14 @@
 from distutils.command.upload import upload
+from email.policy import default
+from enum import unique
 from msilib.schema import Class
 from pydoc import describe
 from pyexpat import model
-#from random import random
-#import random as random
 import random
 
 from statistics import mode
 from turtle import up
+from unittest.util import _MAX_LENGTH
 
 
 from django.contrib.auth.models import User
@@ -16,45 +17,72 @@ from django.forms import model_to_dict
 
 from django.db import models
 
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractUser, BaseUserManager
 
 from django.conf import settings
 
 
-class User(AbstractUser):
-    pass
+class UsuarioManager(BaseUserManager):
+    def create_user(self, email, username, nombres, password=None):
+        if not email:
+            raise ValueError('El usuario debe tener un correo electrónico')
+
+        usuario = self.model(
+            username=username,
+            email=self.normalize_email(email),
+            nombres = nombres
+        )
+        usuario.set_password(password)
+        usuario.save()
+        return usuario
+    def create_superuser(self, username, email, nombres, password):
+        usuario = self.create_user(
+            email,
+            username=username,
+            nombres = nombres,
+            password=password
+
+        )
+        usuario.usuario_administrador= True
+        usuario.save()
+        return usuario
+
+
+class Usuario(AbstractUser):
+    username=models.CharField('Nombre de usuario', unique=True, max_length=100)
+    email=models.EmailField('Correo Electrónico',max_length=254,unique=True)
+    nombres=models.CharField('Nombres',max_length=200, blank=True, null=True)
+    apellidos=models.CharField('Apellidos',max_length=200, blank=True, null=True)
+    imagen = models.ImageField('Imagen de Perfil', upload_to='perfil/',max_length=200, blank=True, null=True)
+    usuario_activo = models.BooleanField(default=True)
+    usuario_administrador=models.BooleanField(default=False)
+    object = UsuarioManager()
+
+    USERNAME_FIELD = 'username'
+    REQUIRED_FIELDS = ['email', 'nombres']
 
     def __str__(self):
-        return self.username
-
-
-class Usuario(models.Model):
-    nombre=models.CharField(max_length=30)
-    apellido=models.CharField(max_length=30)
-    correo=models.EmailField(unique=True)
-    clave=models.CharField(max_length=8)
-    fecha_nacimiento=models.DateField()
-    estado = models.BooleanField(default=True)
-
-    def __str__(self):
-        return self.nombre
-
-    def toJSON(self): #Método para devolver un diccionario de los atributos del modelo
-        item= model_to_dict(self, exclude='clave, estado')
-
-        return item
+        return f'{self.nombres},{self.apellidos}'
     
+    def has_perm(self, perm, obj= None):
+        return True
+
+    def has_module_perms(self, app_label):
+        return True
+    
+    @property
+    def is_staff(self):
+        return self.usuario_administrador
+
 class Cuenta(models.Model):
     correo=models.EmailField()
     clave=models.CharField(max_length=8)
-    user=models.ForeignKey(Usuario, on_delete=models.CASCADE)
     
 
 class Reporte(models.Model):
     titulo=models.CharField(max_length=100)
     descripcion=models.TextField()
     estado=models.BooleanField(default=True)
-    user=models.ForeignKey(Usuario, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.titulo
@@ -71,6 +99,7 @@ etnia_ficha={
     ('I', 'Indigena'),
     ('Mo', 'Montubio'),
     ('Mu', 'Mulato'),
+    ('Me', 'Mestizo'),
     ('N', 'Negro'),
     ('O', 'Otro')
 }
@@ -83,7 +112,6 @@ estado_civil_ficha_informacion=(
 )
 class FichaInformacion(models.Model):
     cedula=models.CharField(max_length=10)
-    user=models.ForeignKey(Usuario, on_delete=models.CASCADE)
     foto = models.ImageField(upload_to='cars',null=True, blank=True)
     edad=models.IntegerField()
     direccion=models.CharField(max_length=50)
@@ -113,7 +141,7 @@ class Indicacion(models.Model):
     titulo=models.CharField(max_length=100)
     descripcion=models.TextField()
     tiempo=models.DateTimeField(auto_now_add=True)
-    user=models.ForeignKey(Usuario, on_delete=models.CASCADE)
+    
     
     def __str__(self):
         return self.titulo
@@ -123,7 +151,7 @@ class Asignatura(models.Model):
     detalle=models.TextField()
     foto=models.ImageField(upload_to="images/")
     estado=models.BooleanField(default=False)
-    user=models.ForeignKey(Usuario, on_delete=models.CASCADE)
+    
 
     def toJSON(self): #Método para devolver un diccionario de los atributos del modelo
         item = model_to_dict(self, exclude='foto,estado')
@@ -137,65 +165,24 @@ class Nivel(models.Model):
     numero=models.IntegerField()
     descripcion=models.TextField()
     estado=models.BooleanField(default=False)
-    user=models.ForeignKey(Asignatura, on_delete=models.CASCADE)
+   
 
 class Test(models.Model):
     nombre=models.CharField(max_length=50)
     estado=models.BooleanField(default=False)
-    user=models.ForeignKey(Nivel, on_delete=models.CASCADE)
+   
 
-########Trabajando con las preguntas y respuestas##########
+##################
 
 class Pregunta(models.Model):
-    NUMER_DE_RESPUESTAS_PERMITIDAS = 1 #Número de respuestas permitidas igual a 1
     texto=models.TextField(verbose_name='Texto de la pregunta')
-    max_puntaje=models.DecimalField(verbose_name='Máximo Puntaje', default=3, decimal_places=2,max_digits=6)
+    
 
     def __str__(self):
         return self.texto
 
 
 
-class ElegirRespuesta(models.Model): #ElegirRespuesta, conectada con la respuesta
-    MAXIMO_RESPUESTA=4 #Máximo número de respuestas  #opciones #Cuatro campos
-    pregunta=models.ForeignKey(Pregunta, related_name='opciones', on_delete=models.CASCADE) #Pregunta conectada con posible respuesta
-    correcta=models.BooleanField(verbose_name='Respuesta correcta', default=False,null= False)
-    respuesta=models.TextField(verbose_name='Texto de la respuesta')
-    
-    def __str__(self):
-        return self.respuesta
 
-class Usuario2(models.Model): #QuizUsuario
-    usuario = models.OneToOneField(User, on_delete=models.CASCADE) # Usuario tiene que estar logueado para responder las preguntas
-    puntaje_total = models.DecimalField(verbose_name='Puntaje total',default=0,decimal_places=2,max_digits=10)
 
-    def crear_intentos(self, pregunta):
-        intento = PreguntasRespondidas(pregunta=pregunta,quizUsuario=self)
-        intento.save()
-
-    def obtener_nuevas_preguntas(self):
-        respondidas=PreguntasRespondidas.objects.filter(quizUsuario=self).values_list('pregunta__pk', flat=True)
-        preguntas_restantes=Pregunta.objects.exclude(pk__in=respondidas)
-        if not preguntas_restantes.exists():
-            return None
-        return random.choice(preguntas_restantes)
-
-    def validar_intento(self, pregunta_respondida, respuesta_seleccionada):
-        if pregunta_respondida.pregunta_id!=respuesta_seleccionada.pregunta_id: 
-            return
-        pregunta_respondida.respuesta_seleccionada = respuesta_seleccionada
-
-        if respuesta_seleccionada.correcta is True:
-            pregunta_respondida.correcta = True
-            pregunta_respondida.puntaje_obtenido = respuesta_seleccionada.pregunta.max_puntaje  
-            pregunta_respondida.respuesta = respuesta_seleccionada
-
-        pregunta_respondida.save()
-
-class PreguntasRespondidas(models.Model):
-    quizUsuario= models.ForeignKey(Usuario2, on_delete=models.CASCADE, related_name='intentos') #Mandamos al usuario en preguntas respondidas
-    pregunta = models.ForeignKey(Pregunta, on_delete=models.CASCADE)
-    respuesta = models.ForeignKey(ElegirRespuesta, on_delete=models.CASCADE, null=True)
-    correcta = models.BooleanField(default=False, null=False) 
-    puntaje_obtenido = models.DecimalField(default=0, decimal_places=2, max_digits=6)
 

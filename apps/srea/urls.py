@@ -9,6 +9,7 @@ from .vistas.pregunta import *
 from .vistas.test import *
 from .vistas.ficha import *
 from .vistas.index import *
+from django.contrib.auth.decorators import login_required
 
 app_name="apps.srea"
 
@@ -19,8 +20,8 @@ urlpatterns = [
     path('update/<int:pk>/', CuentaUpdateView.as_view(), name="update"),
     path('delete/<int:pk>/', CuentaDeleteView.as_view(), name="delete"),
 #-------------------------Usuario---------------------------------------
-    path('u_lista/',UsuarioListView.as_view(), name="principal"),
-    path('usuario/', UsuarioCreateView.as_view(), name="usuario"),
+    path('u_lista/',login_required(ListadoUsuario.as_view()), name="principal"),
+    path('usuario/', login_required(RegistrarUsuario.as_view()), name="usuario"),
     path('u_lista/u_usuario/<int:pk>/', UsuarioUpdateView.as_view(), name="u_usuario"),
     path('u_lista/d_usuario/<int:pk>/', UsuarioDeleteView.as_view(), name="d_usuario"),
 #-------------------------Reporte---------------------------------------

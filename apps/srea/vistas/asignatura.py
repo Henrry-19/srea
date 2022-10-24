@@ -92,7 +92,7 @@ class AsignaturaDeleteView(DeleteView):
     template_name = 'asignatura/asignatura_delete.html'
     success_url=reverse_lazy('srea:p_asignatura')
 
-    @method_decorator(login_required)
+    #@method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         self.object = self.get_object()
         return super().dispatch(request, *args, **kwargs)

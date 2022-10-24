@@ -5,7 +5,7 @@ from django.utils.decorators import method_decorator #Importación del método d
 class Index1View(TemplateView):
     template_name = 'index.html' #Cambio de interfaz de inicio
     
-    @method_decorator(login_required)
+   # @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
@@ -17,7 +17,7 @@ class Index1View(TemplateView):
 class Index2View(TemplateView):
     template_name = './index1.html' #Cambio de interfaz de inicio
     
-    @method_decorator(login_required)
+   # @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 

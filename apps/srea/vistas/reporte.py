@@ -66,7 +66,6 @@ class ReporteCreateView(View):
                 titulo = form.cleaned_data.get('titulo')
                 descripcion = form.cleaned_data.get('descripcion')
                 estado =form.cleaned_data.get('estado')
-                user = form.cleaned_data.get('user')
                 form.save()
         context={
             

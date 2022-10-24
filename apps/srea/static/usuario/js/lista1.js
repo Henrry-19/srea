@@ -14,11 +14,12 @@ $(function () {
         },
         columns: [
             {"data": "id"},
-            {"data": "nombre"},
-            {"data": "apellido"},
-            {"data": "correo"},
-            {"data": "fecha_nacimiento"},
-            {"data": "correo"},
+            {"data": "email"},
+            {"data": "username"},
+            {"data": "nombres"},
+            {"data": "apellidos"},
+            {"data": "email"},
+            {}
         ],
         columnDefs: [
             {

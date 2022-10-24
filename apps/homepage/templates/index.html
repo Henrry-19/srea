@@ -100,9 +100,19 @@
       <nav class="nav-menu">
         <ul>
           <li class="active"><a href="/"><i class="bx bx-home"></i> <span>Inicio</span></a></li>
+          {% if request.user.is_staff %}
+          <li class="nav-item"><a href="" class="nav-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="bx bx-group" ></i>Usuarios</a>
+              <ul class="sub-menu children dropdown-menu">
+                  <li><a href="{% url 'srea:principal' %}"><i class="bx bx-table"></i><p>Listado de usuarios</p></a></li>
+                  <li><a href="{% url 'srea:usuario' %}"><i class="bx bx-plus-circle"></i>Registro de usuarios</a></li>
+              </ul>
+          </li>
+          {% endif %}
           <li><a href="{% url 'srea:index2'%}"><i class="bx bx-user"></i> <span>Principal</span></a></li>
-          <li><a href="#resume"><i class="bx bx-file-blank"></i> <span>Cursos</span></a></li>
-          <li><a href="#portfolio"><i class="bx bx-book-content"></i> Reporte</a></li>
+          <li><a href="#resume"><i class="bx bx-folder-open"></i> <span>Cursos</span></a></li>
+          {% if request.user.is_staff %}
+          <li><a href="#portfolio"><i class="bx bx-notepad"></i>Ficha</a></li>
+          {% endif %}
           <!--<li><a href="#services"><i class="bx bx-server"></i> Services</a></li>-->
          <!--<li><a href="#contact"><i class="bx bx-envelope"></i> Contact</a></li>-->
           <li>

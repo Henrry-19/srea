@@ -18,76 +18,58 @@
         </div>
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                <li class="nav-header">Administración</li>
                 <li class="nav-item">
                     <a href="/" class="nav-link">
                         <i class="icon fa fa-home fa-fw " aria-hidden="true"></i>
-                        <p>
                             Inicio
-                        </p>
                     </a>
                 </li>
+                {% if request.user.is_staff %}
+                <li class="menu-item-has-children dropdown">
+                    <a href="" class="nav-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-users">Usuarios</i> </a>
+                    <ul class="sub-menu children dropdown-menu">
+                        <li><i class="fa fa-table"></i><a href="{% url 'srea:principal' %}">Listado de usuarios</a></li>
+                        <li><i class="fa fa-table"></i><a href="{% url 'srea:usuario' %}">Registro de usuarios</a></li>
+                    </ul>
+
+                    
+
+                </li>
+                {% endif %}
+
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="fas fa-graduation-cap"></i>
-                        <p>
-                            Principal
-                        </p>
-                    </a>
+                    <a href="" class="nav-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="fas fa-graduation-cap">
+                        Principal</i> </a>
+                    <ul class="sub-menu children dropdown-menu">
+                        <li><i class="fa fa-table"></i><a href=""></a></li>
+                    </ul>
                 </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link" data-toggle="dropdown" href="#">
-                        <i class="fas fa-folder-open"></i>  Cursos
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                        <div class="dropdown-divider"></div>
-                        
-                        <a href="{% url 'srea:principal'%}" class="dropdown-item">
-                            <i class="fas fa-users"></i> Estudiantes
-                        </a>
-        
-                        <div class="dropdown-divider"></div>
-                        <a href="{% url 'srea:p_asignatura'%}" class="dropdown-item">
-                            <i class="fas fa-folder"></i> Asignatura                           
-                        </a>
-                            <u> 
-                                <ol>
-                                    <a href="{% url 'srea:p_pregunta'%}" class="dropdown-item">
-                                        <i class="far fa-folder"></i>
-                                        Unidad I
-                                    </a>
-                                    <a href="{% url 'srea:p_pregunta'%}" class="dropdown-item">
-                                        <i class="far fa-folder"></i>
-                                        Unidad II
-                                    </a>
-                                    <a href="{% url 'srea:p_pregunta'%}" class="dropdown-item">
-                                        <i class="far fa-folder"></i>
-                                        Unidad III
-                                    </a>
-                                    <a href="{% url 'srea:p_pregunta'%}" class="dropdown-item">
-                                        <i class="far fa-folder"></i>
-                                        Unidad IV
-                                    </a>
-                                </ol>
-                            </u>
-                        <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item dropdown-footer">
-                            <p>Actividades</p>
-                        </a>
-                    </div>
-                </li>
+
                 <li class="nav-item">
-                    <a href="{% url 'srea:p_ficha'%}" class="nav-link">
-                        <i class="fas fa-poll" aria-hidden="true"></i>
-                        <p>
-                            Ficha     
-                        </p>
-                    </a>
-                    <div class="dropdown-divider"></div>
-                    <a href="{% url 'srea:p_reporte'%}" class="dropdown-item">
-                        <i class="fas fa-folder"></i> Generar reporte                           
-                    </a>
+                    <a href="" class="nav-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="fas fa-folder-open">
+                        Cursos</i> </a>
+                    <ul class="sub-menu children dropdown-menu">
+                        <li><i class="fas fa-folder"></i><a href="">Asignatura </a></li>
+                    </ul>
                 </li>
+
+
+                {% if request.user.is_staff %}
+                <li class="nav-item">
+                    <a href="{% url 'srea:p_ficha'%}" class="nav-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="fas fa-poll" aria-hidden="true">
+                        Ficha</i> </a>
+                    <ul class="sub-menu children dropdown-menu">
+                        <li> <i class="fas fa-folder"></i>Reporte<a href="{% url 'srea:p_reporte'%}"></a></li>
+                    </ul>
+                </li>
+                {% endif %}
+
+
+
+
+
+
+
             </ul>
         </nav>
     </div>

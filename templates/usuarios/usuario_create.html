@@ -1,0 +1,28 @@
+{% extends 'layout.html' %}
+{% load static %}
+
+{% block head %}
+  <script src="{% static 'lib/datatables-1.10.20/js/jquery.dataTables.js' %}"></script>
+  <script src="{% static 'lib/datatables-1.10.20/js/dataTables.bootstrap4.min.js' %}"></script>
+  <script src="{% static 'lib/datatables-1.10.20/plugins/responsive-2.2.3/js/dataTables.responsive.min.js' %}"></script>
+  <script src="{% static 'lib/datatables-1.10.20/plugins/responsive-2.2.3/js/responsive.bootstrap4.min.js' %}"></script>
+{% endblock head %}
+
+{% block content %}
+
+<div class="card">
+    <div class="card-header">
+        <strong class="card-title">Registro de usuarios</strong>
+    </div>
+    <div class="card-body">
+        <form method="POST">
+            {% csrf_token %}
+            {{form.as_p}}
+            <div class="card-footer">
+                <a href="{% url 'srea:principal'%}" class="btn btn-danger"> Cancelar</a>
+                <button type="submit" class="btn btn-primary">Registrar</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock content %}
