@@ -34,28 +34,10 @@ class CuentaCreateForm(ModelForm):
         }
       
 class UsuarioCreateForm(ModelForm):
-    password1 = forms.CharField(label='Contraseña', widget=forms.PasswordInput(
-        attrs={
-            'class':'form-control',
-            'placeholder':'Ingrese su constraseña...',
-            'id':'password1',
-            'required':'required',
-        }
-    ))
-
-    password2 = forms.CharField(label='Contraseña de confirmación', widget=forms.PasswordInput(
-         attrs={
-            'class':'form-control',
-            'placeholder':'Ingrese nuevamente su constraseña...',
-            'id':'password2',
-            'required':'required',
-        }
-    ))
-
 
     class Meta:
         model=Usuario
-        fields = ('email','username','nombres', 'apellidos')
+        fields=['email','username','nombres', 'apellidos']
         exclude = ['foto']
 
         widgets = {
@@ -87,7 +69,32 @@ class UsuarioCreateForm(ModelForm):
                 }),
         }
 
-    def clean_password2(self):
+
+    password1 = forms.CharField(label='Contraseña', widget=forms.PasswordInput(
+        attrs={
+            'class':'form-control',
+            'placeholder':'Ingrese su constraseña...',
+            'id':'password1',
+            'required':'required',
+        }
+    ))
+
+    password2 = forms.CharField(label='Contraseña de confirmación', widget=forms.PasswordInput(
+         attrs={
+            'class':'form-control',
+            'placeholder':'Ingrese nuevamente su constraseña...',
+            'id':'password2',
+            'required':'required',
+        }
+    ))
+
+    
+
+    def clean_password2(self):#Validación de contraseña
+        #Método que valida que ambas contraseñas ingresadas sean iguales, antes de ser encriptadas
+        #y guardadas en la base de datos, se retorna la contraseña valida
+        #
+        #
         password1 = self.cleaned_data.get('password1')
         password2 = self.cleaned_data.get('password2')
         if  password1 != password2:

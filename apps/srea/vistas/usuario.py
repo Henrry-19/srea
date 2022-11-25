@@ -34,9 +34,21 @@ class RegistrarUsuario(CreateView):
     model = Usuario
     form_class = UsuarioCreateForm
     template_name = 'usuarios/usuario_create.html'
-    success_url = reverse_lazy('srea:principal')
 
-
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST) #Obteniendo toda la información que me están enviando de la petición
+        if form.is_valid():
+            nuevo_usuario = Usuario(
+                email = form.cleaned_data.get('email'),
+                username = form.cleaned_data.get('username'),
+                nombres = form.cleaned_data.get('nombres'),
+                apellidos = form.cleaned_data.get('apellidos')
+            )
+            nuevo_usuario.set_password(form.cleaned_data.get('password1'))
+            nuevo_usuario.save()
+            return redirect('srea:principal')
+        else:
+            return render(request,self.template_name,{'form':form})
 
 
 class UsuarioDeleteView(DeleteView):
@@ -80,7 +92,7 @@ class UsuarioUpdateView(UpdateView):
         try:
             action= request.POST['action']
             if action =='edit':
-                form = self.get_form()
+                form = self.get_form() ###
                 data=form.save()
             else:
                 data['error']='No realiza ninguna acción'
@@ -95,4 +107,13 @@ class UsuarioUpdateView(UpdateView):
         context['url_lista'] = reverse_lazy('srea:principal')
         context['action'] = 'edit'
         return context
+
+class Usuario1UpdateView(UpdateView):
+    model=Usuario
+    fields=['email','username','nombres', 'apellidos']
+    template_name='usuarios/usuario_create.html'
+
+    def get_success_url(self): #Me regresa a la ventana
+        pk = self.kwargs['pk']
+        return reverse_lazy('srea:principal')
 

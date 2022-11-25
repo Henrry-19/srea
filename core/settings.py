@@ -4,7 +4,7 @@ from pathlib import Path
 import environ
 import os
 
-from .db import MYSQL
+from .db import MYSQL #Importar la base de datos
 
 env=environ.Env()
 environ.Env.read_env()
@@ -92,7 +92,7 @@ WSGI_APPLICATION = 'core.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
-DATABASES = MYSQL
+DATABASES = MYSQL #Configuración de la base de datos
 
 
 # Password validation
