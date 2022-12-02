@@ -1,15 +1,15 @@
-function message_error(obj) {
-    var html = '';
-    if (typeof (obj) === 'object') {
+function message_error(obj) { //Función mensaje error
+    var html = '';//
+    if (typeof (obj) === 'object') {//Si el tipo de objeto es igual a un objeto 
         html = '<ul style="text-align: left;">';
         $.each(obj, function (key, value) {
             html += '<li>' + key + ': ' + value + '</li>';
         });
         html += '</ul>';
-    } else {
+    } else {//Imprime el mensaje de error
         html = '<p>' + obj + '</p>';
     }
-    Swal.fire({
+    Swal.fire({//Presentamos un mensaje de alerta
         title: 'Error!',
         html: html,
         icon: 'error'

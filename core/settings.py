@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     #libs
-    'widget_tweaks',
+    'widget_tweaks', #Me permite incrustar atributos en mis componentes
     #Apps
     'apps.srea',
     'apps.homepage',
@@ -50,7 +50,6 @@ INSTALLED_APPS = [
 
 ]
 
-TAILWIND_APP_NAME = 'theme'
 
 INTERNAL_IPS = [
     "127.0.0.1",
@@ -73,8 +72,8 @@ ROOT_URLCONF = 'core.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR,'templates')], #Concatenar las dos rutas
-        'APP_DIRS': True,
+        'DIRS': [os.path.join(BASE_DIR,'templates')], #Concatenar las dos rutas, rutas que contienen nuestras templates
+        'APP_DIRS': True, #Buscar en los templates de nuestras aplicaciones
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
@@ -129,13 +128,14 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
-STATIC_URL = 'static/'
+#Trabajando con los archivos estáticos
+STATIC_URL = 'static/' #Permite trabajar con la ruta de nuestros archivos estáticos 
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR,"static"),
+    os.path.join(BASE_DIR,"static"), #Ruta en la que van a estar alojados mis archivos estáticos
 ]
 
-
+#path.join-->permite unificar una ruta
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
@@ -148,15 +148,18 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 SITE_ID = 1 
-AUTH_USER_MODEL = 'srea.Usuario' #Como modelo para todo el sistema, utiliza este modelo para la autenticación
+#AUTH_USER_MODEL = 'srea.Usuario' #Como modelo para todo el sistema, utiliza este modelo para la autenticación
 
-LOGIN_REDIRECT_URL ='/srea/index1/'
+LOGIN_REDIRECT_URL ='/home/index1/'
 
+
+#LOGOUT_REDIRECT_URL ='/login/'
 LOGOUT_REDIRECT_URL ='/login/'
 
 LOGIN_URL = '/login/'
+#LOGIN_URL = '/'
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/') 
 
 MEDIA_URL = '/media/'
 

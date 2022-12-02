@@ -19,7 +19,7 @@
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                 <li class="nav-item">
-                    <a href="/" class="nav-link">
+                    <a href="{% url 'home:index1' %}" class="nav-link">
                         <i class="icon fa fa-home fa-fw " aria-hidden="true"></i>
                             Inicio
                     </a>
@@ -56,10 +56,10 @@
 
                 {% if request.user.is_staff %}
                 <li class="nav-item">
-                    <a href="{% url 'srea:p_ficha'%}" class="nav-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="fas fa-poll" aria-hidden="true">
+                    <a href="" class="nav-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="fas fa-poll" aria-hidden="true">
                         Ficha</i> </a>
                     <ul class="sub-menu children dropdown-menu">
-                        <li> <i class="fas fa-folder"></i>Reporte<a href="{% url 'srea:p_reporte'%}"></a></li>
+                        <li> <i class="fas fa-folder"></i>Reporte<a href=""></a></li>
                     </ul>
                 </li>
                 {% endif %}

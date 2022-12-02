@@ -45,23 +45,22 @@
 {% block javascript %}
     <script type="application/javascript">
           $(function(){
-              $('#data').DataTable({
+              $('#data').DataTable({ //id=data-->id de la tabla
                 responsive: true,
-                autoWidth: false
+                autoWidth: false //Permite que no ajuste el tamaño de las columnas en la tabla
               });
 
-              $('.btnTest').on('click',function () { 
+              $('.btnTest').on('click',function () { //Cuando se ejecute el evento clic-->clase del botón-->btnTest
                 $.ajax({
-                  url:'{% url 'srea:principal' %}', 
-                  type: 'POST',
-                  data: {id:30},
-                  dataType: 'json'
-                }).done(function(data){
-                  console.log(data)
-
-                }).fail(function(jqXHR,textStatus,errorThrown){
-                  alert(textStatus+':'+errorThrown)
-                }).always(function(data){
+                  url:'{% url 'srea:principal' %}',  //Primero se envia la url para comunicarse-
+                  type: 'POST', //Se envía el tipo de petición
+                  data: {id:1}, //Enviamos parámetros
+                  dataType: 'json' //Tipo de dato que me va a retornar
+                }).done(function(data){ //Si la petición se ejecuta correctamente ingresa en este método (data->datos enviados por el servidor)
+                  console.log(data) //Presento por consola el data
+                }).fail(function(jqXHR,textStatus,errorThrown){//Se ejecuta si ocurrio un método en la petición 
+                  alert(textStatus+':'+errorThrown) // jqXHR-->Objeto de la petición && textStatus-->Tipo de error && errorThrown-->  Error  
+                }).always(function(data){// Se ejecuta siempre, independientemente si pateción es correcta o no
                   
                 });
               });

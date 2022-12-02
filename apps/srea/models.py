@@ -1,96 +1,34 @@
-from distutils.command.upload import upload
-from email.policy import default
-from enum import unique
-from msilib.schema import Class
-from pydoc import describe
-from pyexpat import model
-import random
-
-from statistics import mode
-from turtle import up
-from unittest.util import _MAX_LENGTH
-
-
-from django.contrib.auth.models import User
-
-from django.forms import model_to_dict
-
 from django.db import models
+from datetime import datetime
+from django.forms import model_to_dict # Librería que permite convertir mi modelo a tipo diccionario
 
-from django.contrib.auth.models import AbstractUser, BaseUserManager
+##################Usuario######################
+genero_ficha_informacion = (
+    ('female', 'Femenino'),
+    ('male', 'Masculino')
+)
 
-from django.conf import settings
-
-
-class UsuarioManager(BaseUserManager):
-    def create_user(self, email, username, nombres, password=None):
-        if not email:
-            raise ValueError('El usuario debe tener un correo electrónico')
-
-        usuario = self.model(
-            username=username,
-            email=self.normalize_email(email),
-            nombres = nombres
-        )
-        usuario.set_password(password)
-        usuario.save()
-        return usuario
-    def create_superuser(self, username, email, nombres, password):
-        usuario = self.create_user(
-            email,
-            username=username,
-            nombres = nombres,
-            password=password
-
-        )
-        usuario.usuario_administrador= True
-        usuario.save()
-        return usuario
-
-
-class Usuario(AbstractUser):
-    username=models.CharField('Nombre de usuario', unique=True, max_length=100)
-    email=models.EmailField('Correo Electrónico',max_length=254,unique=True)
-    nombres=models.CharField('Nombres',max_length=200, blank=True, null=True)
-    apellidos=models.CharField('Apellidos',max_length=200, blank=True, null=True)
-    imagen = models.ImageField('Imagen de Perfil', upload_to='perfil/',max_length=200, blank=True, null=True)
-    usuario_activo = models.BooleanField(default=True)
-    usuario_administrador=models.BooleanField(default=False)
-    object = UsuarioManager()
-
-    USERNAME_FIELD = 'username'
-    REQUIRED_FIELDS = ['email', 'nombres']
+class Usuario(models.Model):
+    nombres=models.CharField(max_length=200, verbose_name='Nombres')
+    apellidos=models.CharField(max_length=200, verbose_name='Apellidos')
+    birthday = models.DateField(default=datetime.now, verbose_name='Fecha de nacimiento')
+    email=models.EmailField(max_length=254,unique=True,verbose_name='Correo Electrónico')
+    genero = models.CharField(max_length=10, choices=genero_ficha_informacion, default='male', verbose_name='Genero')
+    
+ ###Crear un método llamado toJSON###
+    def toJSON(self):##Me devuelve un diccionario con todos los atributos de mi entidad
+        item=model_to_dict(self) #Mi atributo self contiene mi modelo
+        return item
 
     def __str__(self): 
         return f'{self.nombres},{self.apellidos}'
     
-    def has_perm(self, perm, obj= None):
-        return True
-
-    def has_module_perms(self, app_label):
-        return True
-    
-    @property
-    def is_staff(self):
-        return self.usuario_administrador
-
-class Cuenta(models.Model):
-    correo=models.EmailField()
-    clave=models.CharField(max_length=8)
+    class Meta:
+        verbose_name = 'Usuarios'
+        verbose_name_plural = 'Usuarios'
+        ordering = ['id']
     
 
-class Reporte(models.Model):
-    titulo=models.CharField(max_length=100)
-    descripcion=models.TextField()
-    estado=models.BooleanField(default=True)
-
-    def __str__(self):
-        return self.titulo
-
-genero_ficha_informacion = (
-    ('M', 'Femenino'),
-    ('F', 'Masculino')
-)
 
 etnia_ficha={
     ('A', 'Afroecuatoriano'),
@@ -110,76 +48,115 @@ estado_civil_ficha_informacion=(
     ('D','Divorciado/a'),
     ('V','Viudo/a')
 )
+
+##################Ficha de información######################
+
 class FichaInformacion(models.Model):
-    cedula=models.CharField(max_length=10)
-    foto = models.ImageField(upload_to='cars',null=True, blank=True)
+    user= models.ForeignKey(Usuario, on_delete=models.CASCADE)
+    dni = models.CharField(max_length=10, unique=True, verbose_name='Dni')
     edad=models.IntegerField()
     direccion=models.CharField(max_length=50)
-    ocupacion=models.CharField(max_length=1) #Ingresar como lista-clase ocupación
+    ocupacion=models.CharField(max_length=50) #Ingresar como lista-clase ocupación
     tecnica_estudio=models.CharField(max_length=50,null=True)
-    genero=models.CharField(choices=genero_ficha_informacion, max_length=1)
-    etnia=models.CharField(choices=etnia_ficha,max_length=2)
-    estado_civil= models.CharField(choices=estado_civil_ficha_informacion, max_length=1)
+    etnia=models.CharField(choices=etnia_ficha,max_length=10)
+    estado_civil= models.CharField(choices=estado_civil_ficha_informacion, max_length=10)
     
 
     def __str__(self):
-        return self.cedula
+        return self.cedula #llamar con clave primaria
+    
+    class Meta:
+        verbose_name = 'Ficha'
+        verbose_name_plural = 'Fichas'
+        ordering = ['id']
 
-
-    def toJSON(self): #Método para devolver un diccionario de los atributos del modelo
-        item= model_to_dict(self, exclude='edad,foto')
-
-        return item
-
-#    def __str__(self):
-#        if self.foto:
-#            return '{}{}'.format(MEDIA_URL, self.foto)
-#        return '{}{}'.format(STATIC_URL, 'img/user_png')
-
-
+##################Indicación######################
 class Indicacion(models.Model):
+    user= models.ForeignKey(Usuario, on_delete=models.CASCADE)
     titulo=models.CharField(max_length=100)
-    descripcion=models.TextField()
-    tiempo=models.DateTimeField(auto_now_add=True)
+    descripcion=models.TextField(verbose_name='Descripción')
+    fecha=models.DateTimeField(auto_now_add=True)
     
     
     def __str__(self):
         return self.titulo
+    
+    class Meta:
+        verbose_name = 'Indicación'
+        verbose_name_plural = 'Indicaciones'
+        ordering = ['id']
 
+##################Asignatura######################    
 class Asignatura(models.Model):
-    nombre=models.CharField(max_length=50)
-    detalle=models.TextField()
-    foto=models.ImageField(upload_to="images/")
-    estado=models.BooleanField(default=False)
+    user= models.ForeignKey(Usuario, on_delete=models.CASCADE)
+    nombre=models.CharField(max_length=150, verbose_name='Nombre', unique=True)
+    detalle=models.TextField(verbose_name='Detalle de la asignatura')
+    imagen = models.ImageField(upload_to='asignatura/%Y/%m/%d', null=True, blank=True)
     
+    def __str__(self):
+        return self.nombre 
 
-    def toJSON(self): #Método para devolver un diccionario de los atributos del modelo
-        item = model_to_dict(self, exclude='foto,estado')
-        return item
+    class Meta:
+        verbose_name = 'Asignatura'
+        verbose_name_plural = 'Asignaturas'
+        ordering = ['id']   
 
-    
-
-
+##################Nivel######################
 class Nivel(models.Model):
-    nombre=models.CharField(max_length=50)
-    numero=models.IntegerField()
-    descripcion=models.TextField()
-    estado=models.BooleanField(default=False)
+    asignatura = models.ForeignKey(Asignatura, on_delete=models.CASCADE)
+    nombre=models.CharField(max_length=150, verbose_name='Nombre', unique=True)
+    descripcion=models.TextField(verbose_name='Descripción')
    
+    def __str__(self):
+        return self.nombre
+
+    class Meta:
+        verbose_name = 'Nivel'
+        verbose_name_plural = 'Niveles'
+        ordering = ['id']
+
+##################Test######################
 
 class Test(models.Model):
-    nombre=models.CharField(max_length=50)
-    estado=models.BooleanField(default=False)
+    nivel= models.ForeignKey(Nivel, on_delete=models.CASCADE)
+    nombre=models.CharField(max_length=150, verbose_name='Nombre', unique=True)
+
+    def __str__(self):
+        return self.nombre
+
+    class Meta:
+        verbose_name = 'Test'
+        verbose_name_plural = 'Tests'
+        ordering = ['id']
    
 
-##################
+##################Pregunta######################
 
 class Pregunta(models.Model):
+    test=models.ForeignKey(Test, on_delete=models.CASCADE)
     texto=models.TextField(verbose_name='Texto de la pregunta')
-    
 
     def __str__(self):
         return self.texto
+
+    class Meta:
+        verbose_name = 'Pregunta'
+        verbose_name_plural = 'Preguntas'
+        ordering = ['id']  
+
+##################Respuesta######################
+
+class Respuesta(models.Model):
+    pregunta=models.ForeignKey(Pregunta, on_delete=models.CASCADE)
+    respuesta=models.TextField(verbose_name='Texto de la respuesta')
+
+    def __str__(self):
+        return self.respuesta
+
+    class Meta:
+        verbose_name = 'Respuesta'
+        verbose_name_plural = 'Respuestas'
+        ordering = ['id']  
 
 
 

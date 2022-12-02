@@ -1,98 +1,91 @@
-from pickle import FALSE
-from re import template
-import re
-from urllib import request
-from django.contrib.auth.decorators import login_required #Importación de decoradores
-from django.utils.decorators import method_decorator #Importación del método decorador
-from multiprocessing import context
-from django.shortcuts import get_object_or_404, render, redirect
-from django.views.generic import *
-from django.http import HttpResponse
-from django.http import JsonResponse, HttpResponseRedirect
+from django.views.generic import* #importando la vista genérica
+from apps.srea.models import* #importando los modelos
 from django.views.decorators.csrf import csrf_exempt
-
-
-from apps.srea.forms import *
-from apps.srea.models import Usuario
-
+from django.utils.decorators import method_decorator #importando el método decorador
+from django.http import *
 from django.urls import reverse_lazy
+from django.shortcuts import render, redirect
 
-import os
-from django.conf import settings
-from django.template.loader import get_template
-from xhtml2pdf import pisa
+from apps.srea.forms import*
 
 
-class ListadoUsuario(ListView):
-    model = Usuario
-    template_name = 'usuarios/usuario_lista.html'
-
-    def get_queryset(self):
-        return self.model.objects.filter(usuario_activo = True)
-
-class RegistrarUsuario(CreateView):
-    model = Usuario
-    form_class = UsuarioCreateForm
-    template_name = 'usuarios/usuario_create.html'
-
-    def post(self, request, *args, **kwargs):
-        form = self.form_class(request.POST) #Obteniendo toda la información que me están enviando de la petición
-        if form.is_valid():
-            nuevo_usuario = Usuario(
-                email = form.cleaned_data.get('email'),
-                username = form.cleaned_data.get('username'),
-                nombres = form.cleaned_data.get('nombres'),
-                apellidos = form.cleaned_data.get('apellidos')
-            )
-            nuevo_usuario.set_password(form.cleaned_data.get('password1'))
-            nuevo_usuario.save()
-            return redirect('srea:principal')
-        else:
-            return render(request,self.template_name,{'form':form})
-
-
-class UsuarioDeleteView(DeleteView):
-    model = Usuario
-    template_name = 'usuario/usuario_delete.html'
-    success_url=reverse_lazy('srea:principal')
-
-    @method_decorator(login_required)
+class UsuarioListView(ListView): #Primera vista basada en clase ListView, permite sobrescribir métodos
+    model= Usuario#Primero se indica el modelo o entidad
+    template_name = 'usuario/usuario_lista.html' #Indicarle cual es la plantilla
+    
+    @method_decorator(csrf_exempt)#Mecanismo de defensa de django
     def dispatch(self, request, *args, **kwargs):
-        self.object = self.get_object()
         return super().dispatch(request, *args, **kwargs)
 
-    def post(self, request, *args, **kwargs):
-        data = {}
-        try:
-            self.object.delete()
-        except Exception as e:
-            data['error'] = str(e)
-        return JsonResponse(data)
-            
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['title'] = 'Eliminación de un Usuario'
-        context['modelo'] = 'Usuario'
-        context['url_lista'] = reverse_lazy('srea:principal')
+    def post(self, request, *args, **kwargs):###Implementación de ajax en mi método sobrescrito POST###
+        data={} #Se declara un diccionario llamado data
+        try: #controlar el error
+            action=request.POST['action']
+            if action == 'searchdata':
+                data=[]
+                for i in Usuario.objects.all():
+                    data.append(i.toJSON())
+        except Exception as e: #Llamamos a la clase Exceptio para indicar el error
+            data['error']=str(e) #Me devuelve el objeto e-->convertido a un string
+        return JsonResponse(data,safe=False)
+
+    def get_context_data(self, **kwargs): #Método que devuelve un diccionario que representa el contexto de la plantilla
+        context = super().get_context_data(**kwargs) #Obtengo el diccionario que devuelve el método
+        context['title']='Listado de usuario' #Puedo enviar variables
+        context['url_create']=reverse_lazy('srea:usuario')#Ruta abosluta creación de usuario
+        context['url_list']=reverse_lazy('srea:principal')#Ruta abosluta lista de usuario
+        context['modelo']='Usuarios'#Nombre de identidad
         return context
 
+
+class UsuarioCreateView(CreateView):
+    model=Usuario #Indicar el modelo con el cual se va ha trabajar
+    form_class=UsuarioCreateForm #Importando el formulario con el que voy a trabajar
+    template_name='usuario/usuario_create.html' # Debo indicarle la ubicación de mi plantilla
+    success_url= reverse_lazy('srea:principal') #Me permite direccionar a otra plantilla, la funnción reverse_lazy me recibe una url como parámetro
+
+    def post(self, request, *args, **kwargs):###Implementación de ajax en mi método sobrescrito POST###
+        data={} #Se declara un diccionario llamado data
+        try: #controlar el error
+            action= request.POST['action']#Recupero la variable action en mi método POST, cada vez que se haga una petición
+            if action=='add': #Se indica el proceso add
+                form=self.get_form() #Llamamos a nuestro formulario
+                if form.is_valid():# Preguntamos si nuestro formulario es valido
+                    form.save()#Debo guardar el objeto
+                else:
+                    data['error']=form.errors # Data va a hacer igual al formulario con los errores 
+            else:
+                data['error']='No ingreso por ninguna opción'
+        except Exception as e: #Llamamos a la clase Exception para indicar el error
+            data['error']=str(e) #Me devuelve el objeto e-->convertido a un string
+        return JsonResponse(data)
+
+
+    def get_context_data(self, **kwargs): #Método que devuelve un diccionario que representa el contexto de la plantilla
+        context = super().get_context_data(**kwargs) #Obtengo el diccionario que devuelve el método
+        context['title']='Creación de un usuario' #Puedo enviar variables
+        context['modelo']='Usuarios'#Nombre de identidad
+        context['url_list']=reverse_lazy('srea:principal')#Ruta abosluta lista de usuario
+        context['action']='add'#Enviar variable action
+        return context
+
+
 class UsuarioUpdateView(UpdateView):
-    model = Usuario
-    form_class = UsuarioCreateForm
-    template_name = 'usuario/usuario_create.html'
-    success_url = reverse_lazy('srea:usuario')
-    
-    @method_decorator(login_required)
+    model = Usuario #Indicar el modelo con el cual se va ha trabajar
+    form_class = UsuarioCreateForm #Importando el formulario con el que voy a trabajar
+    template_name = 'usuario/usuario_create.html' #Debo indicarle la ubicación de mi plantilla
+    success_url = reverse_lazy('srea:usuario') #Me permite direccionar a otra plantilla, la función reverse_lazy me recibe una url como parámetro
+    #@method_decorator(csrf_exempt) #Mecanismo de defensa de django
     def dispatch(self, request, *args, **kwargs):
-        self.object = self.get_object()
+        self.object = self.get_object()#Le decimos que la clase object va a hacer igual a lo que tenemos en lainstancia de nuestro objeto, para que el funcionamiento no se altere
         return super().dispatch(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
-        data={}                                     
+        data ={}                                     
         try:
             action= request.POST['action']
             if action =='edit':
-                form = self.get_form() ###
+                form = self.get_form()
                 data=form.save()
             else:
                 data['error']='No realiza ninguna acción'
@@ -100,20 +93,36 @@ class UsuarioUpdateView(UpdateView):
             data['error']=str(e)
         return JsonResponse(data)
         
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['title'] = 'Actualización de un usuario'
-        context['entity'] = 'Usuario'
-        context['url_lista'] = reverse_lazy('srea:principal')
-        context['action'] = 'edit'
+    def get_context_data(self, **kwargs): #Método que devuelve un diccionario que representa el contexto de la plantilla
+        context = super().get_context_data(**kwargs) #Obtengo el diccionario que devuelve el método
+        context['title']='Actualización de un usuario' #Puedo enviar variables
+        context['modelo']='Usuarios'#Nombre de identidad
+        context['url_list']=reverse_lazy('srea:principal')#Ruta abosluta lista de usuario
+        context['action']='edit'#Enviar variable action
         return context
 
-class Usuario1UpdateView(UpdateView):
-    model=Usuario
-    fields=['email','username','nombres', 'apellidos']
-    template_name='usuarios/usuario_create.html'
 
-    def get_success_url(self): #Me regresa a la ventana
-        pk = self.kwargs['pk']
-        return reverse_lazy('srea:principal')
 
+class UsuarioDeleteView(DeleteView):
+    model = Usuario #Indicar el modelo con el cual se va ha trabajar
+    template_name = 'usuario/usuario_delete.html' #Debo indicarle la ubicación de mi plantilla
+    success_url= reverse_lazy('srea:principal')#Me permite direccionar a otra plantilla, la función reverse_lazy me recibe una url como parámetro
+
+    def dispatch(self, request, *args, **kwargs):
+        self.object = self.get_object() #Le decimos que la clase object va a hacer igual a lo que tenemos en lainstancia de nuestro objeto, para que el funcionamiento no se altere
+        return super().dispatch(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        data = {} #Creación de variable tipo diccionario
+        try:
+            self.object.delete()#La variabe self.object contiene la variable de mi objeto y puedo acceder a los métodos
+        except Exception as e:
+            data['error'] = str(e) # Si llega a ocurrir un error de la excepion se debe guaradar en la viable e
+        return JsonResponse(data) #Retorno como respuesta un JsonResponse
+            
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Eliminación de un Usuario'
+        context['modelo'] = 'Usuario'
+        context['url_list'] = reverse_lazy('srea:principal')
+        return context

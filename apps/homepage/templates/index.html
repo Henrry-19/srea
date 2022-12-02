@@ -71,7 +71,7 @@
             </div>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="{% url 'logout' %}">
+            <a class="nav-link" href="{% url 'logout' %}"><!--Salir-->
               <iconify-icon icon="bx:power-off"></iconify-icon> 
             </a>
         </li>
@@ -99,7 +99,7 @@
 
       <nav class="nav-menu">
         <ul>
-          <li class="active"><a href="/"><i class="bx bx-home"></i> <span>Inicio</span></a></li>
+          <li class="active"><a href="{% url 'home:index2' %}"><i class="bx bx-home"></i> <span>Inicio</span></a></li>
           {% if request.user.is_staff %}
           <li class="nav-item"><a href="" class="nav-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="bx bx-group" ></i>Usuarios</a>
               <ul class="sub-menu children dropdown-menu">
@@ -108,7 +108,7 @@
               </ul>
           </li>
           {% endif %}
-          <li><a href="{% url 'srea:index2'%}"><i class="bx bx-user"></i> <span>Principal</span></a></li>
+          <li><a href="{% url 'home:index2'%}"><i class="bx bx-user"></i> <span>Principal</span></a></li>
           <li><a href="#resume"><i class="bx bx-folder-open"></i> <span>Cursos</span></a></li>
           {% if request.user.is_staff %}
           <li><a href="#portfolio"><i class="bx bx-notepad"></i>Ficha</a></li>
@@ -117,11 +117,11 @@
          <!--<li><a href="#contact"><i class="bx bx-envelope"></i> Contact</a></li>-->
           <li>
             {%if request.user.is_authenticated %}
-              <a href="{% url 'srea:index1'%}">
+              <a href="{% url 'home:index1'%}">
                 <i class="bx bx-user"></i> Bienvenido {{request.user.username}}
               </a>
             {%else%}
-              <a href="{%url 'login' %}">
+              <a href="">
                 <i class="bx bx-door-open"></i>Login
               </a>
             {%endif%}
@@ -144,26 +144,6 @@
 </section><!-- End Hero -->
 
   <main id="main">
-
-    <!-- ======= About Section ======= -->
-   
-    <!-- End About Section -->
-
-    <!-- ======= Facts Section ======= -->
-  
-
-    <!-- ======= Skills Section ======= -->
-    
-    <!-- ======= Resume Section ======= -->
-    
-    <!-- ======= Portfolio Section ======= -->
-   
-
-    <!-- ======= Services Section ======= -->
-
-
-    <!-- ======= Testimonials Section ======= -->
- <!-- ======= Contact Section ======= -->
  
   </main><!-- End #main -->
 

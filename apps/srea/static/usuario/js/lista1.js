@@ -14,11 +14,11 @@ $(function () {
         },
         columns: [
             {"data": "id"},
-            {"data": "email"},
-            {"data": "username"},
             {"data": "nombres"},
             {"data": "apellidos"},
+            {"data": "birthday"},
             {"data": "email"},
+            {"data": "genero"},
             {}
         ],
         columnDefs: [

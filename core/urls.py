@@ -1,20 +1,12 @@
-from tkinter.font import names
-from xml.etree.ElementInclude import include
-from django.contrib import admin
-from django.urls import path, include
-from .views import HomeView
-from apps.login.views import LoginFormView
-from apps.homepage.views import IndexView
-
+from django.contrib import admin #Librería de adminitración
+from django.urls import path, include #Librería permite incluir las urls
 from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('admin/', admin.site.urls),#Al inicio cargamos el administrador de Django
     path('',include('apps.login.urls'),  name='login1'),
+    path('home/',include('apps.homepage.urls',namespace='home')),
     path('srea/',include('apps.srea.urls', namespace='srea')),
-    path('index/',IndexView.as_view(), name="index"), #Presentar ventana del Login
-    #path('accounts/', include('allauth.urls')),
-
 ]
 urlpatterns += static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
