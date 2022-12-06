@@ -1,6 +1,7 @@
 from django.db import models
 from datetime import datetime
 from django.forms import model_to_dict # Librería que permite convertir mi modelo a tipo diccionario
+from core.settings import MEDIA_URL, STATIC_URL
 
 ##################Usuario######################
 genero_ficha_informacion = (
@@ -93,6 +94,11 @@ class Asignatura(models.Model):
     detalle=models.TextField(verbose_name='Detalle de la asignatura')
     imagen = models.ImageField(upload_to='asignatura/%Y/%m/%d', null=True, blank=True)
     
+    def get_image(self):
+        if self.imagen:
+            return '{}{}'.format(MEDIA_URL, self.imagen)
+        return '{}{}'.format(STATIC_URL, 'img/empty.png')
+
     def __str__(self):
         return self.nombre 
 

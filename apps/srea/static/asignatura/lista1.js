@@ -18,6 +18,7 @@ $(function () {
             {"data": "user"},
             {"data": "nombre"},
             {"data": "detalle"},
+            {"data": "imagen"},
             {"data": "nombre"},
 
         ],

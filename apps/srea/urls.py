@@ -30,10 +30,10 @@ urlpatterns = [
 #    path('i_lista/updateI/<int:pk>/', IndicacionUpdateView.as_view(), name="update_indicacion"),
 #   path('i_lista/deleteI/<int:pk>/', IndicacionDeleteView.as_view(), name="delete_indicacion"),
 #-------------------------Asignatura-----------------------------------------
-#    path('a_lista/',AsignaturaListView.as_view(), name="p_asignatura"), #principal_asignatura
-#    path('asignatura/',AsignaturaCreateView.as_view(), name="asignatura"), #crear asignatura
-#    path('a_lista/u_asignatura/<int:pk>/', AsignaturaUpdateView.as_view(), name="u_asignatura"),
-#    path('a_lista/d_asignatura/<int:pk>/', AsignaturaDeleteView.as_view(), name="d_asignatura"),
+    path('a_lista/',AsignaturaListView.as_view(), name="p_asignatura"), #principal_asignatura
+    path('asignatura/',AsignaturaCreateView.as_view(), name="asignatura"), #crear asignatura
+    path('a_lista/u_asignatura/<int:pk>/', AsignaturaUpdateView.as_view(), name="u_asignatura"),
+    path('a_lista/d_asignatura/<int:pk>/', AsignaturaDeleteView.as_view(), name="d_asignatura"),
 
 #-------------------------Ficha-----------------------------------------
 #    path('f_lista/',FichaListView.as_view(), name="p_ficha"), #principal_ficha

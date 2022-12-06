@@ -2,7 +2,6 @@
 {% block content %}
 <form method="POST">
     {% csrf_token %}
-    {{form}}
     <div class="alert alert-danger alert-dismissible"> 
         <h5><i class="icon fas fa-trash"></i> Notificación!</h5>
         ¿Desea eliminar el registro nro {{object.id}}?

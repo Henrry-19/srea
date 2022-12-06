@@ -159,7 +159,7 @@ LOGOUT_REDIRECT_URL ='/login/'
 LOGIN_URL = '/login/'
 #LOGIN_URL = '/'
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media/') 
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/') #Carpeta raíz, se alojan mis archivos media (imágenes, docuementos) 
 
-MEDIA_URL = '/media/'
+MEDIA_URL = '/media/' #Url absoluta para trabajar con estos archivos media 
 

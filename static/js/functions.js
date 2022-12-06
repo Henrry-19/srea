@@ -38,7 +38,9 @@ function ajax_alert_jqueryconfirm(url, parameters, callback) {
                         url: url,
                         type: 'POST',
                         data: parameters,
-                        dataType: 'json'
+                        dataType: 'json',
+                        processData:false,
+                        contentType:false,
                     }).done(function (data) {
                         console.log(data);
                         if (!data.hasOwnProperty('error')) {

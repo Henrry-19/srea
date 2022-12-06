@@ -65,22 +65,23 @@
             });
         {% endif %}
 
-    
-        $('form').on('submit',function(e){//Acceder al método del submit
-            e.preventDefault();//No se debe hacer el envío de manera automática
-            var parametros=$(this).serializeArray();//Se obtiene todo el conjunto de datos que me da el formulario, en una variable de diccionario
+        $('form').on('submit',function(e){
+            e.preventDefault();
+            //var parametros=$(this).serializeArray();
+            var parametros=new FormData(this);
             $.ajax({
-                url:window.location.pathname, //Se obtiene la url actual con la que estoy trabajando
+                url:window.location.pathname, 
                 type: 'POST',
                 data: parametros,
-                dataType: 'json'
+                dataType: 'json',
+                processData: false,
+                contentType: false
               }).done(function(data){
-                if(!data.hasOwnProperty('error')){//Preguntamos si el data no tiene la variable error
-                    location.href='{{url_list}}';//Regresamos a la pantalla anterior
-                    return false;//Salimos del proceso
+                if(!data.hasOwnProperty('error')){
+                    location.href='{{url_list}}';
+                    return false;
                }
-               //Importamos a functions.js en el home.html
-                message_error(data.error);//Llamamos a la función message_error()-->static/js/functions.js
+                message_error(data.error);
               }).fail(function(jqXHR,textStatus,errorThrown){
                 alert(textStatus+':'+errorThrown)
               }).always(function(data){

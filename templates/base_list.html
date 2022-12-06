@@ -1,15 +1,18 @@
 {% extends 'layout.html' %}
 {% load static %}
 {% block head %}
-  <link rel="stylesheet" href="{% static 'lib/datatables-1.10.20/css/dataTables.bootstrap4.min.css' %}"/>
-  <link rel="stylesheet" href="{% static 'lib/datatables-1.10.20/plugins/responsive-2.2.3/css/responsive.bootstrap4.min.css' %}"/>
-  <script src="{% static 'lib/datatables-1.10.20/js/jquery.dataTables.js' %}"></script>
-  <script src="{% static 'lib/datatables-1.10.20/js/dataTables.bootstrap4.min.js' %}"></script>
-  <script src="{% static 'lib/datatables-1.10.20/plugins/responsive-2.2.3/js/dataTables.responsive.min.js' %}"></script>
-  <script src="{% static 'lib/datatables-1.10.20/plugins/responsive-2.2.3/js/responsive.bootstrap4.min.js' %}"></script>
-{% block head_list %}
-  {% endblock %}
-{% endblock  %}
+    <link rel="stylesheet" href="{% static 'lib/datatables-1.10.20/css/dataTables.bootstrap4.min.css' %}"/>
+    <link rel="stylesheet" href="{% static 'lib/datatables-1.10.20/plugins/responsive-2.2.3/css/responsive.bootstrap4.min.css' %}"/>
+    <script src="{% static 'lib/datatables-1.10.20/js/jquery.dataTables.js' %}"></script>
+    <script src="{% static 'lib/datatables-1.10.20/js/dataTables.bootstrap4.min.js' %}"></script>
+    <script src="{% static 'lib/datatables-1.10.20/plugins/responsive-2.2.3/js/dataTables.responsive.min.js' %}"></script>
+    <script src="{% static 'lib/datatables-1.10.20/plugins/responsive-2.2.3/js/responsive.bootstrap4.min.js' %}"></script>
+
+    {% block head_list %}
+
+    {% endblock %}
+
+{% endblock %}
 
 {% block content %}
 <div class="card card-primary">
@@ -41,31 +44,4 @@
   </div>
 </div>
 {% endblock %}
-
-{% block javascript %}
-    <script type="application/javascript">
-          $(function(){
-              $('#data').DataTable({ //id=data-->id de la tabla
-                responsive: true,
-                autoWidth: false //Permite que no ajuste el tamaño de las columnas en la tabla
-              });
-
-              $('.btnTest').on('click',function () { //Cuando se ejecute el evento clic-->clase del botón-->btnTest
-                $.ajax({
-                  url:'{% url 'srea:principal' %}',  //Primero se envia la url para comunicarse-
-                  type: 'POST', //Se envía el tipo de petición
-                  data: {id:1}, //Enviamos parámetros
-                  dataType: 'json' //Tipo de dato que me va a retornar
-                }).done(function(data){ //Si la petición se ejecuta correctamente ingresa en este método (data->datos enviados por el servidor)
-                  console.log(data) //Presento por consola el data
-                }).fail(function(jqXHR,textStatus,errorThrown){//Se ejecuta si ocurrio un método en la petición 
-                  alert(textStatus+':'+errorThrown) // jqXHR-->Objeto de la petición && textStatus-->Tipo de error && errorThrown-->  Error  
-                }).always(function(data){// Se ejecuta siempre, independientemente si pateción es correcta o no
-                  
-                });
-              });
-          });
-    </script>
-{% endblock %}
-
 

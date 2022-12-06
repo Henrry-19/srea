@@ -1,6 +1,7 @@
 from django.views.generic import* #importando la vista genérica
 from apps.srea.models import* #importando los modelos
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator #importando el método decorador
 from django.http import *
 from django.urls import reverse_lazy
@@ -14,6 +15,7 @@ class UsuarioListView(ListView): #Primera vista basada en clase ListView, permit
     template_name = 'usuario/usuario_lista.html' #Indicarle cual es la plantilla
     
     @method_decorator(csrf_exempt)#Mecanismo de defensa de django
+    @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
@@ -24,7 +26,9 @@ class UsuarioListView(ListView): #Primera vista basada en clase ListView, permit
             if action == 'searchdata':
                 data=[]
                 for i in Usuario.objects.all():
-                    data.append(i.toJSON())
+                    data.append(i.toJSON())#Incrusto cada uno de mis elemntos dentro de mi array
+            else:
+                data["error"]='Ha ocurrido un error'
         except Exception as e: #Llamamos a la clase Exceptio para indicar el error
             data['error']=str(e) #Me devuelve el objeto e-->convertido a un string
         return JsonResponse(data,safe=False)
@@ -43,6 +47,10 @@ class UsuarioCreateView(CreateView):
     form_class=UsuarioCreateForm #Importando el formulario con el que voy a trabajar
     template_name='usuario/usuario_create.html' # Debo indicarle la ubicación de mi plantilla
     success_url= reverse_lazy('srea:principal') #Me permite direccionar a otra plantilla, la funnción reverse_lazy me recibe una url como parámetro
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):###Implementación de ajax en mi método sobrescrito POST###
         data={} #Se declara un diccionario llamado data
@@ -76,6 +84,7 @@ class UsuarioUpdateView(UpdateView):
     template_name = 'usuario/usuario_create.html' #Debo indicarle la ubicación de mi plantilla
     success_url = reverse_lazy('srea:usuario') #Me permite direccionar a otra plantilla, la función reverse_lazy me recibe una url como parámetro
     #@method_decorator(csrf_exempt) #Mecanismo de defensa de django
+    @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         self.object = self.get_object()#Le decimos que la clase object va a hacer igual a lo que tenemos en lainstancia de nuestro objeto, para que el funcionamiento no se altere
         return super().dispatch(request, *args, **kwargs)
@@ -102,12 +111,12 @@ class UsuarioUpdateView(UpdateView):
         return context
 
 
-
 class UsuarioDeleteView(DeleteView):
     model = Usuario #Indicar el modelo con el cual se va ha trabajar
     template_name = 'usuario/usuario_delete.html' #Debo indicarle la ubicación de mi plantilla
     success_url= reverse_lazy('srea:principal')#Me permite direccionar a otra plantilla, la función reverse_lazy me recibe una url como parámetro
-
+    
+    @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         self.object = self.get_object() #Le decimos que la clase object va a hacer igual a lo que tenemos en lainstancia de nuestro objeto, para que el funcionamiento no se altere
         return super().dispatch(request, *args, **kwargs)
