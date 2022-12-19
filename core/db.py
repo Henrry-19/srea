@@ -5,6 +5,6 @@ MYSQL = {
         'USER': 'root',
         'PASSWORD': 'Diosesmivida10@',
         'HOST': 'localhost',
-        'PORT': '3306',
+        'PORT': '3306'
     }
 }

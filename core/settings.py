@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'apps.srea',
     'apps.homepage',
     'apps.login',
+    'apps.user'
 
    
 
@@ -163,3 +164,5 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media/') #Carpeta raíz, se alojan mis arch
 
 MEDIA_URL = '/media/' #Url absoluta para trabajar con estos archivos media 
 
+#Modelo personalizado
+AUTH_USER_MODEL = 'user.User'
