@@ -1,0 +1,93 @@
+{% extends 'layout.html' %}
+{% load widget_tweaks %} {#Importamos la librería#}
+{% block content %}
+    <form method="post" action="." enctype="multipart/form-data">
+        <div class="card card-primary">
+            <div class="card-header">
+                <h3 class="card-title">
+                    {% if action == 'add' %}
+                        <i class="fas fa-plus"></i>
+                    {% else %}
+                        <i class="fas fa-edit"></i>
+                    {% endif %}
+
+                    {{ title }}
+                </h3>
+            </div>
+            <div class="card-body">
+                {% csrf_token %} <!--Protección de Django-->
+                <input type="hidden" name="action" value="{{ action }}">{#Va a tener el valor de la variable action#}
+                {% if form.errors %}{#Si exite un error en el formulario#}
+                    <div class="alert alert-danger alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h5><i class="icon fas fa-ban"></i> Ha ocurrido un error al querer guardar el registro</h5>
+                        <ul><!--Este for permite recorrer el error-->
+                            {% for field in form %}{#Voy  a iterar cada uno de mis componenentes del formulario#}
+                                {% for error in field.errors %}{#A cada componente le voy a preuntar si tiene errores#}
+                                    <li>{{ error }}</li>{#Presento los errores#}
+                                {% endfor %}
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endif %}{#---------#}
+                {% for field in form.visible_fields %}<!--Recorrer el formulario a través de la propiedad visible_fields se accede a todos los componentes-->
+                    <div class="form-group">
+                        <label for="">{{ field.label }}:</label>
+                        {{ field|add_class:'form-control'|attr:'autocomplete:off' }}
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="card-footer">
+                <button type="submit" class="btn btn-info">
+                    <i class="fas fa-save"></i> Guardar registro
+                </button>
+                <a href='{{url_list}}' class="btn btn-danger">
+                    <i class="fas fa-times"></i> Cancelar
+                </a>
+            </div>
+        </div>
+    </form>
+    <script>
+       {% if form.errors %}{#Preguntar si existen los errores#}
+            var errors = '';{#Esta variable va a contener todos los errores de cada componente#}
+            {% for field in form %}
+                {% for error in field.errors %}
+                    errors += '{{ error }}\n';
+                {% endfor %}
+            {% endfor %}
+            {% for error in form.non_field_errors %}
+                errors += '{{ error }}\n';
+            {% endfor %}
+            Swal.fire({
+                title: 'Error!',
+                text: errors,
+                icon: 'error'
+            });
+        {% endif %}
+
+        $('form').on('submit',function(e){
+            e.preventDefault();
+            //var parametros=$(this).serializeArray();
+            var parametros=new FormData(this);
+            $.ajax({
+                url:window.location.pathname, 
+                type: 'POST',
+                data: parametros,
+                dataType: 'json',
+                processData: false,
+                contentType: false
+              }).done(function(data){
+                if(!data.hasOwnProperty('error')){
+                    location.href='{{url_list}}';
+                    return false;
+               }
+                message_error(data.error);
+              }).fail(function(jqXHR,textStatus,errorThrown){
+                alert(textStatus+':'+errorThrown)
+              }).always(function(data){
+                
+              });
+        });
+
+    </script>
+{% endblock %}

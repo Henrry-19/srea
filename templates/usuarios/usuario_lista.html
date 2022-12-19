@@ -1,0 +1,58 @@
+{% extends 'layout.html' %}
+{% load static %}
+
+{% block head %}
+  <script src="{% static 'lib/datatables-1.10.20/js/jquery.dataTables.js' %}"></script>
+  <script src="{% static 'lib/datatables-1.10.20/js/dataTables.bootstrap4.min.js' %}"></script>
+  <script src="{% static 'lib/datatables-1.10.20/plugins/responsive-2.2.3/js/dataTables.responsive.min.js' %}"></script>
+  <script src="{% static 'lib/datatables-1.10.20/plugins/responsive-2.2.3/js/responsive.bootstrap4.min.js' %}"></script>
+{% endblock head %}
+
+{% block content %}
+{% if object_list %}
+<div class="card">
+    <div class="card-header">
+        <strong class="card-title">Listado de usuarios</strong>
+    </div>
+    <div class="table-stats order-table ov-h">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Nombres</th>
+                    <th>Apellidos</th>
+                    <th>Opciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for usuario in object_list %}
+                <tr>
+                    <td>{{usuario.id}}</td>
+                    <td>{{usuario.username}}</td>
+                    <td>{{usuario.email}}</td>
+                    <td>{{usuario.nombres}}</td>
+                    <td>{{usuario.apellidos}}</td>
+                    <td>
+                        <a href="u_usuario/{{usuario.id}}" class="btn btn-danger"><i class="fas fa-edit"></i></a>
+                        <a href="d_usuario/{{usuario.id}}" class="btn btn-primary"><i class="fas fa-trash-alt"></i></a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+
+        </table>
+
+    </div>
+</div>
+{% else %}
+<h1>No exite usuarios registrados</h1>
+{% endif %}
+<div class="card-footer">
+    <a href="" class="btn btn-info btnTest">
+       <i class="fas fa-pen-square"></i>Nuevo registro
+    </a>
+
+  </div>
+{% endblock content %}

@@ -1,0 +1,28 @@
+{% extends "b_list.html" %}
+{% load static %}
+{%block title%}Ficha de usuario{%endblock%}
+
+{% block head_list %}
+<script src="{% static '/ficha/lista1.js' %}"></script>
+{% endblock %}
+{%block colums%}
+<tr>
+    <th scope="col" style="width: 20%;">id</th>
+    <th scope="col" style="width: 20%;">Cedula</th>
+    <th scope="col" style="width: 20%;">User</th>
+    <th scope="col" style="width: 20%;">Dirección</th>
+    <th scope="col" style="width: 20%;">Ocupación</th>
+    <th scope="col" style="width: 20%;">Técnica de estudio</th>
+    <th scope="col" style="width: 20%;">Genero</th>
+    <th scope="col" style="width: 20%;">Estado Civil</th>
+    <th scope="col" style="width: 20%;">Etnia</th>
+    <th scope="col" style="width: 20%;">Opciones</th>
+</tr>
+{%endblock%}
+
+{%block rows%}
+
+{%endblock%}
+
+{% block javascript %}
+{% endblock  %}

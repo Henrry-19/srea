@@ -1,0 +1,62 @@
+{% extends "base_list.html" %}
+{% load static %}
+{%block title%}Lista de asignaturas{%endblock%}
+{%block colums%}
+<tr>
+    <th scope="col" style="width: 20%;">id</th>
+    <th scope="col" style="width: 20%;">Usuario</th>
+    <th scope="col" style="width: 20%;">Nombre</th>
+    <th scope="col" style="width: 20%;">Detalle</th>
+    <th scope="col" style="width: 20%;">Imagen</th>
+    <th scope="col" style="width: 20%;">Opciones</th>
+</tr>
+{%endblock%}
+
+{% block rows %}
+    {% for obj in object_list %}
+        <tr>
+            <td>{{ obj.id }}</td>
+            <td>{{ obj.user.nombres }}</td>
+            <td>{{ obj.nombre }}</td>
+            <td>{{ obj.detalle }}</td>
+            <td class="text-center">
+                <img src="{{ obj.get_image }}" class="img-fluid d-block mx-auto" style="width: 20px; height: 20px;">
+            </td>
+            <td class="text-center">
+                <a href="{% url 'srea:u_asignatura' obj.id %}" class="btn btn-warning btn-xs btn-flat">
+                    <i class="fas fa-edit"></i>
+                </a>
+                <a href="{% url 'srea:d_asignatura' obj.id %}" class="btn btn-danger btn-xs btn-flat">
+                    <i class="fas fa-trash"></i>
+                </a>
+            </td>
+        </tr>
+    {% endfor %}
+{% endblock %}
+
+
+{% block javascript %}
+    <script type="application/javascript">
+        $(function () {
+            $('#data').DataTable({
+                responsive: true,
+                autoWidth: false
+            });
+
+            $('.btnTest').on('click', function () {
+                $.ajax({
+                    url: '{% url 'srea:p_asignatura' %}',
+                    type: 'POST',
+                    data: {id: 1},
+                    dataType: 'json'
+                }).done(function (data) {
+                    console.log(data);
+                }).fail(function (jqXHR, textStatus, errorThrown) {
+                    alert(textStatus + ': ' + errorThrown);
+                }).always(function (data) {
+
+                });
+            });
+        });
+    </script>
+{% endblock %}

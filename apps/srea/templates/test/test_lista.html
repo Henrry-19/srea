@@ -1,0 +1,38 @@
+{% extends "formulario.html" %}
+{%block title%}Test{%endblock%}
+{% block content %}
+<div class="row">
+    <div class="col-sm-12 col-md-6 col-lg-8 col-xl-8">
+        <h1>Test</h1>
+        <fom>
+            <div class="form-group">
+                <a href="#" class="btn btn-info">Registrar</a>
+            </div>    
+        </form>
+        <div class="table-responsive py-2">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Estado</th>
+                        <th>User</th>
+                        <th colspan="">Opciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{test.nombre}}
+                    {%for t in test%}
+                    <tr>
+                        <td>{{t.nombre}}</td>
+                        <td>{{t.estado}}</td>
+                        <td>{{t.user}}</td>
+                        <td><a href="updateT/{{t.id}}" class="btn btn-info">Editar</a></td>
+                        <td><a href="deleteT/{{t.id}}" class="btn btn-danger">Eliminar</a></td>
+                    </tr>
+                    {%endfor%}
+                </tbody>
+            </table>
+         </div>
+    </div>
+</div>
+{% endblock %}

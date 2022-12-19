@@ -1,0 +1,42 @@
+{% extends "body.html" %}
+{%block title%}Niveles{%endblock%}
+{% block content %}
+<div class="row">
+    <div class="col-sm-12 col-md-6 col-lg-8 col-xl-8">
+        <h1>Niveles</h1>
+        <fom>
+            <div class="form-group">
+                <a href="{% url 'srea:nivel' %}" class="btn btn-info">Registrar</a>
+            </div>    
+        </form>
+        <div class="table-responsive py-2">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Número</th>
+                        <th>Descripción</th>
+                        <th>Estado</th>
+                        <th>User</th>
+                        <th colspan="">Opciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{nivel.nombre}}
+                    {%for n in nivel%}
+                    <tr>
+                        <td>{{n.nombre}}</td>
+                        <td>{{n.numero}}</td>
+                        <td>{{n.descripcion}}</td>
+                        <td>{{n.estado}}</td>
+                        <td>{{n.user}}</td>
+                        <td><a href="updateN/{{n.id}}" class="btn btn-info">Editar</a></td>
+                        <td><a href="deleteN/{{n.id}}" class="btn btn-danger">Eliminar</a></td>
+                    </tr>
+                    {%endfor%}
+                </tbody>
+            </table>
+         </div>
+    </div>
+</div>
+{% endblock %}

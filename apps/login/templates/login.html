@@ -1,0 +1,47 @@
+
+{% load static %}
+{%load widget_tweaks%}
+<!DOCTYPE html>
+<html>
+<head>
+  {% include "head.html" %}
+</head>
+<body>
+<div class="hold-transition login-page">
+  <div class="login-logo"> <!--Logo-->
+    <a href="{% url 'inicio_sesion'%}"><b>SREA</b></a>
+  </div>
+  <!-- /.login-logo -->
+  <div class="card">
+    <div class="card-body login-card-body">
+      <p class="login-box-msg">Inicia sesión</p>
+      <!-- formulario -->
+      {% include 'form.html' %}
+
+      <!-- /.social-auth-links -->
+      {% include 'social.html' %}
+      <!-- /.social-auth-links -->
+
+      <p class="mb-1">
+        <a href="#">¿Olvidaste tu contraseña?</a>
+      </p>
+      <p class="mb-0">
+       
+      </p>
+    </div>
+    <!-- /.login-card-body -->
+  </div>
+<!--Script-->
+{% include 'script.html' %}
+</div>
+
+</body>
+<footer>
+  
+  <div>
+    {% include 'footer2.html' %}
+  </div>
+  
+</footer>
+
+</html>

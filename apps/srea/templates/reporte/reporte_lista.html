@@ -1,0 +1,47 @@
+{% extends "b_list.html" %}
+{%block title%}Reportes{%endblock%}
+{% block content %}
+<div class="row">
+    <div class="col-sm-12 col-md-6 col-lg-8 col-xl-8">
+        <h1>Reportes</h1>
+        <fom>
+            <div class="form-group">
+                <a href="{% url 'srea:reporte' %}" class="btn btn-info"><i class="fas fa-pen-square"></i > Registrar</a>
+                <a href="r_lista_pdf/" class="btn btn-secondary"><i class="	fa fa-file" > PDF</i></a>
+            </div>    
+        </form>
+        <div class="table-responsive py-2">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Titulo</th>
+                        <th>Descripción</th>
+                        <th>Estado</th>
+                        <th colspan="">Opciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{reporte.titulo}}
+                    {%for r in reporte%}
+                    <tr>
+                        <td>{{r.id}}</td>
+                        <td>{{r.titulo}}</td>
+                        <td>{{r.descripcion}}</td>
+                        <td>{{r.estado}}</td>
+                        <td>
+                            <a href="updateR/{{r.id}}" class="btn btn-info">
+                                <i class="fas fa-edit"></i> 
+                            </a>
+                            <a href="deleteR/{{r.id}}" class="btn btn-danger">
+                                <i class="fas fa-trash-alt"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    {%endfor%}
+                </tbody>
+            </table>
+         </div>
+    </div>
+</div>
+{% endblock %}

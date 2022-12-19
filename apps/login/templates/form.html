@@ -1,0 +1,40 @@
+{% load static %}
+{%load widget_tweaks%}
+<form action="." method="post">
+    <input type="hidden" name="next" value="{{next}}"> <!--Permite verificar el atributo next-->
+    {% csrf_token %}
+    <div class="input-group mb-3">
+        {{form.username |add_class:'form-control'|attr:'autocomplete:off'|attr:'placeholder:Username'}}
+      <div class="input-group-append">
+        <div class="input-group-text">
+          <span class="fas fa-envelope"></span>
+        </div>
+      </div>
+    </div>
+    <div class="input-group mb-3">
+      {{form.password |add_class:'form-control'|attr:'autocomplete:off'|attr:'placeholder:Contraseña'}}
+      <div class="input-group-append">
+        <div class="input-group-text">
+          <span class="fas fa-lock"></span>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-8">
+        <div class="icheck-primary">
+          <input type="checkbox" id="remember">
+          <label for="remember">
+            Recordar
+          </label>
+        </div>
+      </div>
+      <!-- /.col -->
+      <div class="col-4">
+        <button type="submit" class="btn btn-primary btn-block">
+            <i class="fas fa-sign-in-alt"></i>
+        </button>
+      </div>
+      <!-- /.col -->
+    </div>
+  </form>
+  

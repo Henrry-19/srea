@@ -1,0 +1,42 @@
+{% extends 'layout.html' %}
+{% block content %}
+<form method="POST">
+    {% csrf_token %}
+    <div class="alert alert-danger alert-dismissible"> 
+        <h5><i class="icon fas fa-trash"></i> Notificación!</h5>
+        ¿Desea eliminar el registro nro {{object.id}}?
+    </div>
+    <div class="card-footer">
+        <button type="submit" class="btn btn-primary btn-flat">
+            <i class="fas fa-save"></i> Si, aceptar
+        </button>
+        <a href="{{ url_list }}" class="btn btn-info btn-flat">
+            <i class="fas fa-times"></i> Cancelar
+        </a>
+    </div>
+</form>
+
+<script>//Me permite enviar los datos de mi formulario a la URL en la que me encuentro en este momento
+    $('form').on('submit',function(e){
+        e.preventDefault();
+        var parametros=$(this).serializeArray();
+        $.ajax({
+            url:window.location.pathname, 
+            type: 'POST',
+            data: parametros,
+            dataType: 'json'
+          }).done(function(data){
+            if(!data.hasOwnProperty('error')){
+                location.href='{{url_list}}';//Me permite regerasr a mi lista, luego de la eliminación
+                return false;
+           }
+            message_error(data.error);
+          }).fail(function(jqXHR,textStatus,errorThrown){
+            alert(textStatus+':'+errorThrown)
+          }).always(function(data){
+            
+          });
+    });
+
+</script>
+{% endblock %}
