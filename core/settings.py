@@ -1,16 +1,16 @@
-
 from lib2to3.pytree import Base
 from pathlib import Path
-import environ
 import os
+import environ
+
+env= environ.Env()
+environ.Env.read_env()
 
 from .db import MYSQL #Importar la base de datos
 
-env=environ.Env()
-environ.Env.read_env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent #Directorio de nuestro proyecto django
 
 #NPM_BIN_PATH = "C:/Users/jimen/AppData/Roaming/npm" #OJO ESO HAY QUE GESTIONAR PARA LA INSTALACIÓN
 # Quick-start development settings - unsuitable for production
