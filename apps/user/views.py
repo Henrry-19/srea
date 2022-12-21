@@ -111,3 +111,29 @@ class UserUpdateView(UpdateView):
         context['url_list']=self.success_url#Ruta abosluta lista de asignatura
         context['action']='edit'#Enviar variable action
         return context
+
+
+class UserDeleteView(DeleteView):
+    model = User #Indicar el modelo con el cual se va ha trabajar
+    template_name = 'user/user_delete.html' #Debo indicarle la ubicación de mi plantilla
+    success_url= reverse_lazy('user:user_list')#Me permite direccionar a otra plantilla, la función reverse_lazy me recibe una url como parámetro
+    
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        self.object = self.get_object() #Le decimos que la clase object va a hacer igual a lo que tenemos en lainstancia de nuestro objeto, para que el funcionamiento no se altere
+        return super().dispatch(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        data = {} #Creación de variable tipo diccionario
+        try:
+            self.object.delete()#La variabe self.object contiene la variable de mi objeto y puedo acceder a los métodos
+        except Exception as e:
+            data['error'] = str(e) # Si llega a ocurrir un error de la excepion se debe guaradar en la viable e
+        return JsonResponse(data) #Retorno como respuesta un JsonResponse
+            
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Eliminación de un usuario'
+        context['modelo'] = 'User'
+        context['url_list'] = self.success_url
+        return context

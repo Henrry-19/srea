@@ -10,8 +10,8 @@ urlpatterns = [
 #-------------------------Usuario---------------------------------------
     path('user_list/',(UserListView.as_view()), name="user_list"),
     path('user/', (UserCreateView.as_view()), name="user"),
-    path('u_lista/u_usuario/<int:pk>/', UserUpdateView.as_view(), name="u_user"),
-#    path('u_lista/d_usuario/<int:pk>/', UsuarioDeleteView.as_view(), name="d_usuario"),
+    path('user_list/u_user/<int:pk>/', UserUpdateView.as_view(), name="u_user"),
+    path('user_list/d_user/<int:pk>/', UserDeleteView.as_view(), name="d_user"),
 #-------------------------Reporte---------------------------------------
 
 ]
