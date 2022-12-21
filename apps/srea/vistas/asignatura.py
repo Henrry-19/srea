@@ -26,7 +26,7 @@ class AsignaturaListView(ListView): #Primera vista basada en clase ListView, per
             action=request.POST['action']
             if action == 'searchdata':
                 data=[]
-                for i in Usuario.objects.all():
+                for i in Asignatura.objects.all():
                     data.append(i.toJSON())#Incrusto cada uno de mis elemntos dentro de mi array
             else:
                 data["error"]='Ha ocurrido un error'

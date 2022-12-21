@@ -1,5 +1,5 @@
 {% load static %}
-<aside class="main-sidebar sidebar-light-primary elevation-4">
+<aside  class="main-sidebar sidebar-light-primary elevation-4">
     <a href="#" class="brand-link">
         <img src="{% static 'img/study.png' %}"
              alt="SREA"
@@ -10,7 +10,7 @@
     <div class="sidebar">
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
             <div class="image">
-                <img src="{{request.user.get_image}}" class="img-circle elevation-2" alt="User Image">
+                <img src="{{request.user.get_image}}" class="img-circle" alt="User Image">
             </div>
             <div class="info">
                 <a href="#" class="d-block">Henrry Jiménez</a>
@@ -20,56 +20,50 @@
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                 <li class="nav-item">
                     <a href="{% url 'home:index1' %}" class="nav-link">
-                        <i class="icon fa fa-home fa-fw " aria-hidden="true"></i>
+                        <i class="icon fa fa-home fa-fw "></i>
+                        <p>
                             Inicio
+                        </p>    
                     </a>
                 </li>
                 {% if request.user.is_staff %}
-                <li class="menu-item-has-children dropdown">
-                    <a href="" class="nav-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-users">Usuarios</i> </a>
-                    <ul class="sub-menu children dropdown-menu">
-                        <li><i class="fa fa-table"></i><a href="{% url 'srea:principal' %}">Listado de usuarios</a></li>
-                        <li><i class="fa fa-table"></i><a href="{% url 'srea:usuario' %}">Registro de usuarios</a></li>
-                    </ul>
-
-                    
-
+                <li class="nav-item">
+                    <a href="{% url 'user:user_list' %}" class="nav-link">
+                        <i class="menu-icon fa fa-users"></i>
+                        <p>
+                            Usuarios
+                        </p>    
+                    </a>
                 </li>
                 {% endif %}
 
                 <li class="nav-item">
-                    <a href="" class="nav-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="fas fa-graduation-cap">
-                        Principal</i> </a>
-                    <ul class="sub-menu children dropdown-menu">
-                        <li><i class="fa fa-table"></i><a href=""></a></li>
-                    </ul>
+                    <a href="{% url 'srea:principal' %}" class="nav-link">
+                        <i class="fas fa-chalkboard-teacher"></i>
+                        <p>
+                            Estudiantes
+                        </p>
+                    </a>
                 </li>
 
                 <li class="nav-item">
-                    <a href="" class="nav-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="fas fa-folder-open">
-                        Cursos</i> </a>
-                    <ul class="sub-menu children dropdown-menu">
-                        <li><i class="fas fa-folder"></i><a href="{% url 'srea:p_asignatura' %}">Asignatura </a></li>
-                    </ul>
+                    <a href="{% url 'srea:p_asignatura' %}" class="nav-link"> 
+                        <i class="fas fa-book-reader"></i>
+                        <p>
+                            Asignaturas
+                        </p>  
+                    </a>
                 </li>
-
-
                 {% if request.user.is_staff %}
                 <li class="nav-item">
-                    <a href="" class="nav-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="fas fa-poll" aria-hidden="true">
-                        Ficha</i> </a>
-                    <ul class="sub-menu children dropdown-menu">
-                        <li> <i class="fas fa-folder"></i>Reporte<a href=""></a></li>
-                    </ul>
+                    <a href="#" class="nav-link">
+                        <i class="fas fa-poll"></i>
+                        <p>
+                            Reporte
+                        </p>
+                    </a>
                 </li>
                 {% endif %}
-
-
-
-
-
-
-
             </ul>
         </nav>
     </div>

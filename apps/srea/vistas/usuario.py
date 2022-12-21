@@ -35,7 +35,7 @@ class UsuarioListView(ListView): #Primera vista basada en clase ListView, permit
 
     def get_context_data(self, **kwargs): #Método que devuelve un diccionario que representa el contexto de la plantilla
         context = super().get_context_data(**kwargs) #Obtengo el diccionario que devuelve el método
-        context['title']='Listado de usuario' #Puedo enviar variables
+        context['title']='Listado de estudiante' #Puedo enviar variables
         context['url_create']=reverse_lazy('srea:usuario')#Ruta abosluta creación de usuario
         context['url_list']=reverse_lazy('srea:principal')#Ruta abosluta lista de usuario
         context['modelo']='Usuarios'#Nombre de identidad

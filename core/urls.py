@@ -8,5 +8,6 @@ urlpatterns = [
     path('',include('apps.login.urls'),  name='login1'),
     path('home/',include('apps.homepage.urls',namespace='home')),
     path('srea/',include('apps.srea.urls', namespace='srea')),
+    path('user/',include('apps.user.urls', namespace='user')),
 ]
 urlpatterns += static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT) #Configuracón para que se puedan leer los archivos
