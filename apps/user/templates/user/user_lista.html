@@ -25,7 +25,7 @@
                 <img src="{{ obj.get_image }}" class="img-fluid d-block mx-auto" style="width: 20px; height: 20px;">
             </td>
             <td class="text-center">
-                <a href="{% url 'srea:u_asignatura' obj.id %}" class="btn btn-warning btn-xs btn-flat">
+                <a href="{% url 'user:u_user' obj.id %}" class="btn btn-warning btn-xs btn-flat">
                     <i class="fas fa-edit"></i>
                 </a>
                 <a href="{% url 'srea:d_asignatura' obj.id %}" class="btn btn-danger btn-xs btn-flat">

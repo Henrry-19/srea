@@ -33,7 +33,7 @@ class UserCreateForm(ModelForm):
                     'placeholder':'Ingrese un nombre de usuario'
                 }
             ),
-            'password':PasswordInput(
+            'password':PasswordInput(render_value=True,
                 attrs={
                     'placeholder':'Ingrese su password',
                 }
