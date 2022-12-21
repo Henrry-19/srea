@@ -12,10 +12,17 @@ class User(AbstractUser):
         return '{}{}'.format(STATIC_URL, 'img/empty.png')
 
     def toJSON(self):
-        item = model_to_dict(self, exclude=['password','groups', 'user_permissions ']) #Me permite obtener un diccionario a partir del modelo que se le enví
-        item['last_login']=self.last_login.strftime('%Y-%m-%d')
+        item = model_to_dict(self, exclude=['password','groups', 'user_permissions ', 'last_login']) #Me permite obtener un diccionario a partir del modelo que se le enví
+        if self.last_login:
+            item['last_login']=self.last_login.strftime('%Y-%m-%d')
         item['date_joined']=self.date_joined.strftime('%Y-%m-%d')
         item['image']=self.get_image()
 
         return item
+
+    def save(self, *args, **kwargs):
+        if self.pk is None:
+            self.set_password(self.password)
+        super().save(*args, **kwargs)
+        
 
