@@ -45,7 +45,15 @@ class UserCreateForm(ModelForm):
         form = super()
         try:
             if form.is_valid():
-                form.save()
+                pwd=self.cleaned_data['password']
+                u=form.save(commit=False) #Hacemos una pausa a la creación del objeto
+                if u.pk is None:
+                    u.set_password(pwd)
+                else:
+                     user=User.objects.get(pk=u.pk)
+                     if user.password != pwd:
+                        u.set_password(pwd)
+                u.save()
             else:
                 data['error'] = form.errors
         except Exception as e:

@@ -13,7 +13,7 @@ $(function () {
             dataSrc: "" //No envío ninguna variable por esa razón está en blanco
         },
         columns: [
-            {"data": "id"},
+            {"data": "position"},
             {"data": "nombres"},
             {"data": "apellidos"},
             {"data": "birthday"},

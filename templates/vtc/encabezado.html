@@ -14,7 +14,9 @@
             </a>
             <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
                     <span class="dropdown-header">
-                        Último Acceso: 24 de Agosto de 2022
+                        Último Acceso:
+                        <br>
+                        {{request.user.last_login}}
                     </span>
                 <div class="dropdown-divider"></div>
                 <a href="#" class="dropdown-item">

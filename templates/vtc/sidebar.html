@@ -10,10 +10,10 @@
     <div class="sidebar">
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
             <div class="image">
-                <img src="{{request.user.get_image}}" class="img-circle" alt="User Image">
+                <img src="{{ request.user.get_image }}" class="img-fluid rounded-circle" alt="User Image">
             </div>
             <div class="info">
-                <a href="#" class="d-block">Henrry Jiménez</a>
+                <a href="#" class="d-block">{{request.user.first_name}} {{request.user.last_name}}</a>
             </div>
         </div>
         <nav class="mt-2">

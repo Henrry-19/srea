@@ -14,7 +14,7 @@ $(function () {
         },
         columns: [
             
-            {"data": "id"},
+            {"data": "position"},
             {"data": "user"},
             {"data": "nombre"},
             {"data": "detalle"},

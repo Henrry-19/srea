@@ -130,7 +130,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
 #Trabajando con los archivos estáticos
-STATIC_URL = 'static/' #Permite trabajar con la ruta de nuestros archivos estáticos 
+STATIC_URL = '/static/' #Permite trabajar con la ruta de nuestros archivos estáticos 
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR,"static"), #Ruta en la que van a estar alojados mis archivos estáticos

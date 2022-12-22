@@ -25,8 +25,12 @@ class UsuarioListView(ListView): #Primera vista basada en clase ListView, permit
             action=request.POST['action']
             if action == 'searchdata':
                 data=[]
+                position = 1
                 for i in Usuario.objects.all():
-                    data.append(i.toJSON())#Incrusto cada uno de mis elemntos dentro de mi array
+                    item= i.toJSON()
+                    item['position']=position
+                    data.append(item)#Incrusto cada uno de mis elementos dentro de mi array
+                    position+=1
             else:
                 data["error"]='Ha ocurrido un error'
         except Exception as e: #Llamamos a la clase Exceptio para indicar el error

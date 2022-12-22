@@ -5,8 +5,8 @@ from core.settings import MEDIA_URL, STATIC_URL
 
 ##################Usuario######################
 genero_ficha_informacion = (
-    ('female', 'Femenino'),
-    ('male', 'Masculino')
+    ('Femenino', 'Femenino'),
+    ('Masculino', 'Masculino')
 )
 
 class Usuario(models.Model):
@@ -14,7 +14,7 @@ class Usuario(models.Model):
     apellidos=models.CharField(max_length=200, verbose_name='Apellidos')
     birthday = models.DateField(default=datetime.now, verbose_name='Fecha de nacimiento')
     email=models.EmailField(max_length=254,unique=True,verbose_name='Correo Electrónico')
-    genero = models.CharField(max_length=10, choices=genero_ficha_informacion, default='male', verbose_name='Genero')
+    genero = models.CharField(max_length=10, choices=genero_ficha_informacion, default='Masculino', verbose_name='Genero')
     
  ###Crear un método llamado toJSON###
     def toJSON(self):##Me devuelve un diccionario con todos los atributos de mi entidad
@@ -97,7 +97,7 @@ class Asignatura(models.Model):
     def get_image(self):
         if self.imagen:
             return '{}{}'.format(MEDIA_URL, self.imagen)
-        return '{}{}'.format(STATIC_URL, 'img/empty.png')
+        return '{}{}'.format(STATIC_URL, 'img/usuario.png')
 
     def __str__(self):
         return self.nombre 
