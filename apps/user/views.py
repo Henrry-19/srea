@@ -2,23 +2,21 @@ from django.views.generic import* #importando la vista genérica
 from apps.srea.models import* #importando los modelos
 from apps.user.models import* #importando los modelos
 from django.views.decorators.csrf import csrf_exempt
-from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator #importando el método decorador
 from django.http import *
 from django.urls import reverse_lazy
 from django.shortcuts import render, redirect
 from apps.user.forms import*
-
-
+from django.contrib.auth.mixins import LoginRequiredMixin
+from apps.srea.mixins import*
 from apps.srea.forms import*
 
 
-class UserListView(ListView): #Primera vista basada en clase ListView, permite sobrescribir métodos
+class UserListView(LoginRequiredMixin,IsSuperuserMixin,ListView): #Primera vista basada en clase ListView, permite sobrescribir métodos
     model= User#Primero se indica el modelo o entidad
     template_name = 'user/user_lista.html' #Indicarle cual es la plantilla
     
     @method_decorator(csrf_exempt)#Desactivando el mecanismo de defensa de django
-    @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
@@ -55,7 +53,6 @@ class UserCreateView(CreateView):
     template_name='user/user_create.html' # Debo indicarle la ubicación de mi plantilla
     success_url= reverse_lazy('user:user_list') #Me permite direccionar a otra plantilla, la funnción reverse_lazy me recibe una url como parámetro
 
-    @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
@@ -90,7 +87,7 @@ class UserUpdateView(UpdateView):
     template_name = 'user/user_create.html' #Debo indicarle la ubicación de mi plantilla
     success_url = reverse_lazy('user:user_list') #Me permite direccionar a otra plantilla, la función reverse_lazy me recibe una url como parámetro
     #@method_decorator(csrf_exempt) #Mecanismo de defensa de django
-    @method_decorator(login_required)
+    
     def dispatch(self, request, *args, **kwargs):
         self.object = self.get_object()#Le decimos que la clase object va a hacer igual a lo que tenemos en lainstancia de nuestro objeto, para que el funcionamiento no se altere
         return super().dispatch(request, *args, **kwargs)
@@ -122,7 +119,7 @@ class UserDeleteView(DeleteView):
     template_name = 'user/user_delete.html' #Debo indicarle la ubicación de mi plantilla
     success_url= reverse_lazy('user:user_list')#Me permite direccionar a otra plantilla, la función reverse_lazy me recibe una url como parámetro
     
-    @method_decorator(login_required)
+   
     def dispatch(self, request, *args, **kwargs):
         self.object = self.get_object() #Le decimos que la clase object va a hacer igual a lo que tenemos en lainstancia de nuestro objeto, para que el funcionamiento no se altere
         return super().dispatch(request, *args, **kwargs)

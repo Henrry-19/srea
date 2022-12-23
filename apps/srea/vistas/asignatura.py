@@ -6,17 +6,16 @@ from django.utils.decorators import method_decorator #importando el método deco
 from django.http import *
 from django.urls import reverse_lazy
 from django.shortcuts import render, redirect
-
+from apps.srea.mixins import*
 
 from apps.srea.forms import*
+from django.contrib.auth.mixins import LoginRequiredMixin
 
-
-class AsignaturaListView(ListView): #Primera vista basada en clase ListView, permite sobrescribir métodos
+class AsignaturaListView(LoginRequiredMixin,IsSuperuserMixin, ListView): #Primera vista basada en clase ListView, permite sobrescribir métodos
     model= Asignatura#Primero se indica el modelo o entidad
     template_name = 'asignatura/asignatura_lista.html' #Indicarle cual es la plantilla
     
     @method_decorator(csrf_exempt)#Mecanismo de defensa de django
-    @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
