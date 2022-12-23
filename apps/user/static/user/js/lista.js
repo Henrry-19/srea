@@ -13,34 +13,44 @@ $(function () {
             dataSrc: ""
         },
         columns: [
-            
             {"data": "position"},
-            {"data": "first_name"},
-            {"data": "last_name"},
+            {"data": "full_name"},
             {"data": "username"},
             {"data": "date_joined"},
-            {"data": "image"},
-            {"data": "id"},
-
+            {"data": "imagen"},
+            {"data": "groups"},
+            {"data": "position"},
         ],
         columnDefs: [
+            {
+                targets: [-3],
+                class: 'text-center',
+                orderable: false,
+                render: function (data, type, row) {
+                    return '<img src="' + row.imagen + '" class="img-fluid mx-auto d-block" style="width: 20px; height: 20px;">';
+                }
+            },
 
             {
                 targets: [-2],
                 class: 'text-center',
                 orderable: false,
                 render: function (data, type, row) {
-                    return '<img src"'+row.image+'"class="img-fluid mx-auto d-block style=width:20px; height:20px;">'
- 
+                    var html = '';
+                    $.each(row.groups, function (key, value) {
+                        html += '<span class="badge badge-success">' + value.name + '</span> ';
+                    });
+                    return html;
                 }
             },
+            
             {
                 targets: [-1],
                 class: 'text-center',
                 orderable: false,
                 render: function (data, type, row) {
-                    var buttons = '<a href="/user/user/u_user/' + row.id + '/" class="btn btn-warning btn-xs btn-flat"><i class="fas fa-edit"></i></a> ';
-                    buttons += '<a href="/user/a_lista/d_user/' + row.id + '/" type="button" class="btn btn-danger btn-xs btn-flat"><i class="fas fa-trash-alt"></i></a>';
+                    var buttons = '<a href="/user/user_list/u_user/' + row.id + '/" class="btn btn-warning btn-xs btn-flat"><i class="fas fa-edit"></i></a> ';
+                    buttons += '<a href="/user/user_list/d_user/' + row.id + '/" type="button" class="btn btn-danger btn-xs btn-flat"><i class="fas fa-trash-alt"></i></a>';
                     return buttons;
                 }
             },

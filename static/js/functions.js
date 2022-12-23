@@ -1,28 +1,27 @@
-function message_error(obj) { //Función mensaje error
-    var html = '';//
-    if (typeof (obj) === 'object') {//Si el tipo de objeto es igual a un objeto 
+function message_error(obj) {
+    var html = '';
+    if (typeof (obj) === 'object') {
         html = '<ul style="text-align: left;">';
         $.each(obj, function (key, value) {
             html += '<li>' + key + ': ' + value + '</li>';
         });
         html += '</ul>';
-    } else {//Imprime el mensaje de error
+    } else {
         html = '<p>' + obj + '</p>';
     }
-    Swal.fire({//Presentamos un mensaje de alerta
+    Swal.fire({
         title: 'Error!',
         html: html,
         icon: 'error'
     });
 }
 
-
-function ajax_alert_jqueryconfirm(url, parameters, callback) {
+function submit_with_ajax(url, title, content, parameters, callback) {
     $.confirm({
         theme: 'material',
-        title: 'Confirmación',
+        title: title,
         icon: 'fa fa-info',
-        content: '¿Estás seguro de realizar la siguiente acción?',
+        content: content,
         columnClass: 'small',
         typeAnimated: true,
         cancelButtonClass: 'btn-primary',
@@ -33,18 +32,17 @@ function ajax_alert_jqueryconfirm(url, parameters, callback) {
                 text: "Si",
                 btnClass: 'btn-primary',
                 action: function () {
-
                     $.ajax({
-                        url: url,
+                        url: url, //window.location.pathname
                         type: 'POST',
                         data: parameters,
                         dataType: 'json',
-                        processData:false,
-                        contentType:false,
+                        processData: false,
+                        contentType: false,
                     }).done(function (data) {
                         console.log(data);
                         if (!data.hasOwnProperty('error')) {
-                            callback();
+                            callback(data);
                             return false;
                         }
                         message_error(data.error);
@@ -53,7 +51,6 @@ function ajax_alert_jqueryconfirm(url, parameters, callback) {
                     }).always(function (data) {
 
                     });
-
                 }
             },
             danger: {
@@ -64,8 +61,35 @@ function ajax_alert_jqueryconfirm(url, parameters, callback) {
                 }
             },
         }
-
     })
+}
 
-
+function alert_action(title, content, callback, cancel) {
+    $.confirm({
+        theme: 'material',
+        title: title,
+        icon: 'fa fa-info',
+        content: content,
+        columnClass: 'small',
+        typeAnimated: true,
+        cancelButtonClass: 'btn-primary',
+        draggable: true,
+        dragWindowBorder: false,
+        buttons: {
+            info: {
+                text: "Si",
+                btnClass: 'btn-primary',
+                action: function () {
+                    callback();
+                }
+            },
+            danger: {
+                text: "No",
+                btnClass: 'btn-red',
+                action: function () {
+                    cancel();
+                }
+            },
+        }
+    })
 }

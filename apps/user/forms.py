@@ -10,7 +10,7 @@ class UserCreateForm(ModelForm):
     class Meta:
         model=User
         fields= ['first_name','last_name','email', 'username', 'password', 'imagen', 'groups']
-        exclude = ['last_login' , 'date_joineds', 'is_superuser', 'is_active', 'is_staff', 'user_permissions']
+        exclude = ['last_login' , 'date_joined', 'is_superuser', 'is_active', 'is_staff', 'user_permissions']
 
         widgets = {
             'first_name':TextInput(
@@ -60,6 +60,7 @@ class UserCreateForm(ModelForm):
                      if user.password != pwd:
                         u.set_password(pwd)
                 u.save()
+                u.groups.clear() #Limpia los grupos
                 for g in self.cleaned_data['groups']:
                     user.groups.add(g)
             else:

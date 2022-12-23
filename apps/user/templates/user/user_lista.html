@@ -1,64 +1,23 @@
-{% extends "base_list.html" %}
+{% extends 'base_list.html' %}
 {% load static %}
-{%block title%}Lista de asignaturas{%endblock%}
+{% block head_list %}
+    <script src="{% static 'user/js/lista.js' %}"></script>
+{% endblock %}
 {%block colums%}
 <tr>
-    <th scope="col" style="width: 5%;">id</th>
-    <th scope="col" style="width: 15%;">Nombres</th>
-    <th scope="col" style="width: 16%;">Apellidos</th>
+    <th scope="col" style="width: 5%;">Nro</th>
+    <th scope="col" style="width: 20%;">Nombres</th>
     <th scope="col" style="width: 20%;">Username</th>
     <th scope="col" style="width: 20%;">Fecha de registro</th>
     <th scope="col" style="width: 10%;">Imagen</th>
-    <th scope="col" style="width: 20%;">Opciones</th>
+    <th scope="col" style="width: 10%;">Grupos</th>
+    <th scope="col" style="width: 15%;">Opciones</th>
 </tr>
 {%endblock%}
 
-{% block rows %}
-    {% for obj in object_list %}
-        <tr>
-            <td>{{ obj.id }}</td>
-            <td>{{ obj.first_name }}</td>
-            <td>{{ obj.last_name }}</td>
-            <td>{{ obj.username }}</td>
-            <td>{{ obj.date_joined }}</td>
-            <td class="text-center">
-                <img src="{{ obj.get_image }}" class="img-fluid d-block mx-auto" style="width: 20px; height: 20px;">
-            </td>
-            <td class="text-center">
-                <a href="{% url 'user:u_user' obj.id %}" class="btn btn-warning btn-xs btn-flat">
-                    <i class="fas fa-edit"></i>
-                </a>
-                <a href="{% url 'user:d_user' obj.id %}" class="btn btn-danger btn-xs btn-flat">
-                    <i class="fas fa-trash"></i>
-                </a>
-            </td>
-        </tr>
-    {% endfor %}
-{% endblock %}
+{%block rows%}
 
+{%endblock%}
 
 {% block javascript %}
-    <script type="application/javascript">
-        $(function () {
-            $('#data').DataTable({
-                responsive: true,
-                autoWidth: false
-            });
-
-            $('.btnTest').on('click', function () {
-                $.ajax({
-                    url: '{% url 'user:user_list' %}',
-                    type: 'POST',
-                    data: {id: 1},
-                    dataType: 'json'
-                }).done(function (data) {
-                    console.log(data);
-                }).fail(function (jqXHR, textStatus, errorThrown) {
-                    alert(textStatus + ': ' + errorThrown);
-                }).always(function (data) {
-
-                });
-            });
-        });
-    </script>
 {% endblock %}

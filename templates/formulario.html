@@ -70,9 +70,9 @@
             });
         {% endif %}
 
+
         $('form').on('submit',function(e){
             e.preventDefault();
-            //var parametros=$(this).serializeArray();
             var parametros=new FormData(this);
             $.ajax({
                 url:window.location.pathname, 
