@@ -8,11 +8,16 @@ from .vistas.test import *
 from .vistas.pregunta import *
 from .vistas.respuesta import *
 
+from .vistas.index import *
+
 from django.contrib.auth.decorators import login_required
 
 app_name="apps.srea" #Variable que me permite decir como se va a llamar la ruta que se va a concatenar con la otra ruta absoluta
 
 urlpatterns = [
+#-------------------------------Index---------------------------------------#
+path('index1/',IndexView.as_view(), name="index1"),
+
 #-------------------------Usuario---------------------------------------
     path('u_lista/',(UsuarioListView.as_view()), name="principal"),
     path('usuario/', (UsuarioCreateView.as_view()), name="usuario"),

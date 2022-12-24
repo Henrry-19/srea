@@ -42,13 +42,13 @@ class AsignaturaListView(LoginRequiredMixin,IsSuperuserMixin, ListView): #Primer
         return context
 
 
-class AsignaturaCreateView(CreateView):
+class AsignaturaCreateView(LoginRequiredMixin,CreateView):
     model=Asignatura #Indicar el modelo con el cual se va ha trabajar
     form_class=AsignaturaCreateForm #Importando el formulario con el que voy a trabajar
     template_name='asignatura/asignatura_create.html' # Debo indicarle la ubicación de mi plantilla
     success_url= reverse_lazy('srea:asignatura') #Me permite direccionar a otra plantilla, la funnción reverse_lazy me recibe una url como parámetro
 
-    @method_decorator(login_required)
+   
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
@@ -78,13 +78,13 @@ class AsignaturaCreateView(CreateView):
         return context
 
 
-class AsignaturaUpdateView(UpdateView):
+class AsignaturaUpdateView(LoginRequiredMixin,UpdateView):
     model = Asignatura #Indicar el modelo con el cual se va ha trabajar
     form_class = AsignaturaCreateForm #Importando el formulario con el que voy a trabajar
     template_name = 'asignatura/asignatura_create.html' #Debo indicarle la ubicación de mi plantilla
     success_url = reverse_lazy('srea:asignatura') #Me permite direccionar a otra plantilla, la función reverse_lazy me recibe una url como parámetro
     #@method_decorator(csrf_exempt) #Mecanismo de defensa de django
-    @method_decorator(login_required)
+
     def dispatch(self, request, *args, **kwargs):
         self.object = self.get_object()#Le decimos que la clase object va a hacer igual a lo que tenemos en lainstancia de nuestro objeto, para que el funcionamiento no se altere
         return super().dispatch(request, *args, **kwargs)
@@ -111,12 +111,12 @@ class AsignaturaUpdateView(UpdateView):
         return context
 
 
-class AsignaturaDeleteView(DeleteView):
+class AsignaturaDeleteView(LoginRequiredMixin,DeleteView):
     model = Asignatura #Indicar el modelo con el cual se va ha trabajar
     template_name = 'asignatura/asignatura_delete.html' #Debo indicarle la ubicación de mi plantilla
     success_url= reverse_lazy('srea:p_asignatura')#Me permite direccionar a otra plantilla, la función reverse_lazy me recibe una url como parámetro
     
-    @method_decorator(login_required)
+ 
     def dispatch(self, request, *args, **kwargs):
         self.object = self.get_object() #Le decimos que la clase object va a hacer igual a lo que tenemos en lainstancia de nuestro objeto, para que el funcionamiento no se altere
         return super().dispatch(request, *args, **kwargs)

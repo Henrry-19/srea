@@ -151,7 +151,7 @@ AUTHENTICATION_BACKENDS = [
 SITE_ID = 1 
 #AUTH_USER_MODEL = 'srea.Usuario' #Como modelo para todo el sistema, utiliza este modelo para la autenticación
 
-LOGIN_REDIRECT_URL ='/home/index1/'
+LOGIN_REDIRECT_URL ='/srea/index1/'
 
 
 #LOGOUT_REDIRECT_URL ='/login/'

@@ -47,13 +47,12 @@ class UsuarioListView(LoginRequiredMixin,IsSuperuserMixin,ListView): #Primera vi
         return context
 
 
-class UsuarioCreateView(CreateView):
+class UsuarioCreateView(LoginRequiredMixin,CreateView):
     model=Usuario #Indicar el modelo con el cual se va ha trabajar
     form_class=UsuarioCreateForm #Importando el formulario con el que voy a trabajar
     template_name='usuario/usuario_create.html' # Debo indicarle la ubicación de mi plantilla
     success_url= reverse_lazy('srea:principal') #Me permite direccionar a otra plantilla, la funnción reverse_lazy me recibe una url como parámetro
 
-    @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
@@ -83,13 +82,13 @@ class UsuarioCreateView(CreateView):
         return context
 
 
-class UsuarioUpdateView(UpdateView):
+class UsuarioUpdateView(LoginRequiredMixin,UpdateView):
     model = Usuario #Indicar el modelo con el cual se va ha trabajar
     form_class = UsuarioCreateForm #Importando el formulario con el que voy a trabajar
     template_name = 'usuario/usuario_create.html' #Debo indicarle la ubicación de mi plantilla
     success_url = reverse_lazy('srea:usuario') #Me permite direccionar a otra plantilla, la función reverse_lazy me recibe una url como parámetro
     #@method_decorator(csrf_exempt) #Mecanismo de defensa de django
-    @method_decorator(login_required)
+
     def dispatch(self, request, *args, **kwargs):
         self.object = self.get_object()#Le decimos que la clase object va a hacer igual a lo que tenemos en lainstancia de nuestro objeto, para que el funcionamiento no se altere
         return super().dispatch(request, *args, **kwargs)
@@ -116,12 +115,11 @@ class UsuarioUpdateView(UpdateView):
         return context
 
 
-class UsuarioDeleteView(DeleteView):
+class UsuarioDeleteView(LoginRequiredMixin,DeleteView):
     model = Usuario #Indicar el modelo con el cual se va ha trabajar
     template_name = 'usuario/usuario_delete.html' #Debo indicarle la ubicación de mi plantilla
     success_url= reverse_lazy('srea:principal')#Me permite direccionar a otra plantilla, la función reverse_lazy me recibe una url como parámetro
     
-    @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         self.object = self.get_object() #Le decimos que la clase object va a hacer igual a lo que tenemos en lainstancia de nuestro objeto, para que el funcionamiento no se altere
         return super().dispatch(request, *args, **kwargs)

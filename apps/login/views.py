@@ -21,7 +21,7 @@ class LoginFormView(LoginView):
         return context
 
 class LogoutRedirectView(RedirectView):
-    pattern_name='inicio_sesion' #El nombre del patrón de URL al que se redirigirá.
+    pattern_name='login' #El nombre del patrón de URL al que se redirigirá.
     
   
     def dispatch(self, request, *args, **kwargs):
