@@ -7,3 +7,4 @@ html5lib==1.1
 mysqlclient
 Pillow==9.2.0
 xhtml2pdf==0.2.8
+django-crum-0.7.9

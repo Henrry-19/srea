@@ -15,7 +15,7 @@ from django.contrib.auth.decorators import login_required
 app_name="apps.srea" #Variable que me permite decir como se va a llamar la ruta que se va a concatenar con la otra ruta absoluta
 
 urlpatterns = [
-#-------------------------------Index---------------------------------------#
+#-------------------------------home---------------------------------------#
 path('index1/',IndexView.as_view(), name="index1"),
 
 #-------------------------Usuario---------------------------------------

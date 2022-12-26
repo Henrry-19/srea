@@ -10,6 +10,7 @@ from apps.user.forms import*
 from django.contrib.auth.mixins import LoginRequiredMixin
 from apps.srea.mixins import*
 from apps.srea.forms import*
+from django.contrib.auth.models import Group
 
 
 class UserListView(LoginRequiredMixin,IsSuperuserMixin,ListView): #Primera vista basada en clase ListView, permite sobrescribir métodos
@@ -138,3 +139,12 @@ class UserDeleteView(DeleteView):
         context['modelo'] = 'User'
         context['url_list'] = self.success_url
         return context
+
+class UserChangeGroup(LoginRequiredMixin, View):
+
+    def get(self, request, *args, **kwargs):
+        try:
+            request.session['group'] = Group.objects.get(pk=self.kwargs['pk'])
+        except:
+            pass
+        return HttpResponseRedirect(reverse_lazy('srea:index1'))

@@ -15,7 +15,6 @@ $(function () {
         columns: [
             
             {"data": "position"},
-            {"data": "user"},
             {"data": "nombre"},
             {"data": "detalle"},
             {"data": "imagen"},
@@ -23,6 +22,14 @@ $(function () {
 
         ],
         columnDefs: [
+            {
+                targets: [-2],
+                class: 'text-center',
+                orderable: false,
+                render: function (data, type, row) {
+                    return '<img src="' + row.imagen + '" class="img-fluid mx-auto d-block" style="width: 20px; height: 20px;">';
+                }
+            },
 
             {
                 targets: [-1],

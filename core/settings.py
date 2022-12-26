@@ -66,6 +66,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'crum.CurrentRequestUserMiddleware'
+    
 ]
 
 ROOT_URLCONF = 'core.urls'
@@ -166,3 +168,6 @@ MEDIA_URL = '/media/' #Url absoluta para trabajar con estos archivos media
 
 #Modelo personalizado
 AUTH_USER_MODEL = 'user.User'
+
+###################
+SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'

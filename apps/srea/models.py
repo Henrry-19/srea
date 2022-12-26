@@ -2,6 +2,7 @@ from django.db import models
 from datetime import datetime
 from django.forms import model_to_dict # Librería que permite convertir mi modelo a tipo diccionario
 from core.settings import MEDIA_URL, STATIC_URL
+from apps.user.models import*
 
 ##################Usuario######################
 genero_ficha_informacion = (
@@ -29,8 +30,6 @@ class Usuario(models.Model):
         verbose_name_plural = 'Usuarios'
         ordering = ['id']
     
-
-
 etnia_ficha={
     ('A', 'Afroecuatoriano'),
     ('B', 'Blanco'),
@@ -89,7 +88,7 @@ class Indicacion(models.Model):
 
 ##################Asignatura######################    
 class Asignatura(models.Model):
-    user= models.ForeignKey(Usuario, on_delete=models.CASCADE)
+    user= models.ForeignKey(User, on_delete=models.CASCADE)
     nombre=models.CharField(max_length=150, verbose_name='Nombre', unique=True)
     detalle=models.TextField(verbose_name='Detalle de la asignatura')
     imagen = models.ImageField(upload_to='asignatura/%Y/%m/%d', null=True, blank=True)
@@ -98,6 +97,12 @@ class Asignatura(models.Model):
         if self.imagen:
             return '{}{}'.format(MEDIA_URL, self.imagen)
         return '{}{}'.format(STATIC_URL, 'img/usuario.png')
+    
+     ###Crear un método llamado toJSON###
+    def toJSON(self):##Me devuelve un diccionario con todos los atributos de mi entidad
+        item=model_to_dict(self) #Mi atributo self contiene mi modelo
+        item['imagen']=self.get_image()
+        return item
 
     def __str__(self):
         return self.nombre 
@@ -135,7 +140,6 @@ class Test(models.Model):
         verbose_name_plural = 'Tests'
         ordering = ['id']
    
-
 ##################Pregunta######################
 
 class Pregunta(models.Model):
