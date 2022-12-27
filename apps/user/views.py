@@ -11,6 +11,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from apps.srea.mixins import*
 from apps.srea.forms import*
 from django.contrib.auth.models import Group
+from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth import update_session_auth_hash
 
 
 class UserListView(LoginRequiredMixin,IsSuperuserMixin,ListView): #Primera vista basada en clase ListView, permite sobrescribir métodos
@@ -180,6 +182,49 @@ class UserProfileView(LoginRequiredMixin,UpdateView):
         context = super().get_context_data(**kwargs) #Obtengo el diccionario que devuelve el método
         context['title']='Edición del Perfil' #Puedo enviar variables
         context['modelo']='Perfil'#Nombre de identidad
+        context['url_list']=self.success_url#Ruta abosluta lista de asignatura
+        context['action']='edit'#Enviar variable action
+        return context
+
+
+class UserChangePasswordView(LoginRequiredMixin,FormView):
+    model = User #Indicar el modelo con el cual se va ha trabajar
+    form_class = PasswordChangeForm #Importando el formulario con el que voy a trabajar
+    template_name = 'user/change_password.html' #Debo indicarle la ubicación de mi plantilla
+    success_url = reverse_lazy('login') #Me permite direccionar a otra plantilla, la función reverse_lazy me recibe una url como parámetro
+    #@method_decorator(csrf_exempt) #Mecanismo de defensa de django
+    
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_form(self, form_class= None):
+        form=PasswordChangeForm(user=self.request.user)
+        form.fields['old_password'].widget.attrs['placeholder']='Ingrese su contraseña actual'
+        form.fields['new_password1'].widget.attrs['placeholder']='Ingrese su nueva contraseña'
+        form.fields['new_password2'].widget.attrs['placeholder']='Repita su nueva contraseña'
+        return form
+
+    def post(self, request, *args, **kwargs):
+        data ={}                                     
+        try:
+            action= request.POST['action']
+            if action =='edit':
+                form = PasswordChangeForm(user=request.user, data=request.POST)
+                if form.is_valid():
+                    form.save()
+                    update_session_auth_hash(request, form.user)
+                else:
+                    data['error']=form.errors
+            else:
+                data['error']='No realiza ninguna acción'
+        except Exception as e:
+            data['error']=str(e)
+        return JsonResponse(data)
+        
+    def get_context_data(self, **kwargs): #Método que devuelve un diccionario que representa el contexto de la plantilla
+        context = super().get_context_data(**kwargs) #Obtengo el diccionario que devuelve el método
+        context['title']='Edición de Password' #Puedo enviar variables
+        context['modelo']='Password'#Nombre de identidad
         context['url_list']=self.success_url#Ruta abosluta lista de asignatura
         context['action']='edit'#Enviar variable action
         return context
