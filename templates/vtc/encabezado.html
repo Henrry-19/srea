@@ -8,17 +8,17 @@
         </li>
     </ul>
     <ul class="navbar-nav ml-auto">
-        {% if request.user.groups.all %}
+        {% if request.user.groups.all %} <!--Validar que un usuario tenga un grupo o perfil asociado-->
             <li class="nav-item dropdown">
                 <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                    class="nav-link{% if request.user.groups.all.count > 1 %} dropdown-toggle{% endif %}">{{ request.session.group }}</a>
                 {% if request.user.groups.all.count > 1 %}
                     <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow"
                         style="left: 0px; right: inherit;">
-                        {% for g in request.user.groups.all %}
+                        {% for g in request.user.groups.all %} <!--Iterar los objetos-->
                             {% if g.id != request.session.group.id %}
-                                <li><a href="{% url 'user:user_change_group' g.id %}"
-                                       class="dropdown-item">{{ g.name }} </a></li>
+                                <li><a href="{% url 'user:user_change_group' g.id %}" 
+                                       class="dropdown-item">{{ g.name }} </a></li> <!--Obtener el nombre del perfil-->
                             {% endif %}
                         {% endfor %}
                     </ul>

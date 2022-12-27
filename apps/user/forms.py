@@ -1,6 +1,7 @@
 from django.forms import*
-
 from apps.user.models import User
+
+
 
 class UserCreateForm(ModelForm):
     def __init__(self, *args, **kwargs):

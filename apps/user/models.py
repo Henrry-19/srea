@@ -22,14 +22,13 @@ class User(AbstractUser):
         item['groups']=[{'id':g.id, 'name':g.name}for g  in self.groups.all()]
         return item
 
-
     def get_group_session(self):
         try:
             request = get_current_request()
             groups = self.groups.all()
             if groups.exists():
                 if 'group' not in request.session:
-                    request.session['group'] = groups[0]
+                    request.session['group'] = groups[0] #Seleecionar el primer perfil de usuario
         except:
             pass
 

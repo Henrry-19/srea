@@ -169,5 +169,5 @@ MEDIA_URL = '/media/' #Url absoluta para trabajar con estos archivos media
 #Modelo personalizado
 AUTH_USER_MODEL = 'user.User'
 
-###################
+########Permite trabajar con los objetos dentro de las sesiones###########
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'

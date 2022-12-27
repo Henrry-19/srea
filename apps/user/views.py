@@ -114,7 +114,6 @@ class UserUpdateView(UpdateView):
         context['action']='edit'#Enviar variable action
         return context
 
-
 class UserDeleteView(DeleteView):
     model = User #Indicar el modelo con el cual se va ha trabajar
     template_name = 'user/user_delete.html' #Debo indicarle la ubicación de mi plantilla
@@ -144,7 +143,7 @@ class UserChangeGroup(LoginRequiredMixin, View):
 
     def get(self, request, *args, **kwargs):
         try:
-            request.session['group'] = Group.objects.get(pk=self.kwargs['pk'])
+            request.session['group'] = Group.objects.get(pk=self.kwargs['pk']) #Guardo la sesión que voy a utilizar
         except:
             pass
         return HttpResponseRedirect(reverse_lazy('srea:index1'))

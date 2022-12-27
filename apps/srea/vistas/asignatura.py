@@ -11,9 +11,10 @@ from apps.srea.mixins import*
 from apps.srea.forms import*
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-class AsignaturaListView(LoginRequiredMixin,IsSuperuserMixin, ListView): #Primera vista basada en clase ListView, permite sobrescribir métodos
+class AsignaturaListView(LoginRequiredMixin,IsSuperuserMixin,ValidatePermissionRequiredMixin,ListView): #Primera vista basada en clase ListView, permite sobrescribir métodos
     model= Asignatura#Primero se indica el modelo o entidad
     template_name = 'asignatura/asignatura_lista.html' #Indicarle cual es la plantilla
+    permission_required='view_asignatura', 'change_asignatura'
     
     @method_decorator(csrf_exempt)#Mecanismo de defensa de django
     def dispatch(self, request, *args, **kwargs):
@@ -46,10 +47,11 @@ class AsignaturaListView(LoginRequiredMixin,IsSuperuserMixin, ListView): #Primer
         return context
 
 
-class AsignaturaCreateView(LoginRequiredMixin,CreateView):
+class AsignaturaCreateView(LoginRequiredMixin,ValidatePermissionRequiredMixin,CreateView):
     model=Asignatura #Indicar el modelo con el cual se va ha trabajar
     form_class=AsignaturaCreateForm #Importando el formulario con el que voy a trabajar
     template_name='asignatura/asignatura_create.html' # Debo indicarle la ubicación de mi plantilla
+    permission_required='add_asignatura'
     success_url= reverse_lazy('srea:asignatura') #Me permite direccionar a otra plantilla, la funnción reverse_lazy me recibe una url como parámetro
 
    
@@ -82,10 +84,13 @@ class AsignaturaCreateView(LoginRequiredMixin,CreateView):
         return context
 
 
-class AsignaturaUpdateView(LoginRequiredMixin,UpdateView):
+class AsignaturaUpdateView(LoginRequiredMixin,ValidatePermissionRequiredMixin,UpdateView):
     model = Asignatura #Indicar el modelo con el cual se va ha trabajar
     form_class = AsignaturaCreateForm #Importando el formulario con el que voy a trabajar
     template_name = 'asignatura/asignatura_create.html' #Debo indicarle la ubicación de mi plantilla
+    permission_required='change_asignatura'
+
+
     success_url = reverse_lazy('srea:asignatura') #Me permite direccionar a otra plantilla, la función reverse_lazy me recibe una url como parámetro
     #@method_decorator(csrf_exempt) #Mecanismo de defensa de django
 
@@ -115,11 +120,11 @@ class AsignaturaUpdateView(LoginRequiredMixin,UpdateView):
         return context
 
 
-class AsignaturaDeleteView(LoginRequiredMixin,DeleteView):
+class AsignaturaDeleteView(LoginRequiredMixin,ValidatePermissionRequiredMixin,DeleteView):
     model = Asignatura #Indicar el modelo con el cual se va ha trabajar
     template_name = 'asignatura/asignatura_delete.html' #Debo indicarle la ubicación de mi plantilla
     success_url= reverse_lazy('srea:p_asignatura')#Me permite direccionar a otra plantilla, la función reverse_lazy me recibe una url como parámetro
-    
+    permission_required='delete_asignatura'
  
     def dispatch(self, request, *args, **kwargs):
         self.object = self.get_object() #Le decimos que la clase object va a hacer igual a lo que tenemos en lainstancia de nuestro objeto, para que el funcionamiento no se altere
