@@ -147,3 +147,39 @@ class UserChangeGroup(LoginRequiredMixin, View):
         except:
             pass
         return HttpResponseRedirect(reverse_lazy('srea:index1'))
+
+
+class UserProfileView(LoginRequiredMixin,UpdateView):
+    model = User #Indicar el modelo con el cual se va ha trabajar
+    form_class = UserProfileForm #Importando el formulario con el que voy a trabajar
+    template_name = 'user/user_profile_create.html' #Debo indicarle la ubicación de mi plantilla
+    success_url = reverse_lazy('srea:index1') #Me permite direccionar a otra plantilla, la función reverse_lazy me recibe una url como parámetro
+    #@method_decorator(csrf_exempt) #Mecanismo de defensa de django
+    
+    def dispatch(self, request, *args, **kwargs):
+        self.object = self.get_object()#Le decimos que la clase object va a hacer igual a lo que tenemos en lainstancia de nuestro objeto, para que el funcionamiento no se altere
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_object(self, queryset=None):
+        return self.request.user
+
+    def post(self, request, *args, **kwargs):
+        data ={}                                     
+        try:
+            action= request.POST['action']
+            if action =='edit':
+                form = self.get_form()
+                data=form.save()
+            else:
+                data['error']='No realiza ninguna acción'
+        except Exception as e:
+            data['error']=str(e)
+        return JsonResponse(data)
+        
+    def get_context_data(self, **kwargs): #Método que devuelve un diccionario que representa el contexto de la plantilla
+        context = super().get_context_data(**kwargs) #Obtengo el diccionario que devuelve el método
+        context['title']='Edición del Perfil' #Puedo enviar variables
+        context['modelo']='Perfil'#Nombre de identidad
+        context['url_list']=self.success_url#Ruta abosluta lista de asignatura
+        context['action']='edit'#Enviar variable action
+        return context

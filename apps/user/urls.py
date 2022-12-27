@@ -13,6 +13,8 @@ urlpatterns = [
     path('user_list/u_user/<int:pk>/', UserUpdateView.as_view(), name="u_user"),
     path('user_list/d_user/<int:pk>/', UserDeleteView.as_view(), name="d_user"),
     path('change/group/<int:pk>/', UserChangeGroup.as_view(), name='user_change_group'),
+    path('perfil/', UserProfileView.as_view(), name='editar_perfil'),
+    
 #-------------------------Reporte---------------------------------------
 
 ]

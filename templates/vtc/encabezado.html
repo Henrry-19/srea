@@ -36,7 +36,7 @@
                         {{request.user.last_login}}
                     </span>
                 <div class="dropdown-divider"></div>
-                <a href="#" class="dropdown-item">
+                <a href="{% url 'user:editar_perfil' %}" class="dropdown-item">
                     <i class="fas fa-edit mr-2"></i> Editar perfil
                     <span class="float-right text-muted text-sm">3 mins</span>
                 </a>
