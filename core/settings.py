@@ -6,7 +6,7 @@ import environ
 env= environ.Env()
 environ.Env.read_env()
 
-from .db import MYSQL #Importar la base de datos
+from core.db.db import MYSQL #Importar la base de datos
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -171,3 +171,14 @@ AUTH_USER_MODEL = 'user.User'
 
 ########Permite trabajar con los objetos dentro de las sesiones###########
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
+
+####Correo electrónico####
+EMAIL_HOST = 'smtp.gmail.com'
+
+EMAIL_PORT = 587
+
+EMAIL_HOST_USER = 'srea.educacion2023@gmail.com'
+
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
+
+DOMAIN = ''

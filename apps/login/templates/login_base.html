@@ -1,48 +1,63 @@
 {% load static %}
+{%load widget_tweaks%}
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Login</title>
+    <!-- Tell the browser to be responsive to screen width -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>{%block title%} {%endblock%}</title>
-    <!-- Font Awesome Icons -->
+      <!-- Font Awesome -->
     <link rel="stylesheet" href="{% static 'lib/adminlte-3.0.4/plugins/font-awesome-5.11.1/css/all.min.css' %}">
-    <!-- Theme style -->
+      <!-- Theme style -->
     <link rel="stylesheet" href="{% static 'lib/adminlte-3.0.4/css/adminlte.min.css' %}">
-    <!-- Google Font: Source Sans Pro -->
+      <!-- Google Font: Source Sans Pro -->
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+    <script src="{% static 'lib/sweetalert2-9.10.0/sweetalert2.all.min.js' %}"></script>
     <!-- jQuery -->
     <script src="{% static 'lib/adminlte-3.0.4/plugins/jquery/jquery.min.js' %}"></script>
     <!-- Bootstrap 4 -->
     <script src="{% static 'lib/adminlte-3.0.4/plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
-    <!-- AdminSREA App -->
+    <!-- AdminLTE App -->
     <script src="{% static 'lib/adminlte-3.0.4/js/adminlte.min.js' %}"></script>
- 
+    <!--Sweetalert2-->
+    <script src="{% static 'lib/sweetalert2-9.10.0/sweetalert2.all.min.js' %}"></script>
     <!-- Jquery Confirm -->
     <link rel="stylesheet" href="{% static 'lib/jquery-confirm-v3.3.4/jquery-confirm.min.css' %}">
     <script src="{% static 'lib/jquery-confirm-v3.3.4/jquery-confirm.min.js' %}"></script>
-
-    
-    <!-- CDN-->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
-    
-
-    <!-- SREA App -->
-    <script src="{% static 'lib/adminlte-3.0.4/js/adminlte.min.js' %}"></script>
-     <!-- Librería para notificación-error -->
-    <script src="{% static 'lib/sweetalert2-9.10.0/sweetalert2.all.min.js' %}"></script>
     <!-- Functions -->
     <script src="{% static 'js/functions.js' %}"></script>
-
-    <!-- Block head -->
-    {% block head %}
     
+    {% block head %}
+        
     {% endblock %}
+        
 </head>
+<body>
+<div class="hold-transition login-page">
+  <div class="login-logo"> <!--Logo-->
+    <a href="{% url 'login'%}"><b>SREA</b></a>
+  </div>
+  <!-- /.login-logo -->
 
-{% block body %}
+<!--Script-->
 
-{% endblock %}
+
+{% block content %}
+    
+{% endblock  %}
+    
+{% include 'script.html' %}
+</div>
+
+</body>
+<footer>
+  
+  <div>
+    {% include 'footer2.html' %}
+  </div>
+  
+</footer>
+
 </html>

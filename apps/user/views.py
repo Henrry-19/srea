@@ -198,7 +198,7 @@ class UserChangePasswordView(LoginRequiredMixin,FormView):
         return super().dispatch(request, *args, **kwargs)
 
     def get_form(self, form_class= None):
-        form=PasswordChangeForm(user=self.request.user)
+        form = PasswordChangeForm(user=self.request.user)
         form.fields['old_password'].widget.attrs['placeholder']='Ingrese su contraseña actual'
         form.fields['new_password1'].widget.attrs['placeholder']='Ingrese su nueva contraseña'
         form.fields['new_password2'].widget.attrs['placeholder']='Repita su nueva contraseña'

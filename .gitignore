@@ -16,7 +16,7 @@ eggs/
 .eggs/
 db.py/
 db.py
-db/
+/db.py
 lib64/
 parts/
 sdist/
@@ -83,6 +83,11 @@ target/
 # IPython
 profile_default/
 ipython_config.py
+db/
+db/db
+/db
+/db/db
+.db.db
 
 # pyenv
 #   For a library or package, you might want to ignore these files since the code is

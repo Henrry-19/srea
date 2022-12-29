@@ -1,47 +1,53 @@
+{% extends 'login_base.html' %}
+{% load widget_tweaks %}
 
-{% load static %}
-{%load widget_tweaks%}
-<!DOCTYPE html>
-<html>
-<head>
-  {% include "head.html" %}
-</head>
-<body>
-<div class="hold-transition login-page">
-  <div class="login-logo"> <!--Logo-->
-    <a href="{% url 'login'%}"><b>SREA</b></a>
-  </div>
-  <!-- /.login-logo -->
+{% block content %}
   <div class="card">
     <div class="card-body login-card-body">
-      <p class="login-box-msg">Inicia sesión</p>
+      <p class="login-box-msg">Bienvenido</p>
       <!-- formulario -->
-      {% include 'form.html' %}
-
+      <form action="." method="post">
+        <input type="hidden" name="next" value="{{ next }}" /> <!-- Permite verificar el atributo next -->
+        {% csrf_token %}
+        <div class="input-group mb-3">
+          {{ form.username|add_class:'form-control'|attr:'autocomplete:off'|attr:'placeholder:Nombre de usuario' }}
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-user"></span>
+            </div>
+          </div>
+        </div>
+        <div class="input-group mb-3">
+          {{ form.password|add_class:'form-control'|attr:'autocomplete:off'|attr:'placeholder:Contraseña' }}
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-lock"></span>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-12">
+            <button type="submit" class="btn btn-primary btn-block"><i class="fas fa-sign-in-alt"></i>Iniciar sesión</button>
+          </div>
+        </div>
+        <p class="text-center">
+          <a href="#">Crear una cuenta</a>
+        </p>
+      </form>
       <!-- /.social-auth-links -->
-      {% include 'social.html' %}
-      <!-- /.social-auth-links -->
-
-      <p class="mb-1">
-        <a href="#">¿Olvidaste tu contraseña?</a>
-      </p>
-      <p class="mb-0">
-       
-      </p>
+      <div class="social-auth-links text-center mb-0">
+        <p>- OR -</p>
+        <a href="#" class="btn-fa-primary">
+          <i class="fab fa-facebook mr-2" style='font-size:30px;color:darkblue'></i>
+        </a>
+        <a class="btn-fa-danger" href="#">
+          <i class="fab fa-google-plus mr-2" style='font-size:30px;color:brown'></i>
+        </a>
+        <hr>
+        <p class="mb-0">
+          <a href="{% url 'reset_password' %}">¿Olvidaste tu contraseña?</a>
+        </p>
+      </div>
     </div>
-    <!-- /.login-card-body -->
   </div>
-<!--Script-->
-{% include 'script.html' %}
-</div>
-
-</body>
-<footer>
-  
-  <div>
-    {% include 'footer2.html' %}
-  </div>
-  
-</footer>
-
-</html>
+{% endblock %}

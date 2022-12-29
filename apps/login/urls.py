@@ -9,4 +9,6 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('login/',LoginFormView.as_view(),  name='login'), #Permite ingresar al administrador
     path('logout/',LogoutRedirectView.as_view(), name='logout'), #Permite salir del administrador
+    path('reset/password',ResetPasswordView.as_view(), name='reset_password'), #Permite resetear la clave
+
 ]
