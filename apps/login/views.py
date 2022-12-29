@@ -120,7 +120,14 @@ class ChangePasswordView(FormView):
     def post(self, request, *args, **kwargs):###Implementación de ajax en mi método sobrescrito POST###
         data={} #Se declara un diccionario llamado data
         try: #controlar el error
-            pass
+            form = ChangePasswordForm(request.POST)
+            if form.is_valid():
+                user = User.objects.get(token=self.kwargs['token'])
+                user.set_password(request.POST['password'])
+                user.token = uuid.uuid4()
+                user.save()
+            else:
+                data['error'] =form.errors
         except Exception as e: #Llamamos a la clase Exceptio para indicar el error
             data['error']=str(e) #Me devuelve el objeto e-->convertido a un string
         return JsonResponse(data,safe=False)
