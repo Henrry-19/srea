@@ -6,6 +6,8 @@ from crum import get_current_request
 
 class User(AbstractUser):
     imagen=models.ImageField(upload_to='users/%Y/%m/%d',null=True,blank=True)
+    email=models.EmailField(max_length=254,unique=True,verbose_name='Correo Electrónico')
+    token = models.UUIDField(primary_key=False, editable=False, null=True, blank=True)
 
     def get_image(self):
         if self.imagen:

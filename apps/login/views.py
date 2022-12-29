@@ -10,7 +10,7 @@ from django.views.decorators.csrf import csrf_exempt
 from apps.login.forms import*
 from django.http import *
 import smtplib
-import uuid
+import uuid #Permite generar un código universal de encriptación
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from django.template.loader import render_to_string
@@ -69,7 +69,7 @@ class ResetPasswordView(FormView):
 
                 content = render_to_string('login/send_email.html', {
                     'user': user,
-                    'link_resetpwd': 'http://{}/login/change/password/{}/'.format(URL, str(user.token)),
+                    'link_resetpwd': 'http://{}/change/password/{}/'.format(URL, str(user.token)),
                     'link_home': 'http://{}'.format(URL)
                 })
                 mensaje.attach(MIMEText(content, 'html'))
@@ -99,5 +99,37 @@ class ResetPasswordView(FormView):
         context['title']='Reseteo de Clave'
         return context
     
+
+class ChangePasswordView(FormView):
+    form_class = ChangePasswordForm
+    template_name= 'login/change_password.html'
+    success_url = reverse_lazy(settings.LOGIN_REDIRECT_URL)
+
+    
+    @method_decorator(csrf_exempt)#Mecanismo de defensa de django
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+
+    def get(self, request, *args, **kwargs):
+        token = self.kwargs['token']
+        if User.objects.filter(token=token).exists():
+            return super().get(request, *args, **kwargs)
+        return HttpResponseRedirect('/')
+
+    def post(self, request, *args, **kwargs):###Implementación de ajax en mi método sobrescrito POST###
+        data={} #Se declara un diccionario llamado data
+        try: #controlar el error
+            pass
+        except Exception as e: #Llamamos a la clase Exceptio para indicar el error
+            data['error']=str(e) #Me devuelve el objeto e-->convertido a un string
+        return JsonResponse(data,safe=False)
+
+    def get_context_data(self, **kwargs):
+        context= super().get_context_data(**kwargs)
+        context['title']='Reseteo de Clave'
+        return context
+    
+
 
 

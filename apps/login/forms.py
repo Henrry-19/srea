@@ -20,4 +20,19 @@ class ResetPasswordForm(forms.Form):
         username = self.cleaned_data.get('username')
         return User.objects.get(username=username)
 
+class ChangePasswordForm(forms.Form):
+    password = forms.CharField(widget=forms.PasswordInput(attrs={
+        'placeholder':'Ingrese su clave',
+        'class' : 'form-control',
+        'autocomplete':'off'
+    }))
+
+    confirmPassword = forms.CharField(widget=forms.PasswordInput(attrs={
+        'placeholder':'Ingrese su clave nuevamente',
+        'class' : 'form-control',
+        'autocomplete':'off'
+    }))
+
+ 
+
         
