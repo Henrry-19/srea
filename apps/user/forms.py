@@ -63,7 +63,7 @@ class UserCreateForm(ModelForm):
                 u.save()
                 u.groups.clear() #Limpia los grupos
                 for g in self.cleaned_data['groups']:
-                    user.groups.add(g)
+                    u.groups.add(g)
             else:
                 data['error'] = form.errors
         except Exception as e:

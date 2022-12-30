@@ -28,6 +28,8 @@
     <script src="{% static 'lib/jquery-confirm-v3.3.4/jquery-confirm.min.js' %}"></script>
     <!-- Functions -->
     <script src="{% static 'js/functions.js' %}"></script>
+
+    <link rel="stylesheet" href="login.css">
     
     {% block head %}
         
@@ -35,17 +37,37 @@
         
 </head>
 <body>
-<div class="hold-transition login-page">
-  <div class="login-logo"> <!--Logo-->
-    <a href="{% url 'login'%}"><b>SREA</b></a>
-  </div>
-
-{% block content %}
+    <style>
+        .container {
+            display: flex;
+        }
+        
+        .center {
+            
+            padding: 10 px;
+            margin:0 5px;
+        
+        }
+        .img {
+            max-width: 100%;
+            height: 790px;
+            padding: 20px;
+            border-radius: 15px;
+        }
+    </style>
+<div class="container">
+    <div class="center">
+        <div class="hold-transition login-box">
+            
+            {% block content_login %}
+            
+            {% endblock  %}
+        </div>
+    </div>
+    <div class="center">
+        <img class="img" src='{% static "img/educacion.jpg" %}' >
+    </div>
     
-{% endblock  %}
-
-<div>
-
 </div>
 {% include 'script.html' %}
 </div>

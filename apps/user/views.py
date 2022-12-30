@@ -44,6 +44,7 @@ class UserListView(LoginRequiredMixin,IsSuperuserMixin,ListView): #Primera vista
     def get_context_data(self, **kwargs): #Método que devuelve un diccionario que representa el contexto de la plantilla
         context = super().get_context_data(**kwargs) #Obtengo el diccionario que devuelve el método
         context['title']='Listado de Usuarios' #Puedo enviar variables
+        context['url_create_login']=reverse_lazy('user:user_login')#Ruta abosluta creación de usuario
         context['url_create']=reverse_lazy('user:user')#Ruta abosluta creación de usuario
         context['url_list']=reverse_lazy('user:user_list')#Ruta abosluta lista de usuario
         context['modelo']='Usuarios'#Nombre de identidad
@@ -66,7 +67,7 @@ class UserCreateView(CreateView):
             if action=='add': #Se indica el proceso add
                 form=self.get_form() #Llamamos a nuestro formulario
                 if form.is_valid():# Preguntamos si nuestro formulario es valido
-                    form.save()#Debo guardar el objeto
+                    form.save()
                 else:
                     data['error']=form.errors # Data va a hacer igual al formulario con los errores 
             else:
@@ -150,7 +151,6 @@ class UserChangeGroup(LoginRequiredMixin, View):
             pass
         return HttpResponseRedirect(reverse_lazy('srea:index1'))
 
-
 class UserProfileView(LoginRequiredMixin,UpdateView):
     model = User #Indicar el modelo con el cual se va ha trabajar
     form_class = UserProfileForm #Importando el formulario con el que voy a trabajar
@@ -228,3 +228,39 @@ class UserChangePasswordView(LoginRequiredMixin,FormView):
         context['url_list']=self.success_url#Ruta abosluta lista de asignatura
         context['action']='edit'#Enviar variable action
         return context
+
+
+class UserCreateView2(CreateView):
+    model=User #Indicar el modelo con el cual se va ha trabajar
+    form_class=UserCreateForm #Importando el formulario con el que voy a trabajar
+    template_name='user/user_create_login.html' # Debo indicarle la ubicación de mi plantilla
+    success_url= reverse_lazy('user:user_list') #Me permite direccionar a otra plantilla, la funnción reverse_lazy me recibe una url como parámetro
+
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):###Implementación de ajax en mi método sobrescrito POST###
+        data={} #Se declara un diccionario llamado data
+        try: #controlar el error
+            action= request.POST['action']#Recupero la variable action en mi método POST, cada vez que se haga una petición
+            if action=='add': #Se indica el proceso add
+                form=self.get_form() #Llamamos a nuestro formulario
+                if form.is_valid():# Preguntamos si nuestro formulario es valido
+                    form.save()
+                else:
+                    data['error']=form.errors # Data va a hacer igual al formulario con los errores 
+            else:
+                data['error']='No ingreso por ninguna opción'
+        except Exception as e: #Llamamos a la clase Exception para indicar el error
+            data['error']=str(e) #Me devuelve el objeto e-->convertido a un string
+        return JsonResponse(data)
+
+
+    def get_context_data(self, **kwargs): #Método que devuelve un diccionario que representa el contexto de la plantilla
+        context = super().get_context_data(**kwargs) #Obtengo el diccionario que devuelve el método
+        context['title']='Creación de una cuenta' #Puedo enviar variables
+        context['modelo']='User'#Nombre de identidad
+        context['url_list']=self.success_url#Ruta abosluta lista de asignatura
+        context['action']='add'#Enviar variable action
+        return context
+
