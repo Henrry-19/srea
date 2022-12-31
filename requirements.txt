@@ -8,3 +8,4 @@ mysqlclient
 Pillow==9.2.0
 xhtml2pdf==0.2.8
 django-crum-0.7.9
+django-jazzmin-2.6.0

@@ -28,6 +28,7 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -50,6 +51,24 @@ INSTALLED_APPS = [
    
 
 ]
+
+######JAZZMIN#######
+JAZZMIN_SETTINGS ={
+# title of the window (Will default to current_admin_site.site_title if absent or None)
+    "site_title":'SREA',
+# Welcome text on the login screen
+    "welcome_sign":'Inicio de sesión',
+# Logo to use for your site, must be present in static files, used for brand on top left
+    "site_logo": "../static/img/study.png",
+#----------------------------------------------
+    'icons':{
+        'auth.Group':'fas fa-users',
+        'user.user':'fas fa-user',
+        'srea.asignatura':'fas fa-book'
+
+    }
+}
+
 
 
 INTERNAL_IPS = [
@@ -182,3 +201,5 @@ EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
 
 DOMAIN = ''
+
+
