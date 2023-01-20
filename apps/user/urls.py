@@ -1,5 +1,7 @@
 from django.urls import path
 from apps.user.views import *
+from apps.user.vistas.carerra import*
+from apps.user.vistas.ficha import*
 
 
 from django.contrib.auth.decorators import login_required
@@ -18,9 +20,15 @@ urlpatterns = [
 
     ########################################################################3
     path('user/login', (UserCreateView2.as_view()), name="user_login"),
+#-------------------------Carrera---------------------------------------
+    path('carrera_list/',(CarreraListView.as_view()), name="carrera_list"),
+    path('carrera/', (CarreraCreateView.as_view()), name="carrera"),
+    path('carrera_list/u_carrera/<int:pk>/', CarreraUpdateView.as_view(), name="u_carrera"),
+    path('carrera_list/d_carrera/<int:pk>/', CarreraDeleteView.as_view(), name="d_carrera"),
 
-    
-#-------------------------Reporte---------------------------------------
+    #-------------------------Ficha---------------------------------------
+    path('ficha_list/',(FichaListView.as_view()), name="ficha_list"),
+    path('ficha/', (FichaCreateView.as_view()), name="ficha"),
 
 ]
 

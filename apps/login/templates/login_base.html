@@ -32,6 +32,9 @@
     {% block head %}
         
     {% endblock %}
+
+    {% block extra_head %}
+    {% endblock %}
         
 </head>
 <body>
@@ -40,9 +43,20 @@
     <a href="{% url 'login'%}"><b>SREA</b></a>
   </div>
 
-{% block content %}
-    
-{% endblock  %}
+  <div class="card">
+    <div class="card-body login-card-body">
+    {% block body %}
+      {% block content %}
+      {% endblock  %}
+    {% endblock %}
+    </div>
+  </div>  
+  
+
+
+
+{% block extra_body %}
+{% endblock %}
 
 <div>
 

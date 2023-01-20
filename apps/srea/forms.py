@@ -1,12 +1,14 @@
 from django.forms import *
 from apps.srea.models import*
+from apps.user.models import*
 
 
-class UsuarioCreateForm(ModelForm):
+
+class AsignaturaCreateForm(ModelForm):
 
     class Meta:
-        model=Usuario
-        fields= '__all__'
+        model=Asignatura
+        fields= ['nombre','detalle','imagen']
 
     def save(self, commit=True):
         data = {}
@@ -20,11 +22,10 @@ class UsuarioCreateForm(ModelForm):
             data['error'] = str(e)
         return data
 
-
-class AsignaturaCreateForm(ModelForm):
+class PreguntaCreateForm(ModelForm):
 
     class Meta:
-        model=Asignatura
+        model=Pregunta
         fields= '__all__'
 
     def save(self, commit=True):

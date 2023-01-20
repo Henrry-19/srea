@@ -16,6 +16,7 @@ from django.contrib.auth import update_session_auth_hash
 
 
 class UserListView(LoginRequiredMixin,IsSuperuserMixin,ListView): #Primera vista basada en clase ListView, permite sobrescribir métodos
+    context_object_name = 'matricula'
     model= User#Primero se indica el modelo o entidad
     template_name = 'user/user_lista.html' #Indicarle cual es la plantilla
     
@@ -232,7 +233,7 @@ class UserChangePasswordView(LoginRequiredMixin,FormView):
 
 class UserCreateView2(CreateView):
     model=User #Indicar el modelo con el cual se va ha trabajar
-    form_class=UserCreateForm #Importando el formulario con el que voy a trabajar
+    form_class=UserCreateForm2 #Importando el formulario con el que voy a trabajar
     template_name='user/user_create_login.html' # Debo indicarle la ubicación de mi plantilla
     success_url= reverse_lazy('user:user_list') #Me permite direccionar a otra plantilla, la funnción reverse_lazy me recibe una url como parámetro
 

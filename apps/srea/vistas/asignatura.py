@@ -1,5 +1,5 @@
 from django.views.generic import* #importando la vista genérica
-from apps.srea.models import* #importando los modelos
+from apps.srea.models import  Asignatura #importando los modelos
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator #importando el método decorador
@@ -11,10 +11,10 @@ from apps.srea.mixins import*
 from apps.srea.forms import*
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-class AsignaturaListView(LoginRequiredMixin,IsSuperuserMixin,ValidatePermissionRequiredMixin,ListView): #Primera vista basada en clase ListView, permite sobrescribir métodos
+class AsignaturaListView(LoginRequiredMixin,ValidatePermissionRequiredMixin,ListView): #Primera vista basada en clase ListView, permite sobrescribir métodos
     model= Asignatura#Primero se indica el modelo o entidad
     template_name = 'asignatura/asignatura_lista.html' #Indicarle cual es la plantilla
-    permission_required='view_asignatura', 'change_asignatura'
+    permission_required='view_asignatura'
     
     @method_decorator(csrf_exempt)#Mecanismo de defensa de django
     def dispatch(self, request, *args, **kwargs):
@@ -144,3 +144,5 @@ class AsignaturaDeleteView(LoginRequiredMixin,ValidatePermissionRequiredMixin,De
         context['modelo'] = 'Asignatura'
         context['url_list'] = reverse_lazy('srea:p_asignatura')
         return context
+
+

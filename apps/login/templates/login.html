@@ -1,4 +1,5 @@
 {% extends 'login_base.html' %}
+{% load socialaccount %}
 {% load widget_tweaks %}
 
 {% block content %}
@@ -37,10 +38,11 @@
       <!-- /.social-auth-links -->
       <div class="social-auth-links text-center mb-0">
         <p>- OR -</p>
-        <a href="#" class="btn-fa-primary">
+       <!-- <a href="#" class="btn-fa-primary">
           <i class="fab fa-facebook mr-2" style='font-size:30px;color:darkblue'></i>
-        </a>
-        <a class="btn-fa-danger" href="#">
+        </a>-->
+        <h4>Google</h4>
+        <a class="btn-fa-danger" href="{% provider_login_url  "google"  %}">
           <i class="fab fa-google-plus mr-2" style='font-size:30px;color:brown'></i>
         </a>
         <hr>

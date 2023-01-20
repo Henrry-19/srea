@@ -6,11 +6,19 @@ admin.site.index_title = 'Panel de Control'
 
 # ASIGNATURAS
 class AsignaturaAdmin(admin.ModelAdmin):
-    list_display = ["user", 'nombre','detalle', 'imagen']
+    list_display = ['nombre','detalle', 'imagen']
     search_fields = ['nombre']
-    ordering = ['user']
-
+    
 admin.site.register(Asignatura, AsignaturaAdmin)
+
+class RespuestaInline(admin.StackedInline):
+    model = Respuesta
+    extra=0
+
+class RespuestaAdmin(admin.ModelAdmin):
+    inlines = [RespuestaInline] 
+#    search_fields = ['nombre']
+
 
 # Register your models here.
 #admin.site.register(Usuario)
@@ -19,9 +27,14 @@ admin.site.register(Asignatura, AsignaturaAdmin)
 #admin.site.register(Indicacion)
 
 #admin.site.register(Nivel)
-#admin.site.register(Test)
-#admin.site.register(Pregunta)
-#admin.site.register(Respuesta)
+class MatriculaAdmin(admin.ModelAdmin):
+    list_display = ['user','asignatura']
+    search_fields = ['user']
+    
+admin.site.register(Matricula)
+admin.site.register(Test)
+admin.site.register(Pregunta, RespuestaAdmin)
+admin.site.register(Respuesta)
 
 
 

@@ -2,97 +2,16 @@ from django.db import models
 from datetime import datetime
 from django.forms import model_to_dict # Librería que permite convertir mi modelo a tipo diccionario
 from core.settings import MEDIA_URL, STATIC_URL
-from apps.user.models import*
-
-##################Usuario######################
-genero_ficha_informacion = (
-    ('Femenino', 'Femenino'),
-    ('Masculino', 'Masculino')
-)
-
-class Usuario(models.Model):
-    nombres=models.CharField(max_length=200, verbose_name='Nombres')
-    apellidos=models.CharField(max_length=200, verbose_name='Apellidos')
-    birthday = models.DateField(default=datetime.now, verbose_name='Fecha de nacimiento')
-    email=models.EmailField(max_length=254,unique=True,verbose_name='Correo Electrónico')
-    genero = models.CharField(max_length=10, choices=genero_ficha_informacion, default='Masculino', verbose_name='Genero')
-    
- ###Crear un método llamado toJSON###
-    def toJSON(self):##Me devuelve un diccionario con todos los atributos de mi entidad
-        item=model_to_dict(self) #Mi atributo self contiene mi modelo
-        return item
-
-    def __str__(self): 
-        return f'{self.nombres},{self.apellidos}'
-    
-    class Meta:
-        verbose_name = 'Usuarios'
-        verbose_name_plural = 'Usuarios'
-        ordering = ['id']
-    
-etnia_ficha={
-    ('A', 'Afroecuatoriano'),
-    ('B', 'Blanco'),
-    ('C', 'Cholo'),
-    ('I', 'Indigena'),
-    ('Mo', 'Montubio'),
-    ('Mu', 'Mulato'),
-    ('Me', 'Mestizo'),
-    ('N', 'Negro'),
-    ('O', 'Otro')
-}
-
-estado_civil_ficha_informacion=(
-    ('S','Soltero/a'),
-    ('C','Casado/a'),
-    ('D','Divorciado/a'),
-    ('V','Viudo/a')
-)
-
-##################Ficha de información######################
-
-class FichaInformacion(models.Model):
-    user= models.ForeignKey(Usuario, on_delete=models.CASCADE)
-    dni = models.CharField(max_length=10, unique=True, verbose_name='Dni')
-    edad=models.IntegerField()
-    direccion=models.CharField(max_length=50)
-    ocupacion=models.CharField(max_length=50) #Ingresar como lista-clase ocupación
-    tecnica_estudio=models.CharField(max_length=50,null=True)
-    etnia=models.CharField(choices=etnia_ficha,max_length=10)
-    estado_civil= models.CharField(choices=estado_civil_ficha_informacion, max_length=10)
-    
-
-    def __str__(self):
-        return self.cedula #llamar con clave primaria
-    
-    class Meta:
-        verbose_name = 'Ficha'
-        verbose_name_plural = 'Fichas'
-        ordering = ['id']
-
-##################Indicación######################
-class Indicacion(models.Model):
-    user= models.ForeignKey(Usuario, on_delete=models.CASCADE)
-    titulo=models.CharField(max_length=100)
-    descripcion=models.TextField(verbose_name='Descripción')
-    fecha=models.DateTimeField(auto_now_add=True)
-    
-    
-    def __str__(self):
-        return self.titulo
-    
-    class Meta:
-        verbose_name = 'Indicación'
-        verbose_name_plural = 'Indicaciones'
-        ordering = ['id']
-
+from apps.srea.tipo_pregunta import tipo_preguntas
+#from apps.user.models import*
+from datetime import date
+from  apps.user.models import User
 ##################Asignatura######################    
 class Asignatura(models.Model):
-    user= models.ForeignKey(User, on_delete=models.CASCADE)
     nombre=models.CharField(max_length=150, verbose_name='Nombre', unique=True)
     detalle=models.TextField(verbose_name='Detalle de la asignatura')
     imagen = models.ImageField(upload_to='asignatura/%Y/%m/%d', null=True, blank=True)
-    
+  
     def get_image(self):
         if self.imagen:
             return '{}{}'.format(MEDIA_URL, self.imagen)
@@ -100,7 +19,7 @@ class Asignatura(models.Model):
     
      ###Crear un método llamado toJSON###
     def toJSON(self):##Me devuelve un diccionario con todos los atributos de mi entidad
-        item=model_to_dict(self) #Mi atributo self contiene mi modelo
+        item = model_to_dict(self, exclude=['usuario'])
         item['imagen']=self.get_image()
         return item
 
@@ -112,28 +31,41 @@ class Asignatura(models.Model):
         verbose_name_plural = 'Asignaturas'
         ordering = ['id']   
 
-##################Nivel######################
-class Nivel(models.Model):
-    asignatura = models.ForeignKey(Asignatura, on_delete=models.CASCADE)
-    nombre=models.CharField(max_length=150, verbose_name='Nombre', unique=True)
-    descripcion=models.TextField(verbose_name='Descripción')
-   
-    def __str__(self):
-        return self.nombre
+##################Matrícula######################
+class Matricula(models.Model):
+    numero_ciclo = models.IntegerField(default=1, verbose_name="Número de ciclo") 
+    user=models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Usuario")    
+    asignatura=models.ForeignKey(Asignatura, on_delete=models.CASCADE, verbose_name="Asignatura")
+    fecha=models.DateTimeField(auto_now_add=True, verbose_name="Fecha de registro")
 
-    class Meta:
-        verbose_name = 'Nivel'
-        verbose_name_plural = 'Niveles'
-        ordering = ['id']
+        ###Crear un método llamado toJSON###
+    def toJSON(self):##Me devuelve un diccionario con todos los atributos de mi entidad
+        item=model_to_dict(self) #Mi atributo self contiene mi modelo, se convierte en un diccionario
+        item['fecha']=self.fecha.strftime('%Y-%m-%d')
+        return item
+    def __str__(self):
+        fecMat=self.fecha.strftime("%A %d/%m/%Y %H:%M:%S")
+        txt="{}, matriculado (a) en la asignatura, {} / Fecha: {}".format(self.user.first_name, self.asignatura ,fecMat)
+        #return str(txt)
+        return txt
+        
+
 
 ##################Test######################
 
 class Test(models.Model):
-    nivel= models.ForeignKey(Nivel, on_delete=models.CASCADE)
-    nombre=models.CharField(max_length=150, verbose_name='Nombre', unique=True)
+    asignatura = models.ForeignKey(Asignatura,on_delete=models.CASCADE, verbose_name="Asignatura")
+    titulo = models.CharField(max_length=150, verbose_name='Título')
+    descripcion = models.TextField(null=True, blank=True,verbose_name="Descripción")
+    fecha = models.DateTimeField(auto_now_add=True, verbose_name="Fecha de publicación") 
+    
+    def toJSON(self):##Me devuelve un diccionario con todos los atributos de mi entidad
+        item=model_to_dict(self) #Mi atributo self contiene mi modelo, se convierte en un diccionario
+        item['fecha']=self.fecha.strftime('%Y-%m-%d')
+        return item
 
     def __str__(self):
-        return self.nombre
+        return self.titulo
 
     class Meta:
         verbose_name = 'Test'
@@ -143,21 +75,25 @@ class Test(models.Model):
 ##################Pregunta######################
 
 class Pregunta(models.Model):
-    test=models.ForeignKey(Test, on_delete=models.CASCADE)
-    texto=models.TextField(verbose_name='Texto de la pregunta')
+    test=models.ForeignKey(Test, on_delete=models.CASCADE, related_name="test")
+    pregunta=models.TextField(null=True, blank=True,verbose_name='Texto de la pregunta')
+    tipoPregunta= models.CharField(max_length = 2, choices=tipo_preguntas, verbose_name='Tipo de preguntas')
+    
+    def toJSON(self):##Me devuelve un diccionario con todos los atributos de mi entidad
+        item=model_to_dict(self) #Mi atributo self contiene mi modelo, se convierte en un diccionario
+        return item
 
     def __str__(self):
-        return self.texto
+        return self.pregunta
 
     class Meta:
         verbose_name = 'Pregunta'
         verbose_name_plural = 'Preguntas'
         ordering = ['id']  
-
 ##################Respuesta######################
 
 class Respuesta(models.Model):
-    pregunta=models.ForeignKey(Pregunta, on_delete=models.CASCADE)
+    pregunta=models.ForeignKey(Pregunta, on_delete=models.CASCADE, related_name="pregunta_respuesta")
     respuesta=models.TextField(verbose_name='Texto de la respuesta')
 
     def __str__(self):
@@ -166,7 +102,8 @@ class Respuesta(models.Model):
     class Meta:
         verbose_name = 'Respuesta'
         verbose_name_plural = 'Respuestas'
-        ordering = ['id']  
+        ordering = ['id']
+
 
 
 

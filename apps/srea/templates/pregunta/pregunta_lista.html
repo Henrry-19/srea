@@ -1,29 +1,20 @@
-{% extends "b_list.html" %}
-{%block title%}Preguntas{%endblock%}
-<center>
-    <h2>Bienvenido {{user}}</h2>
-</center>
+{% extends 'base_list.html' %}
+{% load static %}
+{% block head_list %}
+    <script src="{% static 'pregunta/lista1.js' %}"></script>
+{% endblock %}
 {%block colums%}
 <tr>
-    <th>Preguntas</th>
-    
-    <th colspan="">Opciones</th>
+    <th scope="col" style="width: 5%;">id</th>
+    <th scope="col" style="width: 16%;">Texto</th>
+    <th scope="col" style="width: 20%;">TipoPregunta</th>
+    <th scope="col" style="width: 10%;">Opciones</th>
 </tr>
 {%endblock%}
 
 {%block rows%}
-{%for p in pregunta%}
-    <tr>
-        <td>{{p.texto}}</td>
-        <td>
-        <a href="u_pregunta/{{p.id}}" class="btn btn-info btn-xs"><i class="fas fa-edit"></i></a>
-        <a href="d_pregunta/{{p.id}}" class="btn btn-danger btn-xs"><i class="fas fa-trash-alt"></i></a>
-        </td>
-    </tr>
-{%endfor%}
-<div>
-    <div class="card-footer">
-        <a href="{% url 'srea:pregunta' %}" class="btn btn-info"><i class="fas fa-pen-square"></i>Registrar</a>  
-    </div>
-</div>
+
 {%endblock%}
+
+{% block javascript %}
+{% endblock %}
