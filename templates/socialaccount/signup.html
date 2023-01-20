@@ -1,0 +1,28 @@
+{% extends "socialaccount/base.html" %}
+{% load socialaccount %}
+
+{% load i18n %}
+
+{% block head_title %}{% trans "Signup" %}{% endblock %}
+
+{% block content %}
+    <!--<h1>{% trans "Sign Up" %}</h1>-->
+    <h1>Ya existe una cuenta con ese correo</h1>
+
+<!--<p>{% blocktrans with provider_name=account.get_provider.name site_name=site.name %}Está a punto de usar su {{provider_name}} cuenta para iniciar sesión en
+{{site_name}}. Como paso final, por favor complete el siguiente formulario:{% endblocktrans %}</p>-->
+<p>{% blocktrans with provider_name=account.get_provider.name site_name=site.name %}Está a punto de usar su {{provider_name}} cuenta para iniciar sesión en
+  {{site_name}}. Por favor ingrese con otra cuenta:{% endblocktrans %}</p>
+<!--<form class="signup" id="signup_form" method="post" action="{% url 'socialaccount_signup' %}">
+  {% csrf_token %}
+  {{ form.as_p }}
+  {% if redirect_field_value %}
+  <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+  {% endif %}
+  <button type="submit">{% trans "Sign Up" %} &raquo;</button>
+</form>-->
+<h4>Google</h4>
+    <a class="btn-fa-danger" href="{% provider_login_url  "google"  %}">
+      <i class="fab fa-google-plus mr-2" style='font-size:30px;color:brown'></i>
+    </a>
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends 'layout.html' %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {%block title%}Lista de asignaturas{%endblock%}
+    {% block head %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/contenedor.css' %}">
+    {% endblock %}
+</head>
+<body>
+    {% block content %}
+    <hr>
+    <h2>Asignaturas</h2>
+    <hr>
+    {%for obj in object_list %}
+            <div class="container asignatura">{{obj.asignatura}}</div>
+    {%endfor%}
+    
+        
+   
+
+    
+    
+    {% endblock %}
+</body>
+</html>
