@@ -45,7 +45,6 @@ INSTALLED_APPS = [
     'widget_tweaks', #Me permite incrustar atributos en mis componentes
     #Apps
     'apps.srea',
-    'apps.homepage',
     'apps.login',
     'apps.user'
 
@@ -180,11 +179,12 @@ ACCOUNT_LOGOUNT_ON_GET = True
 SITE_ID = 2 
 #AUTH_USER_MODEL = 'srea.Usuario' #Como modelo para todo el sistema, utiliza este modelo para la autenticación
 
+#LOGIN_REDIRECT_URL ='/srea/index1/'
 LOGIN_REDIRECT_URL ='/srea/index1/'
 
 
 #LOGOUT_REDIRECT_URL ='/login/'
-LOGOUT_REDIRECT_URL ='/login/'
+LOGOUT_REDIRECT_URL ='/'
 
 LOGIN_URL = '/login/'
 #LOGIN_URL = '/'

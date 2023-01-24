@@ -4,7 +4,7 @@
         <img src="{% static 'img/study.png' %}"
              alt="SREA"
              class="brand-image img-circle elevation-3"
-             style="opacity: .8">
+             style="opacity: .9">
         <span class="brand-text font-weight-light">SREA</span>
     </a>
     <div class="sidebar">
@@ -19,7 +19,7 @@
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                 <li class="nav-item">
-                    <a href="/" class="nav-link">
+                    <a href="{% url 'srea:index1' %}" class="nav-link">
                         <i class="icon fa fa-home fa-fw "></i>
                         <p>
                             Inicio
@@ -36,23 +36,26 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{% url 'user:user_list' %}" class="nav-link">
-                        <i class="menu-icon fa fa-users"></i>
-                        <p>
-                            Usuarios
-                        </p>    
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="menu-icon fa fa-users"></i>
+                    <a href="{% url 'srea:matricula' %}" class="nav-link">
+                        <i class=" 	fa fa-id-card"></i>
                         <p>
                             Matrícula
                         </p>    
                     </a>
                 </li>
                {% endif %}
-
+               <li class="nav-item">
+                <a href="{% url 'user:user_list' %}" class="nav-link">
+                    <i class="menu-icon fa fa-users"></i>
+                    <p>
+                    {% if request.user.is_staff %}
+                        Usuarios
+                    {% else %}
+                        Participantes
+                    {% endif %}
+                    </p>    
+                </a>
+                </li>
                 <li class="nav-item">
                     <a href="{% url 'user:ficha_list' %}" class="nav-link">
                         <i class="fas fa-chalkboard-teacher"></i>
@@ -62,16 +65,14 @@
                     </a>
                 </li>
                 {% for g in request.user.groups.all %}
-                {% if g.name != "Estudiante" %}
-                <li class="nav-item">
-                    <a href="{% url 'srea:p_asignatura' %}" class="nav-link"> 
-                        <i class="fas fa-book-reader"></i>
-                        <p>
-                            Asignaturas
-                        </p>  
-                    </a>
-                </li>
-                {% endif %}
+                    <li class="nav-item">
+                        <a href="{% url 'srea:p_asignatura' %}" class="nav-link"> 
+                            <i class="fas fa-book-reader"></i>
+                            <p>
+                                Asignaturas
+                            </p>  
+                        </a>
+                    </li>
                 {% endfor %}
                 {% if request.user.is_staff %}
                 <li class="nav-item">
@@ -83,39 +84,16 @@
                     </a>
                 </li>
                 {% endif %}
-                <li class="nav-item">
-                    <a href="{% url 'srea:matricula' %}" class="nav-link"> 
-                        <i class="fa fa-plus-square"></i>
-                        <p>
-                            Evaluar E.A
-                        </p>  
-                    </a>
-                </li>
+                {% if request.user.is_staff %}
                 <li class="nav-item">
                     <a href="{% url 'srea:test' %}" class="nav-link"> 
-                        <i class="fa fa-plus-square"></i>
+                        <i class="fa fa-edit"></i>
                         <p>
                             Test
                         </p>  
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a href="{% url 'srea:pregunta' %}" class="nav-link"> 
-                        <i class="fa fa-plus-square"></i>
-                        <p>
-                            Pregunta
-                        </p>  
-                    </a>
-                </li>
-               
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="fas fa-poll"></i>
-                        <p>
-                            Reporte
-                        </p>
-                    </a>
-                </li>
+                {% endif %}
                
             </ul>
         </nav>

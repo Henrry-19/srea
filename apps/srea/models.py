@@ -6,6 +6,7 @@ from apps.srea.tipo_pregunta import tipo_preguntas
 #from apps.user.models import*
 from datetime import date
 from  apps.user.models import User
+import  random
 ##################Asignatura######################    
 class Asignatura(models.Model):
     nombre=models.CharField(max_length=150, verbose_name='Nombre', unique=True)
@@ -34,20 +35,21 @@ class Asignatura(models.Model):
 ##################Matrícula######################
 class Matricula(models.Model):
     numero_ciclo = models.IntegerField(default=1, verbose_name="Número de ciclo") 
-    user=models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Usuario")    
-    asignatura=models.ForeignKey(Asignatura, on_delete=models.CASCADE, verbose_name="Asignatura")
+    user=models.ForeignKey(User, on_delete=models.CASCADE,related_name="user", verbose_name="Usuario")    
+    asignatura=models.ForeignKey(Asignatura,null=True, on_delete=models.CASCADE, related_name="asignatura", verbose_name="Asignatura")
     fecha=models.DateTimeField(auto_now_add=True, verbose_name="Fecha de registro")
+
+    def get_image(self):
+        if self.asignatura.imagen:
+            return '{}{}'.format(MEDIA_URL, self.asignatura.imagen)
+        return '{}{}'.format(STATIC_URL, 'img/usuario.png')
 
         ###Crear un método llamado toJSON###
     def toJSON(self):##Me devuelve un diccionario con todos los atributos de mi entidad
         item=model_to_dict(self) #Mi atributo self contiene mi modelo, se convierte en un diccionario
         item['fecha']=self.fecha.strftime('%Y-%m-%d')
         return item
-    def __str__(self):
-        fecMat=self.fecha.strftime("%A %d/%m/%Y %H:%M:%S")
-        txt="{}, matriculado (a) en la asignatura, {} / Fecha: {}".format(self.user.first_name, self.asignatura ,fecMat)
-        #return str(txt)
-        return txt
+    
         
 
 
@@ -89,7 +91,17 @@ class Pregunta(models.Model):
     class Meta:
         verbose_name = 'Pregunta'
         verbose_name_plural = 'Preguntas'
-        ordering = ['id']  
+        ordering = ['id']
+
+    def get_respuestas(self):
+        respuesta_objs=list(Respuesta.objects.filter(pregunta = self))
+        random.shuffle(respuesta_objs)
+        data = []
+        for respuesta_obj  in respuesta_objs:
+            data.append({
+                'respuesta':respuesta_obj.respuesta
+            })
+        return data
 ##################Respuesta######################
 
 class Respuesta(models.Model):

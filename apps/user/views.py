@@ -15,10 +15,11 @@ from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
 
 
-class UserListView(LoginRequiredMixin,IsSuperuserMixin,ListView): #Primera vista basada en clase ListView, permite sobrescribir métodos
+class UserListView(LoginRequiredMixin,ValidatePermissionRequiredMixin,ListView): #Primera vista basada en clase ListView, permite sobrescribir métodos
     context_object_name = 'matricula'
     model= User#Primero se indica el modelo o entidad
     template_name = 'user/user_lista.html' #Indicarle cual es la plantilla
+    permission_required='view_user'
     
     @method_decorator(csrf_exempt)#Desactivando el mecanismo de defensa de django
     def dispatch(self, request, *args, **kwargs):
@@ -31,11 +32,27 @@ class UserListView(LoginRequiredMixin,IsSuperuserMixin,ListView): #Primera vista
             if action == 'searchdata':
                 data=[]
                 position = 1
-                for i in User.objects.all():
-                    item= i.toJSON()
-                    item['position']=position
-                    data.append(item)#Incrusto cada uno de mis elementos dentro de mi array
-                    position+=1
+                if request.user.is_staff :
+                    for i in User.objects.all():
+                        item= i.toJSON()
+                        item['position']=position
+                        data.append(item)#Incrusto cada uno de mis elementos dentro de mi array
+                        position+=1
+                if  not request.user.is_staff:
+                     #user=User.objects.filter(pk=request.user.pk)
+                     user=User.objects.filter(carrera=request.user.carrera.pk)
+                     #print(user[0])
+                     for i in user:
+                        #for i in User.objects.filter(pk=u.user.pk):
+                            #print(User.objects.filter(pk=u.user.pk))
+                        #for i in Carrera.objects.filter(pk=u.carrera.pk):
+                            #print(Carrera.objects.filter(pk=u.carrera.pk))
+                            #for i in User.objects.filter(pk=c.pk):
+                                #print(User.objects.filter(pk=c.pk))
+                        item= i.toJSON()
+                        item['position']=position
+                        data.append(item)#Incrusto cada uno de mis elementos dentro de mi array
+                        position+=1
             else:
                 data["error"]='Ha ocurrido un error'
         except Exception as e: #Llamamos a la clase Exceptio para indicar el error
@@ -52,12 +69,12 @@ class UserListView(LoginRequiredMixin,IsSuperuserMixin,ListView): #Primera vista
         return context
 
 
-class UserCreateView(CreateView):
+class UserCreateView(LoginRequiredMixin,ValidatePermissionRequiredMixin,CreateView):
     model=User #Indicar el modelo con el cual se va ha trabajar
     form_class=UserCreateForm #Importando el formulario con el que voy a trabajar
     template_name='user/user_create.html' # Debo indicarle la ubicación de mi plantilla
     success_url= reverse_lazy('user:user_list') #Me permite direccionar a otra plantilla, la funnción reverse_lazy me recibe una url como parámetro
-
+    permission_required='add_user'
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
@@ -86,13 +103,13 @@ class UserCreateView(CreateView):
         context['action']='add'#Enviar variable action
         return context
 
-class UserUpdateView(UpdateView):
+class UserUpdateView(LoginRequiredMixin,ValidatePermissionRequiredMixin,UpdateView):
     model = User #Indicar el modelo con el cual se va ha trabajar
     form_class = UserCreateForm #Importando el formulario con el que voy a trabajar
     template_name = 'user/user_create.html' #Debo indicarle la ubicación de mi plantilla
     success_url = reverse_lazy('user:user_list') #Me permite direccionar a otra plantilla, la función reverse_lazy me recibe una url como parámetro
     #@method_decorator(csrf_exempt) #Mecanismo de defensa de django
-    
+    permission_required='change_user'
     def dispatch(self, request, *args, **kwargs):
         self.object = self.get_object()#Le decimos que la clase object va a hacer igual a lo que tenemos en lainstancia de nuestro objeto, para que el funcionamiento no se altere
         return super().dispatch(request, *args, **kwargs)
@@ -118,11 +135,11 @@ class UserUpdateView(UpdateView):
         context['action']='edit'#Enviar variable action
         return context
 
-class UserDeleteView(DeleteView):
+class UserDeleteView(LoginRequiredMixin,ValidatePermissionRequiredMixin,DeleteView):
     model = User #Indicar el modelo con el cual se va ha trabajar
     template_name = 'user/user_delete.html' #Debo indicarle la ubicación de mi plantilla
     success_url= reverse_lazy('user:user_list')#Me permite direccionar a otra plantilla, la función reverse_lazy me recibe una url como parámetro
-    
+    permission_required='delete_user'
    
     def dispatch(self, request, *args, **kwargs):
         self.object = self.get_object() #Le decimos que la clase object va a hacer igual a lo que tenemos en lainstancia de nuestro objeto, para que el funcionamiento no se altere
@@ -261,7 +278,7 @@ class UserCreateView2(CreateView):
         context = super().get_context_data(**kwargs) #Obtengo el diccionario que devuelve el método
         context['title']='Creación de una cuenta' #Puedo enviar variables
         context['modelo']='User'#Nombre de identidad
-        context['url_list']=self.success_url#Ruta abosluta lista de asignatura
+        context['url_list']=reverse_lazy('login')#Ruta abosluta lista de asignatura
         context['action']='add'#Enviar variable action
         return context
 

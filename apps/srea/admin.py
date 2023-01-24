@@ -11,13 +11,14 @@ class AsignaturaAdmin(admin.ModelAdmin):
     
 admin.site.register(Asignatura, AsignaturaAdmin)
 
+admin.site.register(Test)
+
 class RespuestaInline(admin.StackedInline):
     model = Respuesta
     extra=0
 
-class RespuestaAdmin(admin.ModelAdmin):
-    inlines = [RespuestaInline] 
-#    search_fields = ['nombre']
+class PreguntaAdmin(admin.ModelAdmin):
+    inlines = [RespuestaInline]
 
 
 # Register your models here.
@@ -32,8 +33,7 @@ class MatriculaAdmin(admin.ModelAdmin):
     search_fields = ['user']
     
 admin.site.register(Matricula)
-admin.site.register(Test)
-admin.site.register(Pregunta, RespuestaAdmin)
+admin.site.register(Pregunta, PreguntaAdmin)
 admin.site.register(Respuesta)
 
 

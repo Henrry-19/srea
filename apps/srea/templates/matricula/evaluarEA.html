@@ -1,4 +1,4 @@
-{% extends 'layout.html' %}
+{% extends 'base_list.html' %}
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
@@ -17,14 +17,10 @@
     <h2>Asignaturas</h2>
     <hr>
     {%for obj in object_list %}
-            <div class="container asignatura">{{obj.asignatura}}</div>
+        {% for a in obj.toJSON  %}
+            <div class="container asignatura">{{a.nombre}}</div>
+        {% endfor %} 
     {%endfor%}
-    
-        
-   
-
-    
-    
     {% endblock %}
 </body>
 </html>

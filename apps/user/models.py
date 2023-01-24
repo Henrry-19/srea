@@ -69,9 +69,9 @@ class Indicacion(models.Model):
 class User(AbstractUser):
     imagen=models.ImageField(upload_to='users/%Y/%m/%d',null=True,blank=True)
     email=models.EmailField(max_length=254,unique=True,verbose_name='Correo Electrónico')
-    ficha= models.OneToOneField(Ficha,null=True,on_delete=models.SET_NULL, verbose_name="Ficha")
-    carrera = models.ForeignKey(Carrera,null=True, on_delete=models.SET_NULL, verbose_name="Carrera")
-    indicacion= models.ForeignKey(Indicacion,null=True, on_delete=models.SET_NULL, verbose_name="Indicación" )
+    ficha= models.OneToOneField(Ficha,null=True,blank=True,on_delete=models.CASCADE,related_name="ficha", verbose_name="Ficha")
+    carrera = models.ForeignKey(Carrera,null=True, blank=True, on_delete=models.SET_NULL,related_name="carrera", verbose_name="Carrera")
+    indicacion= models.ForeignKey(Indicacion,null=True, blank=True, on_delete=models.SET_NULL, verbose_name="Indicación" )
    #matricula = models.ForeignKey(Matricula,null=True, on_delete=models.SET_NULL, verbose_name="Indicación" )
     token = models.UUIDField(primary_key=False, editable=False, null=True, blank=True)
     def get_image(self):

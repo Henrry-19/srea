@@ -1,22 +1,57 @@
 {% extends 'base_list.html' %}
 {% load static %}
 {% block head_list %}
-    <script src="{% static 'matricula/lista1.js' %}"></script>
+   
 {% endblock %}
 {%block colums%}
 <tr>
     <th scope="col" style="width: 5%;">id</th>
-    <th scope="col" style="width: 16%;">Número de ciclo</th>
-    <th scope="col" style="width: 20%;">Usuario</th>
-    <th scope="col" style="width: 10%;">Asignatura</th>
-    <th scope="col" style="width: 10%;">Fecha de matrícula</th>
+    <th scope="col" style="width: 8%;">Número de ciclo</th>
+    <th scope="col" style="width: 8%;">Usuario</th>
+    <th scope="col" style="width: 8%;">Asignatura</th>
+    <th scope="col" style="width: 15%;">Fecha de matrícula</th>
     <th scope="col" style="width: 10%;">Opciones</th>
 </tr>
 {%endblock%}
 
 {%block rows%}
-
+{%for m in object_list%} 
+    <tr>           
+    <td>{{m.id}}</td>
+    <td>{{m.numero_ciclo}}</td>
+    <td>{{m.user}}</td>
+    <td>{{m.asignatura}}</td>
+    <td>{{m.fecha}}</td>
+    <td>
+    <a href="/srea/matricula/u_matricula/{{m.id}}" class="btn btn-warning btn-xs btn-flat"><i class="fas fa-edit"></i></a>
+    <a href="/srea/matricula/d_matricula/{{m.id}}" class="btn btn-danger btn-xs"><i class="fas fa-trash-alt"></i></a>
+    </td>
+    </tr>
+{%endfor%}
 {%endblock%}
 
 {% block javascript %}
+<script type="application/javascript">
+    $(function(){
+        $('#data').DataTable({
+          responsive: true,
+          autoWidth: false
+        });
+        $('.btnTest').on('click',function () { 
+          $.ajax({
+            url:'{% url 'srea:matricula' %}', 
+            type: 'POST',
+            data: {id:30},
+            dataType: 'json'
+          }).done(function(data){
+            console.log(data)
+
+          }).fail(function(jqXHR,textStatus,errorThrown){
+            alert(textStatus+':'+errorThrown)
+          }).always(function(data){
+            
+          });
+        });
+    });
+</script>
 {% endblock %}

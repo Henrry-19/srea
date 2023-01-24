@@ -27,11 +27,22 @@ class AsignaturaListView(LoginRequiredMixin,ValidatePermissionRequiredMixin,List
             if action == 'searchdata':
                 data=[]
                 position = 1
-                for i in Asignatura.objects.all():
-                    item= i.toJSON()
-                    item['position']=position
-                    data.append(item)#Incrusto cada uno de mis elemntos dentro de mi array
-                    position+=1
+                if request.user.is_staff :
+                    for i in Asignatura.objects.all():
+                        item= i.toJSON()
+                        item['position']=position
+                        data.append(item)#Incrusto cada uno de mis elemntos dentro de mi array
+                        position+=1
+                if  not request.user.is_staff:
+                    #user=Matricula.objects.filter(user__pk=request.user.pk).select_related('asignatura')
+                    user=Matricula.objects.filter(user__pk=request.user.pk)
+                    for u in user:
+
+                        for i in Asignatura.objects.filter(pk=u.asignatura.pk):
+                            item= i.toJSON()
+                            item['position']=position
+                            data.append(item)#Incrusto cada uno de mis elemntos dentro de mi array
+                            position+=1                   
             else:
                 data["error"]='Ha ocurrido un error'
         except Exception as e: #Llamamos a la clase Exceptio para indicar el error

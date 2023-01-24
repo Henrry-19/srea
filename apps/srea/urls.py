@@ -10,6 +10,10 @@ from .vistas.curso import *
 
 from .vistas.index import *
 
+######################################################
+from django.views import View
+######################################################
+
 from django.contrib.auth.decorators import login_required
 
 app_name="apps.srea" #Variable que me permite decir como se va a llamar la ruta que se va a concatenar con la otra ruta absoluta
@@ -23,12 +27,6 @@ path('index1/',IndexView.as_view(), name="index1"),
 #    path('usuario/', (UsuarioCreateView.as_view()), name="usuario"),
 #    path('u_lista/u_usuario/<int:pk>/', UsuarioUpdateView.as_view(), name="u_usuario"),
 #    path('u_lista/d_usuario/<int:pk>/', UsuarioDeleteView.as_view(), name="d_usuario"),
-#-------------------------Reporte---------------------------------------
-#    path('r_lista/',ReporteListView.as_view(), name="p_reporte"), #principal_reporte
-#    path('r_lista/r_lista_pdf/',ReporteListPdf.as_view(), name="reporte_pdf"), #principal_reporte
-#    path('reporte/',ReporteCreateView.as_view(), name="reporte"), #crear reporte
-#    path('r_lista/updateR/<int:pk>/', ReporteUpdateView.as_view(), name="update_reporte"),
-#    path('r_lista/deleteR/<int:pk>/', ReporteDeleteView.as_view(), name="delete_reporte"),
 #-------------------------Indicacion-----------------------------------------
 #    path('i_lista/',IndicacionListView.as_view(), name="p_indicacion"), #principal_indicacion
 #    path('indicacion/',IndicacionCreateView.as_view(), name="indicacion"), #crear indicacion
@@ -41,7 +39,9 @@ path('index1/',IndexView.as_view(), name="index1"),
     path('a_lista/d_asignatura/<int:pk>/', AsignaturaDeleteView.as_view(), name="d_asignatura"),
 #-------------------------Matrícula-----------------------------------------
     path('evaluar/',MatriculaListView.as_view(), name="matricula"),
-#    path('listar/',ListarMatriculaListView.as_view(), name="p_matricula"),
+    path('matricula/',MatriculaCreateView.as_view(), name="r_matricula"),
+    path('matricula/u_matricula/<int:pk>/', MatriculaUpdateView.as_view(), name="u_matricula"),
+    path('matricula/d_matricula/<int:pk>/', MatriculaDeleteView.as_view(), name="d_matricula"),
 #-------------------------Test-----------------------------------------
     path('t_lista/',TestListView.as_view(), name="test"), #principal_test
 #    path('test/',TestCreateView.as_view(), name="test"), #crear test
@@ -52,6 +52,7 @@ path('index1/',IndexView.as_view(), name="index1"),
     path('pregunta/',PreguntaCreateView.as_view(), name="r_pregunta"), #crear ficha
     path('p_lista/u_pregunta/<int:pk>/', PreguntaUpdateView.as_view(), name="u_pregunta"),
     path('p_lista/d_pregunta/<int:pk>/', PreguntaDeleteView.as_view(), name="d_pregunta"),
+    path('api/get_test/', get_test, name="get_test")
 
     
 ]

@@ -15,7 +15,7 @@ $(function () {
         columns: [
             
             {"data": "position"},
-            {"data": "texto"},
+            {"data": "pregunta"},
             {"data": "tipoPregunta"},
             {"data": "position"}
 

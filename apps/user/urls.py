@@ -29,6 +29,8 @@ urlpatterns = [
     #-------------------------Ficha---------------------------------------
     path('ficha_list/',(FichaListView.as_view()), name="ficha_list"),
     path('ficha/', (FichaCreateView.as_view()), name="ficha"),
+    path('ficha_list/u_ficha/<int:pk>/',FichaUpdateView.as_view(), name="u_ficha"),
+    path('ficha_list/d_ficha/<int:pk>/', FichaDeleteView.as_view(), name="d_ficha"),
 
 ]
 

@@ -1,5 +1,4 @@
 from django.views.generic import* #importando la vista genérica
-from apps.srea.models import  Asignatura #importando los modelos
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator #importando el método decorador
@@ -11,8 +10,13 @@ from apps.srea.mixins import*
 from apps.srea.forms import*
 from django.contrib.auth.mixins import LoginRequiredMixin
 
+#############################################################
+from apps.srea.models import*
+import random
+#############################################################
+
 class TestListView(LoginRequiredMixin,ValidatePermissionRequiredMixin,ListView): #Primera vista basada en clase ListView, permite sobrescribir métodos
-    model= Test#Primero se indica el modelo o entidad
+    model= Test #Primero se indica el modelo o entidad
     template_name = 'test/test_lista.html' #Indicarle cual es la plantilla
     #permission_required='view_asignatura'
     
@@ -45,3 +49,22 @@ class TestListView(LoginRequiredMixin,ValidatePermissionRequiredMixin,ListView):
         #context['url_list']=reverse_lazy('srea:p_asignatura')#Ruta abosluta lista de usuario
         context['modelo']='Asignaturas'#Nombre de identidad
         return context
+
+
+def get_test(request): ###Métod para obtner el test
+    try:
+        pregunta_objs= list(Pregunta.objects.all())
+        data = []
+        random.shuffle(pregunta_objs)
+        for pregunta_obj  in pregunta_objs:
+            data.append({
+                'test':pregunta_obj.test.titulo,
+                'pregunta':pregunta_obj.pregunta,
+                'tipoPregunta':pregunta_obj.tipoPregunta,
+                'respuesta':pregunta_obj.get_respuestas()
+            })
+        payload={'status':True, 'data' : data}
+        return JsonResponse(payload)
+    except Exception as e:
+        print(e)
+    return HttpRequest("Existe un error")
