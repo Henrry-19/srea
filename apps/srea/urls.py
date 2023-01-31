@@ -1,12 +1,12 @@
 from django.urls import path
 from .vistas.indicacion import *
 from .vistas.asignatura import *
-from .vistas.matricula import *
+from .vistas.curso import *
 from .vistas.nivel import *
 from .vistas.test import *
 from .vistas.pregunta import *
 from .vistas.respuesta import *
-from .vistas.curso import *
+from .vistas.curso_test import *
 
 from .vistas.index import *
 
@@ -38,10 +38,10 @@ path('index1/',IndexView.as_view(), name="index1"),
     path('a_lista/u_asignatura/<int:pk>/', AsignaturaUpdateView.as_view(), name="u_asignatura"),
     path('a_lista/d_asignatura/<int:pk>/', AsignaturaDeleteView.as_view(), name="d_asignatura"),
 #-------------------------Matrícula-----------------------------------------
-    path('evaluar/',MatriculaListView.as_view(), name="matricula"),
-    path('matricula/',MatriculaCreateView.as_view(), name="r_matricula"),
-    path('matricula/u_matricula/<int:pk>/', MatriculaUpdateView.as_view(), name="u_matricula"),
-    path('matricula/d_matricula/<int:pk>/', MatriculaDeleteView.as_view(), name="d_matricula"),
+    path('evaluar/',CursoListView.as_view(), name="curso"),
+    path('matricula/',CursoCreateView.as_view(), name="r_curso"),
+    path('matricula/u_matricula/<int:pk>/', CursoUpdateView.as_view(), name="u_curso"),
+    path('matricula/d_matricula/<int:pk>/', CursoDeleteView.as_view(), name="d_curso"),
 #-------------------------Test-----------------------------------------
     path('t_lista/',TestListView.as_view(), name="test"), #principal_test
 #    path('test/',TestCreateView.as_view(), name="test"), #crear test

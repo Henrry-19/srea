@@ -8,13 +8,15 @@ from django.urls import reverse_lazy
 from django.shortcuts import render, redirect
 from apps.srea.mixins import*
 
+from apps.user.forms import*
 from apps.srea.forms import*
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-class AsignaturaListView(LoginRequiredMixin,ValidatePermissionRequiredMixin,ListView): #Primera vista basada en clase ListView, permite sobrescribir métodos
-    model= Asignatura#Primero se indica el modelo o entidad
-    template_name = 'asignatura/asignatura_lista.html' #Indicarle cual es la plantilla
-    permission_required='view_asignatura'
+
+class FacultadListView(LoginRequiredMixin,ValidatePermissionRequiredMixin,ListView): #Primera vista basada en clase ListView, permite sobrescribir métodos
+    model= Facultad#Primero se indica el modelo o entidad
+    template_name = 'facultad/facultad_lista.html' #Indicarle cual es la plantilla
+    permission_required='view_facultad'
     
     @method_decorator(csrf_exempt)#Mecanismo de defensa de django
     def dispatch(self, request, *args, **kwargs):
@@ -27,28 +29,11 @@ class AsignaturaListView(LoginRequiredMixin,ValidatePermissionRequiredMixin,List
             if action == 'searchdata':
                 data=[]
                 position = 1
-                if request.user.is_staff :
-                    for i in Asignatura.objects.all():
+                for i in Facultad.objects.all():
                         item= i.toJSON()
                         item['position']=position
                         data.append(item)#Incrusto cada uno de mis elemntos dentro de mi array
-                        position+=1
-                if  not request.user.is_staff:
-                    #user=Matricula.objects.filter(user__pk=request.user.pk).select_related('asignatura')
-                    #user=Carrera.objects.filter(carrera=request.user.pk)
-                    user=User.objects.filter(pk=request.user.pk)
-                    #print(user)
-                    for u in user:
-                    #  print(u)
-                      for c in Curso.objects.filter(pk=u.curso.id):
-                    #        pass
-                    #        print(c) 
-                            for i in Asignatura.objects.filter(asignatura=c.id):
-                            #     print(i)
-                                item= i.toJSON()
-                                item['position']=position
-                                data.append(item)#Incrusto cada uno de mis elemntos dentro de mi array
-                                position+=1                   
+                        position+=1    
             else:
                 data["error"]='Ha ocurrido un error'
         except Exception as e: #Llamamos a la clase Exceptio para indicar el error
@@ -57,19 +42,19 @@ class AsignaturaListView(LoginRequiredMixin,ValidatePermissionRequiredMixin,List
 
     def get_context_data(self, **kwargs): #Método que devuelve un diccionario que representa el contexto de la plantilla
         context = super().get_context_data(**kwargs) #Obtengo el diccionario que devuelve el método
-        context['title']='Listado de asignatura' #Puedo enviar variables
-        context['url_create']=reverse_lazy('srea:asignatura')#Ruta abosluta creación de usuario
-        context['url_list']=reverse_lazy('srea:p_asignatura')#Ruta abosluta lista de usuario
-        context['modelo']='Asignaturas'#Nombre de identidad
+        context['title']='Listado de Facultad' #Puefacultaddo enviar variables
+        context['url_create']=reverse_lazy('user:facultad')#Ruta abosluta creación de matrícula
+        context['url_list']=reverse_lazy('user:facultad_list')#Ruta abosluta lista de usuario
+        context['modelo']='Facultad'#Nombre de identidad
         return context
 
 
-class AsignaturaCreateView(LoginRequiredMixin,ValidatePermissionRequiredMixin,CreateView):
-    model=Asignatura #Indicar el modelo con el cual se va ha trabajar
-    form_class=AsignaturaCreateForm #Importando el formulario con el que voy a trabajar
-    template_name='asignatura/asignatura_create.html' # Debo indicarle la ubicación de mi plantilla
-    permission_required='add_asignatura'
-    success_url= reverse_lazy('srea:asignatura') #Me permite direccionar a otra plantilla, la funnción reverse_lazy me recibe una url como parámetro
+class FacultadCreateView(LoginRequiredMixin,ValidatePermissionRequiredMixin,CreateView):
+    model=Curso #Indicar el modelo con el cual se va ha trabajar
+    form_class=FacultadCreateForm #Importando el formulario con el que voy a trabajar
+    template_name='facultad/facultad_create.html' # Debo indicarle la ubicación de mi plantilla
+    permission_required='add_facultad'
+    success_url= reverse_lazy('user:facultad_list') #Me permite direccionar a otra plantilla, la funnción reverse_lazy me recibe una url como parámetro
 
    
     def dispatch(self, request, *args, **kwargs):
@@ -94,21 +79,21 @@ class AsignaturaCreateView(LoginRequiredMixin,ValidatePermissionRequiredMixin,Cr
 
     def get_context_data(self, **kwargs): #Método que devuelve un diccionario que representa el contexto de la plantilla
         context = super().get_context_data(**kwargs) #Obtengo el diccionario que devuelve el método
-        context['title']='Creación de una asignatura' #Puedo enviar variables
-        context['modelo']='Asignatura'#Nombre de identidad
-        context['url_list']=reverse_lazy('srea:p_asignatura')#Ruta abosluta lista de asignatura
+        context['title']='Creación de una facultad' #Puedo enviar variables
+        context['modelo']='Facultad'#Nombre de identidad
+        context['url_list']=reverse_lazy('user:facultad_list')#Ruta abosluta lista de asignatura
         context['action']='add'#Enviar variable action
         return context
 
 
-class AsignaturaUpdateView(LoginRequiredMixin,ValidatePermissionRequiredMixin,UpdateView):
-    model = Asignatura #Indicar el modelo con el cual se va ha trabajar
-    form_class = AsignaturaCreateForm #Importando el formulario con el que voy a trabajar
-    template_name = 'asignatura/asignatura_create.html' #Debo indicarle la ubicación de mi plantilla
-    permission_required='change_asignatura'
+class FacultadUpdateView(LoginRequiredMixin,ValidatePermissionRequiredMixin,UpdateView):
+    model = Facultad #Indicar el modelo con el cual se va ha trabajar
+    form_class = FacultadCreateForm #Importando el formulario con el que voy a trabajar
+    template_name = 'facultad/facultad_create.html' #Debo indicarle la ubicación de mi plantilla
+    permission_required='facultad_curso'
 
 
-    success_url = reverse_lazy('srea:asignatura') #Me permite direccionar a otra plantilla, la función reverse_lazy me recibe una url como parámetro
+    success_url = reverse_lazy('user:facultad_list') #Me permite direccionar a otra plantilla, la función reverse_lazy me recibe una url como parámetro
     #@method_decorator(csrf_exempt) #Mecanismo de defensa de django
 
     def dispatch(self, request, *args, **kwargs):
@@ -130,18 +115,18 @@ class AsignaturaUpdateView(LoginRequiredMixin,ValidatePermissionRequiredMixin,Up
         
     def get_context_data(self, **kwargs): #Método que devuelve un diccionario que representa el contexto de la plantilla
         context = super().get_context_data(**kwargs) #Obtengo el diccionario que devuelve el método
-        context['title']='Actualización de una asignatura' #Puedo enviar variables
-        context['modelo']='Asignatura'#Nombre de identidad
-        context['url_list']=reverse_lazy('srea:p_asignatura')#Ruta abosluta lista de asignatura
+        context['title']='Actualización de un facultad' #Puedo enviar variables
+        context['modelo']='Facultad'#Nombre de identidad
+        context['url_list']=reverse_lazy('user:facultad_list')#Ruta abosluta lista de asignatura
         context['action']='edit'#Enviar variable action
         return context
 
 
-class AsignaturaDeleteView(LoginRequiredMixin,ValidatePermissionRequiredMixin,DeleteView):
-    model = Asignatura #Indicar el modelo con el cual se va ha trabajar
-    template_name = 'asignatura/asignatura_delete.html' #Debo indicarle la ubicación de mi plantilla
-    success_url= reverse_lazy('srea:p_asignatura')#Me permite direccionar a otra plantilla, la función reverse_lazy me recibe una url como parámetro
-    permission_required='delete_asignatura'
+class FacultadDeleteView(LoginRequiredMixin,ValidatePermissionRequiredMixin,DeleteView):
+    model = Curso #Indicar el modelo con el cual se va ha trabajar
+    template_name = 'facultad/facultad_delete.html' #Debo indicarle la ubicación de mi plantilla
+    success_url= reverse_lazy('user:facultad_list')#Me permite direccionar a otra plantilla, la función reverse_lazy me recibe una url como parámetro
+    permission_required='delete_facultad'
  
     def dispatch(self, request, *args, **kwargs):
         self.object = self.get_object() #Le decimos que la clase object va a hacer igual a lo que tenemos en lainstancia de nuestro objeto, para que el funcionamiento no se altere
@@ -157,9 +142,9 @@ class AsignaturaDeleteView(LoginRequiredMixin,ValidatePermissionRequiredMixin,De
             
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = 'Eliminación de una asignatura'
-        context['modelo'] = 'Asignatura'
-        context['url_list'] = reverse_lazy('srea:p_asignatura')
+        context['title'] = 'Eliminación de una facultad'
+        context['modelo'] = 'Facultad'
+        context['url_list'] = reverse_lazy('user:facultad_list')
         return context
 
 

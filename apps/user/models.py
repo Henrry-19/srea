@@ -9,21 +9,9 @@ from apps.srea.estado_civil import estado_civil_ficha_informacion
 from apps.srea.etnia import etnia_ficha
 from datetime import datetime
 from datetime import date
-
+from  apps.srea.models import Curso
 
 #from apps.srea.models import Matricula
-##################Carrera######################
-class Carrera(models.Model):
-    nombre = models.CharField(max_length=50, verbose_name='Nombre', unique=True)
-    duracion = models.PositiveSmallIntegerField(verbose_name='Duración', default=5)
-
-    ###Crear un método llamado toJSON###
-    def toJSON(self):##Me devuelve un diccionario con todos los atributos de mi entidad
-        item=model_to_dict(self) #Mi atributo self contiene mi modelo
-        return item
-
-    def __str__(self):
-        return self.nombre
 ##################FichaUser######################
 class Ficha(models.Model):
     dni = models.CharField(max_length=10, unique=True, verbose_name='Dni')
@@ -69,10 +57,9 @@ class Indicacion(models.Model):
 class User(AbstractUser):
     imagen=models.ImageField(upload_to='users/%Y/%m/%d',null=True,blank=True)
     email=models.EmailField(max_length=254,unique=True,verbose_name='Correo Electrónico')
-    ficha= models.OneToOneField(Ficha,null=True,blank=True,on_delete=models.CASCADE,related_name="ficha", verbose_name="Ficha")
-    carrera = models.ForeignKey(Carrera,null=True, blank=True, on_delete=models.SET_NULL,related_name="carrera", verbose_name="Carrera")
+    ficha= models.OneToOneField(Ficha,null=True,blank=True,on_delete=models.SET_NULL,related_name="ficha", verbose_name="Ficha")
+    curso = models.ForeignKey(Curso,null=True, blank=True, on_delete=models.SET_NULL,related_name="carrera", verbose_name="Carrera")
     indicacion= models.ForeignKey(Indicacion,null=True, blank=True, on_delete=models.SET_NULL, verbose_name="Indicación" )
-   #matricula = models.ForeignKey(Matricula,null=True, on_delete=models.SET_NULL, verbose_name="Indicación" )
     token = models.UUIDField(primary_key=False, editable=False, null=True, blank=True)
     def get_image(self):
         if self.imagen:

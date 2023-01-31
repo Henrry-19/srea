@@ -1,5 +1,6 @@
 from django.urls import path
 from apps.user.views import *
+from apps.user.vistas.facultad import*
 from apps.user.vistas.carerra import*
 from apps.user.vistas.ficha import*
 
@@ -20,6 +21,12 @@ urlpatterns = [
 
     ########################################################################3
     path('user/login', (UserCreateView2.as_view()), name="user_login"),
+#-------------------------Facultad---------------------------------------
+    path('facultad_list/',(FacultadListView.as_view()), name="facultad_list"),
+    path('facultad/', (FacultadCreateView.as_view()), name="facultad"),
+    path('facultad_list/u_facultad/<int:pk>/', FacultadUpdateView.as_view(), name="u_facultad"),
+    path('facultad_list/d_facultad/<int:pk>/', FacultadDeleteView.as_view(), name="d_facultad"),
+
 #-------------------------Carrera---------------------------------------
     path('carrera_list/',(CarreraListView.as_view()), name="carrera_list"),
     path('carrera/', (CarreraCreateView.as_view()), name="carrera"),

@@ -1,29 +1,29 @@
 from django.forms import*
 from apps.user.models import *
 
-class CarreraCreateForm(ModelForm):
-
-    class Meta:
-        model=Carrera
-        fields= '__all__'
-
-    def save(self, commit=True):
-        data = {}
-        form = super()
-        try:
-            if form.is_valid():
-                form.save()
-            else:
-                data['error'] = form.errors
-        except Exception as e:
-            data['error'] = str(e)
-        return data
 
 class FichaCreateForm(ModelForm):
 
     class Meta:
         model=Ficha
         fields= '__all__'
+
+        widgets = {
+            'genero': Select(attrs={
+                'class': 'form-control select2',
+                'style': 'width: 100%',
+            }),
+
+            'etnia': Select(attrs={
+                'class': 'form-control select2',
+                'style': 'width: 100%',
+            }),
+
+            'estado_civil': Select(attrs={
+                'class': 'form-control select2',
+                'style': 'width: 100%',
+            })
+        }
 
     def save(self, commit=True):
         data = {}
@@ -45,7 +45,7 @@ class UserCreateForm(ModelForm):
 
     class Meta:
         model=User
-        fields= ['first_name','last_name','email', 'username', 'password', 'imagen','carrera','ficha', 'groups']
+        fields= ['first_name','last_name','email', 'username', 'password', 'imagen','curso','ficha', 'groups']
         exclude = ['last_login' , 'date_joined', 'is_superuser', 'is_active', 'is_staff', 'user_permissions']
 
         widgets = {
@@ -74,14 +74,23 @@ class UserCreateForm(ModelForm):
                     'placeholder':'Ingrese su password',
                 }
             ),
-
+            'ficha': Select(attrs={
+                'class': 'form-control select2',
+                'style': 'width: 100%',
+                'multiple': 'multiple'
+            }),
+            'curso': Select(attrs={
+                'class': 'form-control select2',
+                'style': 'width: 100%',
+                'multiple': 'multiple'
+            }),
             'groups': SelectMultiple(attrs={
                 'class': 'form-control select2',
                 'style': 'width: 100%',
                 'multiple': 'multiple'
-            })
+            }),
         }
-    
+            
     def save(self, commit=True):
         data = {}
         form = super()
@@ -201,13 +210,7 @@ class UserCreateForm2(ModelForm):
                 attrs={
                     'placeholder':'Ingrese su password',
                 }
-            ),
-
-            'groups': SelectMultiple(attrs={
-                'class': 'form-control select2',
-                'style': 'width: 100%',
-                'multiple': 'multiple'
-            })
+            )
         }
     
     def save(self, commit=True):

@@ -4,13 +4,16 @@
             <a class="nav-link" data-widget="pushmenu" href="" role="button"><i class="fas fa-bars"></i></a>
         </li>
         {% if not request.user.is_staff %}
-            {% if not request.user.carrera %}
+            {% if not request.user.curso %}
                 <li class="nav-item d-none d-sm-inline-block">
                     <!--<a href="#" class="nav-link"></a>-->
                 </li>
             {% else %}
                 <li class="nav-item d-none d-sm-inline-block">
-                    <a href="#" class="nav-link">{{request.user.carrera}}</a>
+                    <!--<a href="#" class="nav-link">{{request.user.carrera.facultad}}</a>-->
+                </li>
+                <li class="nav-item d-none d-sm-inline-block">
+                    <a href="#" class="nav-link">{{request.user.curso}}</a>
                 </li>
             {% endif %}
         {% else %}
@@ -40,7 +43,7 @@
         {% endif %}
         <li class="nav-item dropdown">
             <a class="nav-link" data-toggle="dropdown" href="#">
-                <i class="fas fa-users-cog"></i>{{request.user.username}}
+                <i class="fas fa-users-cog"></i> {{request.user.username}}
             </a>
             <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
                     <span class="dropdown-header">
@@ -51,15 +54,13 @@
                 <div class="dropdown-divider"></div>
                 <a href="{% url 'user:editar_perfil' %}" class="dropdown-item">
                     <i class="fas fa-edit mr-2"></i> Editar perfil
-                    <span class="float-right text-muted text-sm">3 mins</span>
                 </a>
                 <div class="dropdown-divider"></div>
                 <a href="{% url 'user:cambiar_clave' %}" class="dropdown-item">
                     <i class="fas fa-lock mr-2"></i> Editar password
-                    <span class="float-right text-muted text-sm">12 hours</span>
                 </a>
                 <div class="dropdown-divider"></div>
-                <a href="#" class="dropdown-item dropdown-footer">
+                <a href="{% url 'srea:index1' %}" class="dropdown-item dropdown-footer">
                     <p>SREA</p>
                 </a>
             </div>

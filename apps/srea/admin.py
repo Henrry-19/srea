@@ -31,8 +31,10 @@ class PreguntaAdmin(admin.ModelAdmin):
 class MatriculaAdmin(admin.ModelAdmin):
     list_display = ['user','asignatura']
     search_fields = ['user']
-    
-admin.site.register(Matricula)
+
+admin.site.register(Facultad)
+admin.site.register(Curso)
+admin.site.register(Carrera)
 admin.site.register(Pregunta, PreguntaAdmin)
 admin.site.register(Respuesta)
 

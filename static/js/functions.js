@@ -10,7 +10,8 @@ function message_error(obj) {
         html = '<p>' + obj + '</p>';
     }
     Swal.fire({
-        title: 'Aviso!',
+        title: 'Información:',
+        icon:'info',
         html: html
     });
 }

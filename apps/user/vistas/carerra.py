@@ -7,6 +7,7 @@ from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
 from apps.srea.mixins import*
 from apps.user.forms import*
+from apps.srea.forms import*
 
 class CarreraListView(LoginRequiredMixin,IsSuperuserMixin,ListView): #Primera vista basada en clase ListView, permite sobrescribir métodos
     model= Carrera#Primero se indica el modelo o entidad
@@ -43,8 +44,8 @@ class CarreraListView(LoginRequiredMixin,IsSuperuserMixin,ListView): #Primera vi
         context['modelo']='Carrera'#Nombre de identidad
         return context
 
-class CarreraCreateView(CreateView):
-    model=User #Indicar el modelo con el cual se va ha trabajar
+class CarreraCreateView(LoginRequiredMixin,CreateView):
+    model=Carrera #Indicar el modelo con el cual se va ha trabajar
     form_class=CarreraCreateForm #Importando el formulario con el que voy a trabajar
     template_name='carrera/carrera_create.html' # Debo indicarle la ubicación de mi plantilla
     success_url= reverse_lazy('user:carrera_list') #Me permite direccionar a otra plantilla, la funnción reverse_lazy me recibe una url como parámetro
@@ -71,13 +72,13 @@ class CarreraCreateView(CreateView):
 
     def get_context_data(self, **kwargs): #Método que devuelve un diccionario que representa el contexto de la plantilla
         context = super().get_context_data(**kwargs) #Obtengo el diccionario que devuelve el método
-        context['title']='Creación de un usuario' #Puedo enviar variables
-        context['modelo']='User'#Nombre de identidad
+        context['title']='Creación de una carrera' #Puedo enviar variables
+        context['modelo']='Carrera'#Nombre de identidad
         context['url_list']=self.success_url#Ruta abosluta lista de asignatura
         context['action']='add'#Enviar variable action
         return context
 
-class CarreraUpdateView(UpdateView):
+class CarreraUpdateView(LoginRequiredMixin,UpdateView):
     model = Carrera #Indicar el modelo con el cual se va ha trabajar
     form_class = CarreraCreateForm #Importando el formulario con el que voy a trabajar
     template_name = 'carrera/carrera_create.html' #Debo indicarle la ubicación de mi plantilla
@@ -109,7 +110,7 @@ class CarreraUpdateView(UpdateView):
         context['action']='edit'#Enviar variable action
         return context
 
-class CarreraDeleteView(DeleteView):
+class CarreraDeleteView(LoginRequiredMixin,DeleteView):
     model = Carrera #Indicar el modelo con el cual se va ha trabajar
     template_name = 'carrera/carrera_delete.html' #Debo indicarle la ubicación de mi plantilla
     success_url= reverse_lazy('user:carrera_list')#Me permite direccionar a otra plantilla, la función reverse_lazy me recibe una url como parámetro

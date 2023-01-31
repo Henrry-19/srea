@@ -64,7 +64,8 @@
                 errors += '{{ error }}\n';
             {% endfor %}
             Swal.fire({
-                title: 'Aviso!',
+                title: 'Información',
+                icon:'info',
                 text: errors
             });
         {% endif %}

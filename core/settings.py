@@ -85,7 +85,9 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'crum.CurrentRequestUserMiddleware'
+    'crum.CurrentRequestUserMiddleware',
+
+    'django_auto_logout.middleware.auto_logout'
     
 ]
 
@@ -102,6 +104,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+
+                'django_auto_logout.context_processors.auto_logout_client',
             ],
         },
     },
@@ -186,8 +190,8 @@ LOGIN_REDIRECT_URL ='/srea/index1/'
 #LOGOUT_REDIRECT_URL ='/login/'
 LOGOUT_REDIRECT_URL ='/'
 
-LOGIN_URL = '/login/'
-#LOGIN_URL = '/'
+#LOGIN_URL = '/login/'
+LOGIN_URL = '/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/') #Carpeta raíz, se alojan mis archivos media (imágenes, docuementos) 
 
@@ -209,5 +213,12 @@ EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
 
 DOMAIN = ''
+
+#Django session timeout
+AUTO_LOGOUT = {
+    'IDLE_TIME': 10,
+    'REDIRECT_TO_LOGIN_IMMEDIATELY': True,
+    'MESSAGE': 'La sesión ha expirado. Vuelva a iniciar sesión para continuar.',
+}
 
 

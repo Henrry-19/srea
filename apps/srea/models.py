@@ -5,8 +5,21 @@ from core.settings import MEDIA_URL, STATIC_URL
 from apps.srea.tipo_pregunta import tipo_preguntas
 #from apps.user.models import*
 from datetime import date
-from  apps.user.models import User
+#from  apps.user.models import Carrera
 import  random
+
+##################Carrera######################
+class Facultad(models.Model):
+    nombre = models.CharField(max_length=150, verbose_name='Nombre', unique=True)
+    descripcion =models.TextField(verbose_name='Descripción')
+
+    ###Crear un método llamado toJSON###
+    def toJSON(self):##Me devuelve un diccionario con todos los atributos de mi entidad
+        item=model_to_dict(self) #Mi atributo self contiene mi modelo
+        return item
+
+    def __str__(self):
+        return self.nombre
 ##################Asignatura######################    
 class Asignatura(models.Model):
     nombre=models.CharField(max_length=150, verbose_name='Nombre', unique=True)
@@ -32,26 +45,43 @@ class Asignatura(models.Model):
         verbose_name_plural = 'Asignaturas'
         ordering = ['id']   
 
-##################Matrícula######################
-class Matricula(models.Model):
-    numero_ciclo = models.IntegerField(default=1, verbose_name="Número de ciclo") 
-    user=models.ForeignKey(User, on_delete=models.CASCADE,related_name="user", verbose_name="Usuario")    
-    asignatura=models.ForeignKey(Asignatura,null=True, on_delete=models.CASCADE, related_name="asignatura", verbose_name="Asignatura")
+##################Curso######################
+class Curso(models.Model):
+    nombre_ciclo = models.CharField(max_length=150, verbose_name="Nombre de ciclo")   
+    asignatura=models.ManyToManyField(Asignatura,blank=True, related_name="asignatura", verbose_name="Asignatura")
     fecha=models.DateTimeField(auto_now_add=True, verbose_name="Fecha de registro")
-
-    def get_image(self):
-        if self.asignatura.imagen:
-            return '{}{}'.format(MEDIA_URL, self.asignatura.imagen)
-        return '{}{}'.format(STATIC_URL, 'img/usuario.png')
 
         ###Crear un método llamado toJSON###
     def toJSON(self):##Me devuelve un diccionario con todos los atributos de mi entidad
         item=model_to_dict(self) #Mi atributo self contiene mi modelo, se convierte en un diccionario
         item['fecha']=self.fecha.strftime('%Y-%m-%d')
+        item['asignatura']=[{'id':c.id, 'name':c.nombre}for c  in self.asignatura.all()]
         return item
-    
-        
 
+    def __str__(self):
+        return str(self.nombre_ciclo)
+    
+    class Meta:
+        verbose_name = 'Curso'
+        verbose_name_plural = 'Cursos'
+        ordering = ['id']  
+
+        
+##################Carrera######################
+class Carrera(models.Model):
+    facultad = models.ForeignKey(Facultad,null=True, blank=True, on_delete=models.CASCADE,related_name="facultad", verbose_name="Facultad")
+    curso = models.ManyToManyField(Curso, blank=True,related_name="curso", verbose_name="Curso")
+    nombre = models.CharField(max_length=50, verbose_name='Nombre', unique=True)
+    duracion = models.PositiveSmallIntegerField(verbose_name='Duración', default=5)
+
+    ###Crear un método llamado toJSON###
+    def toJSON(self):##Me devuelve un diccionario con todos los atributos de mi entidad
+        item=model_to_dict(self) #Mi atributo self contiene mi modelo
+        item['curso']=[{'id':c.id, 'nombre':c.nombre_ciclo}for c  in self.curso.all()]
+        return item
+
+    def __str__(self):
+        return self.nombre
 
 ##################Test######################
 

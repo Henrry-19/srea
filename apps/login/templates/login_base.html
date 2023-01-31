@@ -28,9 +28,12 @@
     <script src="{% static 'lib/jquery-confirm-v3.3.4/jquery-confirm.min.js' %}"></script>
     <!-- Functions -->
     <script src="{% static 'js/functions.js' %}"></script>
+
+    <!--temporizador-->
+    <link rel="stylesheet" type="text/css" href="https://bootswatch.com/5/flatly/bootstrap.min.css">
     
     {% block head %}
-        
+
     {% endblock %}
 
     {% block extra_head %}
@@ -39,15 +42,21 @@
 </head>
 <body>
 <div class="hold-transition login-page">
+    {% for message in messages %}
+    <div class="message alert-success {{ message.tags }}">
+        {{ message }}
+    </div>
+    {% endfor %}
   <div class="login-logo"> <!--Logo-->
     <a href="{% url 'login'%}"><b>SREA</b></a>
   </div>
-
   <div class="card">
     <div class="card-body login-card-body">
     {% block body %}
+
       {% block content %}
       {% endblock  %}
+
     {% endblock %}
     </div>
   </div>  

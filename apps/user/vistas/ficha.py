@@ -41,6 +41,7 @@ class FichaListView(LoginRequiredMixin,ValidatePermissionRequiredMixin,ListView)
                                 item['position']=position
                                 data.append(item)#Incrusto cada uno de mis elemntos dentro de mi array
                                 position+=1  
+                        
             else:
                 data["error"]='Ha ocurrido un error'
         except Exception as e: #Llamamos a la clase Exceptio para indicar el error

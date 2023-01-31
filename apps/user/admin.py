@@ -12,4 +12,3 @@ class UserAdmin(admin.ModelAdmin):
 admin.site.register(User, UserAdmin)
 admin.site.register(Ficha)
 admin.site.register(Indicacion)
-admin.site.register(Carrera)
