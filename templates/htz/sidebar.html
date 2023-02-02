@@ -38,58 +38,39 @@
                         </p>    
                     </a>
                 </li>
-                {% if request.user.is_staff %}
                     <li class="nav-item">
-                        <a href="{% url 'user:facultad_list' %}" class="nav-link">
+                        <a href="#" class="nav-link">
                             <i class="fas fa-landmark"></i>
                             <p>
-                                Facultad
+                                Unidad I
                             </p>    
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{% url 'user:carrera_list' %}" class="nav-link">
+                        <a href="#" class="nav-link">
                             <i class="fas fa-user-graduate"></i>
                             <p>
-                                Carrera
+                                Unidad II
                             </p>    
                         </a>
                     </li>
-                {% for g in request.user.groups.all %}
                     <li class="nav-item">
-                        <a href="{% url 'srea:p_asignatura' %}" class="nav-link"> 
-                            <i class="fas fa-book"></i>
-                            <p>
-                                Asignaturas
-                            </p>  
-                        </a>
-                    </li>
-                {% endfor %} 
-                    <li class="nav-item">
-                        <a href="{% url 'srea:curso' %}" class="nav-link">
+                        <a href="#" class="nav-link">
                             <i class="fas fa-laptop"></i>
                             <p>
-                                Curso
+                                Unidad III
                             </p>    
                         </a>
                     </li>
-                {% endif %}   
+ 
                     <li class="nav-item">
-                        <a href="{% url 'srea:p_asignatura' %}" class="nav-link"> 
+                        <a href="#" class="nav-link"> 
                             <i class="fas fa-book"></i>
                             <p>
-                            Asignaturas
+                                Unidad IV
                             </p>  
                         </a>
                     </li>
-                <li class="nav-item">
-                    <a href="{% url 'user:ficha_list' %}" class="nav-link">
-                        <i class="fas fa-chalkboard-teacher"></i>
-                        <p>
-                            Ficha
-                        </p>
-                    </a>
-                </li>
                 <li class="nav-item">
                     <a href="#" class="nav-link">
                         <i class="fas fa-comments"></i>
@@ -98,16 +79,6 @@
                         </p>
                     </a>
                 </li>
-                {% if request.user.is_staff %}
-                <li class="nav-item">
-                    <a href="{% url 'srea:test' %}" class="nav-link"> 
-                        <i class="fas fa-clipboard"></i>
-                        <p>
-                            Test
-                        </p>  
-                    </a>
-                </li>
-                {% endif %}
                
             </ul>
         </nav>

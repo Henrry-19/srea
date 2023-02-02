@@ -8,11 +8,15 @@
 <tr>
     <th scope="col" style="width: 5%;">Nro</th>
     <th scope="col" style="width: 20%;">Nombres</th>
-    <th scope="col" style="width: 20%;">Username</th>
-    <th scope="col" style="width: 20%;">Fecha de registro</th>
+    <th scope="col" style="width: 10%;">Username</th>
+    <th scope="col" style="width: 10%;">Fecha de registro</th>
     <th scope="col" style="width: 10%;">Imagen</th>
     <th scope="col" style="width: 10%;">Grupos</th>
-    <th scope="col" style="width: 15%;">Opciones</th>
+    {% if request.user.is_staff %}
+        <th scope="col" style="width: 15%;">Opciones</th>
+    {% else %}
+    <th scope="col" style="width: 15%;">Correo</th>
+    {% endif %}
 </tr>
 {%endblock%}
 

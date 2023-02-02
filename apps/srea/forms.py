@@ -9,7 +9,13 @@ class FacultadCreateForm(ModelForm):
         model=Facultad
         fields= '__all__'
 
-
+        widgets = {
+                'carrera': SelectMultiple(attrs={
+                    'class': 'form-control select2',
+                    'style': 'width: 100%',
+                    'multiple': 'multiple'
+                })
+        }
 
     def save(self, commit=True):
         data = {}
@@ -27,7 +33,7 @@ class CarreraCreateForm(ModelForm):
 
     class Meta:
         model=Carrera
-        fields= '__all__'
+        fields= ['nombre','duracion','curso']
 
         widgets = {
            'curso': SelectMultiple(attrs={
@@ -55,19 +61,32 @@ class AsignaturaCreateForm(ModelForm):
 
     class Meta:
         model=Asignatura
-        fields= ['nombre','detalle','imagen']
+        fields= ['users','nombre','detalle','imagen']
+
+        widgets = {
+           'users': SelectMultiple(attrs={
+                'class': 'form-control select2',
+                'style': 'width: 100%',
+                'multiple': 'multiple'
+            }),
+        }
 
     def save(self, commit=True):
         data = {}
         form = super()
         try:
             if form.is_valid():
-                form.save()
+                a=form.save()
+                a.users.clear() #Limpia los grupos
+                for u in self.cleaned_data['users']:
+                    a.users.add(u)
             else:
                 data['error'] = form.errors
         except Exception as e:
             data['error'] = str(e)
         return data
+    
+    
 
 class PreguntaCreateForm(ModelForm):
 

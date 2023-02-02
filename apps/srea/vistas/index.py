@@ -25,5 +25,6 @@ class IndexView(LoginRequiredMixin,TemplateView):
         return context
 
 
-
+class IndexViewAsignatura(LoginRequiredMixin,TemplateView):
+    template_name = 'htz/body.html'
 

@@ -21,6 +21,7 @@ app_name="apps.srea" #Variable que me permite decir como se va a llamar la ruta 
 urlpatterns = [
 #-------------------------------home---------------------------------------#
 path('index1/',IndexView.as_view(), name="index1"),
+path('index2/',IndexViewAsignatura.as_view(), name="index_asignatura"),
 
 #-------------------------Usuario---------------------------------------
 #    path('u_lista/',(UsuarioListView.as_view()), name="principal"),

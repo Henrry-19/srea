@@ -216,7 +216,7 @@ DOMAIN = ''
 
 #Django session timeout
 AUTO_LOGOUT = {
-    'IDLE_TIME': 10,
+    'IDLE_TIME': 3600, #1 hora 3600
     'REDIRECT_TO_LOGIN_IMMEDIATELY': True,
     'MESSAGE': 'La sesión ha expirado. Vuelva a iniciar sesión para continuar.',
 }

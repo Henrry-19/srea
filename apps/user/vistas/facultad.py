@@ -50,7 +50,7 @@ class FacultadListView(LoginRequiredMixin,ValidatePermissionRequiredMixin,ListVi
 
 
 class FacultadCreateView(LoginRequiredMixin,ValidatePermissionRequiredMixin,CreateView):
-    model=Curso #Indicar el modelo con el cual se va ha trabajar
+    model=Facultad #Indicar el modelo con el cual se va ha trabajar
     form_class=FacultadCreateForm #Importando el formulario con el que voy a trabajar
     template_name='facultad/facultad_create.html' # Debo indicarle la ubicación de mi plantilla
     permission_required='add_facultad'
@@ -123,7 +123,7 @@ class FacultadUpdateView(LoginRequiredMixin,ValidatePermissionRequiredMixin,Upda
 
 
 class FacultadDeleteView(LoginRequiredMixin,ValidatePermissionRequiredMixin,DeleteView):
-    model = Curso #Indicar el modelo con el cual se va ha trabajar
+    model = Facultad #Indicar el modelo con el cual se va ha trabajar
     template_name = 'facultad/facultad_delete.html' #Debo indicarle la ubicación de mi plantilla
     success_url= reverse_lazy('user:facultad_list')#Me permite direccionar a otra plantilla, la función reverse_lazy me recibe una url como parámetro
     permission_required='delete_facultad'

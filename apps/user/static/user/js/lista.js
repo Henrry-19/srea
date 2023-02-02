@@ -31,6 +31,7 @@ $(function () {
                 }
             },
 
+
             {
                 targets: [-2],
                 class: 'text-center',
@@ -43,14 +44,30 @@ $(function () {
                     return html;
                 }
             },
+
+            /*{
+                targets: [-2],
+                class: 'text-center',
+                orderable: false,
+                render: function (data, type, row) {
+                    var html = '';
+                    html += '<span class="badge badge-success">' + row.curso + '</span> ';
+                    return html;
+                }
+            },*/
             
             {
                 targets: [-1],
                 class: 'text-center',
                 orderable: false,
                 render: function (data, type, row) {
-                    var buttons = '<a href="/user/user_list/u_user/' + row.id + '/" class="btn btn-warning btn-xs btn-flat"><i class="fas fa-edit"></i></a> ';
-                    buttons += '<a href="/user/user_list/d_user/' + row.id + '/" type="button" class="btn btn-danger btn-xs btn-flat"><i class="fas fa-trash-alt"></i></a>';
+                    //if (row.is_staff) {//
+                        var buttons = '<a href="/user/user_list/u_user/' + row.id + '/" class="btn btn-warning btn-xs btn-flat"><i class="fas fa-edit"></i></a> ';
+                        buttons += '<a href="/user/user_list/d_user/' + row.id + '/" type="button" class="btn btn-danger btn-xs btn-flat"><i class="fas fa-trash-alt"></i></a>';
+                   /* } else{
+                        var buttons = '<span class="badge badge-accent-dark">' + row.email + '</span> ';
+                    }*/
+                    
                     return buttons;
                 }
             },

@@ -15,16 +15,24 @@ $(function () {
         columns: [
             {"data": "position"},
             {"data": "dni"},
+            {"data": "user"},        //[-6]
             {"data": "birthday"},
             {"data": "genero"},
             {"data": "direccion"},
-            {"data": "ocupacion"},
-            {"data": "tecnica_estudio"},
-            {"data": "etnia"},
             {"data": "estado_civil"},
             {"data": "position"},
         ],
-        columnDefs: [           
+        columnDefs: [ 
+            {
+                targets: [-6],
+                class: 'text-center',
+                orderable: false,
+                render: function (data, type, row) {
+                    var html = '';
+                    html += '<span class="badge badge-success">' + row.user + '</span> ';
+                    return html;
+                }
+            },          
             {
                 targets: [-1],
                 class: 'text-center',
@@ -32,6 +40,7 @@ $(function () {
                 render: function (data, type, row) {
                     var buttons = '<a href="/user/ficha_list/u_ficha/' + row.id + '/" class="btn btn-warning btn-xs btn-flat"><i class="fas fa-edit"></i></a> ';
                     buttons += '<a href="/user/ficha_list/d_ficha/' + row.id + '/" type="button" class="btn btn-danger btn-xs btn-flat"><i class="fas fa-trash-alt"></i></a>';
+                    buttons += ' <a href="#" type="button" class="btn btn-primary btn-xs btn-flat"><i class="fa fa-print"></i></a>';
                     return buttons;
                 }
             },

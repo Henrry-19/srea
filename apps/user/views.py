@@ -15,6 +15,7 @@ from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
 
 
+
 class UserListView(LoginRequiredMixin,ValidatePermissionRequiredMixin,ListView): #Primera vista basada en clase ListView, permite sobrescribir métodos
     context_object_name = 'matricula'
     model= User#Primero se indica el modelo o entidad
@@ -41,13 +42,15 @@ class UserListView(LoginRequiredMixin,ValidatePermissionRequiredMixin,ListView):
                 if  not request.user.is_staff:
                      #user=User.objects.filter(pk=request.user.pk)
                      #user=User.objects.filter(carrera=request.user.carrera.pk)
-                     user=User.objects.filter(curso=request.user.curso.pk)
-                     #print(user[0])
-                     for i in user:
-                        item= i.toJSON()
-                        item['position']=position
-                        data.append(item)#Incrusto cada uno de mis elementos dentro de mi array
-                        position+=1
+                     user=User.objects.filter(pk=request.user.pk)
+                     for u in user:
+                         for c in Curso.objects.filter(curso=u.id):
+                            for i  in User.objects.filter(curso=c.id):
+                            #   print(a)
+                                item= i.toJSON()
+                                item['position']=position
+                                data.append(item)#Incrusto cada uno de mis elementos dentro de mi array
+                                position+=1
             else:
                 data["error"]='Ha ocurrido un error'
         except Exception as e: #Llamamos a la clase Exceptio para indicar el error

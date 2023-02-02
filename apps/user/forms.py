@@ -45,7 +45,7 @@ class UserCreateForm(ModelForm):
 
     class Meta:
         model=User
-        fields= ['first_name','last_name','email', 'username', 'password', 'imagen','curso','ficha', 'groups']
+        fields= ['first_name','last_name','email', 'username', 'password', 'imagen','groups']
         exclude = ['last_login' , 'date_joined', 'is_superuser', 'is_active', 'is_staff', 'user_permissions']
 
         widgets = {
@@ -74,16 +74,6 @@ class UserCreateForm(ModelForm):
                     'placeholder':'Ingrese su password',
                 }
             ),
-            'ficha': Select(attrs={
-                'class': 'form-control select2',
-                'style': 'width: 100%',
-                'multiple': 'multiple'
-            }),
-            'curso': Select(attrs={
-                'class': 'form-control select2',
-                'style': 'width: 100%',
-                'multiple': 'multiple'
-            }),
             'groups': SelectMultiple(attrs={
                 'class': 'form-control select2',
                 'style': 'width: 100%',
@@ -105,9 +95,15 @@ class UserCreateForm(ModelForm):
                      if user.password != pwd:
                         u.set_password(pwd)
                 u.save()
+                ###########Groups#################
                 u.groups.clear() #Limpia los grupos
                 for g in self.cleaned_data['groups']:
                     u.groups.add(g)
+                ###########Cursos#################
+                #u.curso.clear() #Limpia los cursos
+                #for c in self.cleaned_data['curso']:
+                #    u.curso.add(c)
+
             else:
                 data['error'] = form.errors
         except Exception as e:

@@ -39,16 +39,16 @@ class AsignaturaListView(LoginRequiredMixin,ValidatePermissionRequiredMixin,List
                     user=User.objects.filter(pk=request.user.pk)
                     #print(user)
                     for u in user:
-                    #  print(u)
-                      for c in Curso.objects.filter(pk=u.curso.id):
-                    #        pass
+                         #print(u)
+                         for i in Asignatura.objects.filter(users=u.id):
+                    #        print(i)
                     #        print(c) 
-                            for i in Asignatura.objects.filter(asignatura=c.id):
+                            #for i in Asignatura.objects.filter(asignatura=c.id):
                             #     print(i)
-                                item= i.toJSON()
-                                item['position']=position
-                                data.append(item)#Incrusto cada uno de mis elemntos dentro de mi array
-                                position+=1                   
+                            item= i.toJSON()
+                            item['position']=position
+                            data.append(item)#Incrusto cada uno de mis elemntos dentro de mi array
+                            position+=1                   
             else:
                 data["error"]='Ha ocurrido un error'
         except Exception as e: #Llamamos a la clase Exceptio para indicar el error

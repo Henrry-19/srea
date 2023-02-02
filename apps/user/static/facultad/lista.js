@@ -16,7 +16,9 @@ $(function () {
             {"data": "position"},
             {"data": "nombre"},
             {"data": "descripcion"},
+            {"data": "carrera"},
             {"data": "position"},
+
         ],
         columnDefs: [           
             {

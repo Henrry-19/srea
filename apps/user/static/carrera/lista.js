@@ -16,6 +16,7 @@ $(function () {
             {"data": "position"},
             {"data": "nombre"},
             {"data": "duracion"},
+            {"data": "facultad"},
             {"data": "position"},
         ],
         columnDefs: [           

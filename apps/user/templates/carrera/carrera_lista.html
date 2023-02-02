@@ -2,53 +2,35 @@
 {% load widget_tweaks %}
 {% load static %}
 {% block head_list %}
-    <script src="{% static 'carrera/lista.js' %}"></script>
+   
 {% endblock %}
 {%block colums%}
 <tr>
     <th scope="col" style="width: 5%;">Nro</th>
     <th scope="col" style="width: 20%;">Nombre</th>
     <th scope="col" style="width: 20%;">Duración</th>
+    <th scope="col" style="width: 20%;">Ciclos</th>
     <th scope="col" style="width: 15%;">Opciones</th>
 </tr>
 {%endblock%}
 
 {%block rows%}
+    {%for m in object_list%} 
+    <tr>           
+        <td>{{m.id}}</td>
+        <td>{{m.nombre}}</td>
+        <td>{{m.duracion}}</td>
+        <td>{% for a in m.curso.all %}<span class="badge badge-success"> {{ a.nombre_ciclo }}</span> <br> {% endfor %}</td>
+        <td>
+        <a href="/user/carrera_list/u_carrera/{{m.id}}" class="btn btn-warning btn-xs btn-flat"><i class="fas fa-edit"></i></a>
+        <a href="/user/carrera_list/d_carrera/{{m.id}}" class="btn btn-danger btn-xs"><i class="fas fa-trash-alt"></i></a>
+        </td>
+    </tr>
+    {%endfor%}
 
 {%endblock%}
 
 
 {% block javascript %}
-    <!-- Modal -->
-    <div class="modal fade" id="myModalUser" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-         aria-hidden="true">
-        <form method="post" action="." enctype="multipart/form-data">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">
-                            <b><i class="fas fa-search"></i> <span></span></b>
-                        </h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="container-fluid">
-                            <input name="action" type="hidden" value="add">
-                            {% for field in form.visible_fields %}
-                                <div class="form-group">
-                                    <label for="email">{{ field.label }}:</label>
-                                    {{ field|add_class:'form-control'|attr:'autocomplete:off' }}
-                                </div>
-                            {% endfor %}
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary btn-flat btn-block"><i class="fas fa-save"></i> Guardar</button>
-                    </div>
-                </div>
-            </div>
-        </form>
-    </div>
+    
 {% endblock %}

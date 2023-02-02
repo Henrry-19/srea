@@ -37,16 +37,20 @@
       </table>
   </div>
   <div class="card-footer">
-  {% if request.user.is_staff %}  
     {% block buttons_list %}
+    {% if request.user.is_staff %}
     <a href="{{url_create}}" class="btn btn-primary btn-flat btnTest">
       <i class="fas fa-plus"></i>Nuevo registro
     </a>
     <a href="{{list_url}}" class="btn btn-success btn-flat">
       <i class="fas fa-sync"></i> Actualizar
-    </a>   
+    </a>
+    {% else %}
+    <a href="{{list_url}}" class="btn btn-success btn-flat">
+      <i class="fas fa-sync"></i> Actualizar
+    </a>
+    {% endif %}  
     {% endblock%}
-    {% endif %}
   </div>
 </div>
 {% endblock %}
