@@ -11,6 +11,7 @@ class AsignaturaAdmin(admin.ModelAdmin):
     
 admin.site.register(Asignatura, AsignaturaAdmin)
 
+admin.site.register(Unidad)
 admin.site.register(Test)
 
 class RespuestaInline(admin.StackedInline):

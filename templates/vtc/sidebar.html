@@ -26,18 +26,18 @@
                         </p>    
                     </a>
                 </li>
+                 {% if request.user.is_staff %}
                 <li class="nav-item">
                     <a href="{% url 'user:user_list' %}" class="nav-link">
                         <i class="menu-icon fa fa-users"></i>
                         <p>
-                        {% if request.user.is_staff %}
+                       
                             Usuarios
-                        {% else %}
-                            Participantes
-                        {% endif %}
+                        
                         </p>    
                     </a>
                 </li>
+                {% endif %}
                 {% if request.user.is_staff %}
                     <li class="nav-item">
                         <a href="{% url 'user:facultad_list' %}" class="nav-link">

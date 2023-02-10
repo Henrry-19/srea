@@ -85,6 +85,20 @@ class Facultad(models.Model):
     def __str__(self):
         return self.nombre
 
+
+##################Unidad####################
+class Unidad(models.Model):
+    nombre = models.CharField(max_length=150, verbose_name='Nombre', unique=True)
+    descripcion =models.TextField(verbose_name='Descripción')
+    asignaturas=models.ManyToManyField(Asignatura, blank=True, related_name="asignaturas", verbose_name="Asignatura")
+
+    def __str__(self):
+        return self.nombre
+
+    class Meta:
+        verbose_name = 'Unidad'
+        verbose_name_plural = 'Unidades'
+        ordering = ['id']
 ##################Test######################
 class Test(models.Model):
     asignatura = models.ForeignKey(Asignatura,on_delete=models.CASCADE, verbose_name="Asignatura")

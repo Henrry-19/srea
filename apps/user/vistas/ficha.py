@@ -33,14 +33,12 @@ class FichaListView(LoginRequiredMixin,ValidatePermissionRequiredMixin,ListView)
                 if  not request.user.is_staff:
                     user=User.objects.filter(pk=request.user.pk)
                     for u in user:
-                       #print(u.ficha)
-                       #print(Ficha.objects.filter(pk=u.ficha))
-                       if u.ficha!=None:
-                        for i in Ficha.objects.filter(pk=u.ficha.pk):
-                                item= i.toJSON()
-                                item['position']=position
-                                data.append(item)#Incrusto cada uno de mis elemntos dentro de mi array
-                                position+=1  
+                    #   if u.ficha!=None:
+                        for i in Ficha.objects.filter(user=u.id):
+                            item= i.toJSON()
+                            item['position']=position
+                            data.append(item)#Incrusto cada uno de mis elemntos dentro de mi array
+                            position+=1  
                         
             else:
                 data["error"]='Ha ocurrido un error'

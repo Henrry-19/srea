@@ -27,7 +27,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{% url 'user:user_list' %}" class="nav-link">
+                    <a href="#" class="nav-link">
                         <i class="menu-icon fa fa-users"></i>
                         <p>
                         {% if request.user.is_staff %}
@@ -38,39 +38,16 @@
                         </p>    
                     </a>
                 </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link">
-                            <i class="fas fa-landmark"></i>
-                            <p>
-                                Unidad I
-                            </p>    
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link">
-                            <i class="fas fa-user-graduate"></i>
-                            <p>
-                                Unidad II
-                            </p>    
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link">
-                            <i class="fas fa-laptop"></i>
-                            <p>
-                                Unidad III
-                            </p>    
-                        </a>
-                    </li>
- 
-                    <li class="nav-item">
-                        <a href="#" class="nav-link"> 
-                            <i class="fas fa-book"></i>
-                            <p>
-                                Unidad IV
-                            </p>  
-                        </a>
-                    </li>
+                {% for u in object_list %}
+                <li class="nav-item">
+                    <a href="/srea/u_unidad/{{u.id}}" class="nav-link">
+                        <i class="far fa-folder"></i>
+                        <p>
+                            {{ u.nombre }}
+                        </p>
+                    </a>
+                </li>             
+                {% endfor %}
                 <li class="nav-item">
                     <a href="#" class="nav-link">
                         <i class="fas fa-comments"></i>
@@ -78,8 +55,7 @@
                             Mensajes
                         </p>
                     </a>
-                </li>
-               
+                </li>              
             </ul>
         </nav>
     </div>

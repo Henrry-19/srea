@@ -40,7 +40,7 @@ $(function () {
                         var buttons = '<a href="/srea/a_lista/u_asignatura/' + row.id + '/" class="btn btn-warning btn-xs btn-flat"><i class="fas fa-edit"></i></a> ';
                         buttons += '<a href="/srea/a_lista/d_asignatura/' + row.id + '/" type="button" class="btn btn-danger btn-xs btn-flat"><i class="fas fa-trash-alt"></i> </a>';
                         //Ingreso al test
-                        buttons += ' <a href="/srea/index2/" type="button" class="btn btn-primary btn-xs btn-flat"> <i class="fa fa-search"> Ver</i> </a>';
+                        buttons += ' <a href="/srea/u_lista/' + row.id + '/" type="button" class="btn btn-primary btn-xs btn-flat"> <i class="fa fa-search"> Ver</i> </a>';
                     
                     return buttons;
                 }
