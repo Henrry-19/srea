@@ -32,7 +32,7 @@
                         <i class="menu-icon fa fa-users"></i>
                         <p>
                        
-                            Usuarios
+                            Usuario
                         
                         </p>    
                     </a>
@@ -60,7 +60,7 @@
                         <a href="{% url 'srea:p_asignatura' %}" class="nav-link"> 
                             <i class="fas fa-book"></i>
                             <p>
-                                Asignaturas
+                                Asignatura
                             </p>  
                         </a>
                     </li>
@@ -78,10 +78,20 @@
                         <a href="{% url 'srea:p_asignatura' %}" class="nav-link"> 
                             <i class="fas fa-book"></i>
                             <p>
-                            Asignaturas
+                            Asignatura
                             </p>  
                         </a>
                     </li>
+                    {% if request.user.is_staff %}
+                    <li class="nav-item">
+                        <a href="{% url 'srea:unidad' %}" class="nav-link"> 
+                            <i class="fa fa-folder"></i>
+                            <p>
+                            Unidad
+                            </p>  
+                        </a>
+                    </li>
+                    {% endif %}
                 <li class="nav-item">
                     <a href="{% url 'user:ficha_list' %}" class="nav-link">
                         <i class="fas fa-chalkboard-teacher"></i>
@@ -104,6 +114,14 @@
                         <i class="fas fa-clipboard"></i>
                         <p>
                             Test
+                        </p>  
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'srea:pregunta' %}" class="nav-link"> 
+                        <i class="fas fa-clipboard"></i>
+                        <p>
+                            Pregunta
                         </p>  
                     </a>
                 </li>

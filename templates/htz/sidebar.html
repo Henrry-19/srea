@@ -31,16 +31,16 @@
                         <i class="menu-icon fa fa-users"></i>
                         <p>
                         {% if request.user.is_staff %}
-                            Usuarios
+                            Usuario
                         {% else %}
-                            Participantes
+                            Participante
                         {% endif %}
                         </p>    
                     </a>
                 </li>
                 {% for u in object_list %}
                 <li class="nav-item">
-                    <a href="/srea/u_unidad/{{u.id}}" class="nav-link">
+                    <a href="#" class="nav-link">
                         <i class="far fa-folder"></i>
                         <p>
                             {{ u.nombre }}
@@ -52,7 +52,7 @@
                     <a href="#" class="nav-link">
                         <i class="fas fa-comments"></i>
                         <p>
-                            Mensajes
+                            Mensaje
                         </p>
                     </a>
                 </li>              

@@ -1,30 +1,25 @@
-{% extends 'htz/body.html' %}
+{% extends 'base_list.html' %}
+{% load widget_tweaks %}
 {% load static %}
-{% block head %}
-    <link rel="stylesheet" href="{% static 'lib/datatables-1.10.20/css/dataTables.bootstrap4.min.css' %}"/>
-    <link rel="stylesheet" href="{% static 'lib/datatables-1.10.20/plugins/responsive-2.2.3/css/responsive.bootstrap4.min.css' %}"/>
-    <script src="{% static 'lib/datatables-1.10.20/js/jquery.dataTables.js' %}"></script>
-    <script src="{% static 'lib/datatables-1.10.20/js/dataTables.bootstrap4.min.js' %}"></script>
-    <script src="{% static 'lib/datatables-1.10.20/plugins/responsive-2.2.3/js/dataTables.responsive.min.js' %}"></script>
-    <script src="{% static 'lib/datatables-1.10.20/plugins/responsive-2.2.3/js/responsive.bootstrap4.min.js' %}"></script>
-    <link rel="stylesheet" href={% static 'css/contenedor.css' %}>
-    {% block head_list %}
-
-    {% endblock %}
-
+{% block head_list %}
+    <script src="{% static 'unidad/lista.js' %}"></script>
 {% endblock %}
+{%block colums%}
+<tr>
+    <th scope="col" style="width: 5%;">Nro</th>
+    <th scope="col" style="width: 10%;">Nombre</th>
+    <th scope="col" style="width: 20%;">Descripción</th>
+    <th scope="col" style="width: 15%;">Asignaturas</th>
+    <th scope="col" style="width: 15%;">Test</th>
+    <th scope="col" style="width: 15%;">Opciones</th>
+</tr>
+{%endblock%}
 
-{% block content %}
-    <div class="container">
-        <div class="left">
-            <h1>TEST</h1>
-            <div class="video-responsive">
-                dd
-            </div>
-        </div>
-        <div class="right">
-            <h3 id="h3">Ejemplo de un formulario</h3>
-        </div>
-    </div>
+{%block rows%}
+
+{%endblock%}
+
+
+{% block javascript %}
+    <!-- Modal -->
 {% endblock %}
-

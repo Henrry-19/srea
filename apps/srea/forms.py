@@ -91,8 +91,16 @@ class AsignaturaCreateForm(ModelForm):
 class UnidadCreateForm(ModelForm):
 
     class Meta:
-        model=Pregunta
+        model=Unidad
         fields= '__all__'
+
+        widgets = {
+           'asignaturas': SelectMultiple(attrs={
+                'class': 'form-control select2',
+                'style': 'width: 100%',
+                'multiple': 'multiple'
+            }),
+        }
 
     def save(self, commit=True):
         data = {}

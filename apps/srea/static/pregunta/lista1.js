@@ -17,10 +17,23 @@ $(function () {
             {"data": "position"},
             {"data": "pregunta"},
             {"data": "tipoPregunta"},
+            {"data": "respuesta"},
             {"data": "position"}
 
         ],
         columnDefs: [
+            {
+                targets: [-2],
+                class: 'text-center',
+                orderable: false,
+                render: function (data, type, row) {
+                    var html = '';
+                    $.each(row.respuesta, function (key, value) {
+                        html += '<span class="badge badge-success">' + value.respuesta + '</span> ';
+                    });
+                    return html;
+                }
+            },
 
             {
                 targets: [-1],

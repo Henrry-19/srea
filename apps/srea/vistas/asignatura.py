@@ -41,10 +41,6 @@ class AsignaturaListView(LoginRequiredMixin,ValidatePermissionRequiredMixin,List
                     for u in user:
                          #print(u)
                          for i in Asignatura.objects.filter(users=u.id):
-                    #        print(i)
-                    #        print(c) 
-                            #for i in Asignatura.objects.filter(asignatura=c.id):
-                            #     print(i)
                             item= i.toJSON()
                             item['position']=position
                             data.append(item)#Incrusto cada uno de mis elemntos dentro de mi array

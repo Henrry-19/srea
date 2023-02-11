@@ -18,10 +18,23 @@ $(function () {
             {"data": "titulo"},
             {"data": "descripcion"},
             {"data": "fecha"},
+            {"data": "unidad"},
             {"data": "position"}
 
         ],
         columnDefs: [
+            {
+                targets: [-2],
+                class: 'text-center',
+                orderable: false,
+                render: function (data, type, row) {
+                    var html = '';
+                    $.each(row.unidad, function (key, value) {
+                        html += '<span class="badge badge-success">' + value.nombre + '</span> ';
+                    });
+                    return html;
+                }
+            },
 
             {
                 targets: [-1],

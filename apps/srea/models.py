@@ -19,6 +19,14 @@ class Asignatura(models.Model):
         if self.imagen:
             return '{}{}'.format(MEDIA_URL, self.imagen)
         return '{}{}'.format(STATIC_URL, 'img/usuario.png')
+
+
+    def get_unidad(self):
+        unidad_objs=list(Unidad.objects.filter(asignaturas=self))
+        data = []
+        for u_obj  in unidad_objs:
+            data.append(u_obj)
+        return data
     
      ###Crear un método llamado toJSON###
     def toJSON(self):##Me devuelve un diccionario con todos los atributos de mi entidad
@@ -92,6 +100,20 @@ class Unidad(models.Model):
     descripcion =models.TextField(verbose_name='Descripción')
     asignaturas=models.ManyToManyField(Asignatura, blank=True, related_name="asignaturas", verbose_name="Asignatura")
 
+    def get_test(self):
+        test_objs=list(Test.objects.filter(unidad=self))
+        data = []
+        for u_obj  in test_objs:
+            print(u_obj)
+            data.append(u_obj)
+        return data
+
+    def toJSON(self):##Me devuelve un diccionario con todos los atributos de mi entidad
+        item=model_to_dict(self) #Mi atributo self contiene mi modelo, se convierte en un diccionario
+        item['test']=[{'id':t.id, 'titulo':t.titulo}for t  in self.get_test()]
+        item['asignaturas']=[{'id':c.id, 'nombre':c.nombre}for c  in self.asignaturas.all()]
+        return item
+
     def __str__(self):
         return self.nombre
 
@@ -101,13 +123,14 @@ class Unidad(models.Model):
         ordering = ['id']
 ##################Test######################
 class Test(models.Model):
-    asignatura = models.ForeignKey(Asignatura,on_delete=models.CASCADE, verbose_name="Asignatura")
+    unidad = models.ManyToManyField(Unidad,blank=True,related_name="unidad", verbose_name="Unidad")
     titulo = models.CharField(max_length=150, verbose_name='Título')
     descripcion = models.TextField(null=True, blank=True,verbose_name="Descripción")
     fecha = models.DateTimeField(auto_now_add=True, verbose_name="Fecha de publicación") 
     
     def toJSON(self):##Me devuelve un diccionario con todos los atributos de mi entidad
         item=model_to_dict(self) #Mi atributo self contiene mi modelo, se convierte en un diccionario
+        item['unidad']=[{'id':u.id, 'nombre':u.nombre}for u  in self.unidad.all()]
         item['fecha']=self.fecha.strftime('%Y-%m-%d')
         return item
 
@@ -125,17 +148,6 @@ class Pregunta(models.Model):
     pregunta=models.TextField(null=True, blank=True,verbose_name='Texto de la pregunta')
     tipoPregunta= models.CharField(max_length = 2, choices=tipo_preguntas, verbose_name='Tipo de preguntas')
     
-    def toJSON(self):##Me devuelve un diccionario con todos los atributos de mi entidad
-        item=model_to_dict(self) #Mi atributo self contiene mi modelo, se convierte en un diccionario
-        return item
-
-    def __str__(self):
-        return self.pregunta
-
-    class Meta:
-        verbose_name = 'Pregunta'
-        verbose_name_plural = 'Preguntas'
-        ordering = ['id']
 
     def get_respuestas(self):
         respuesta_objs=list(Respuesta.objects.filter(pregunta = self))
@@ -146,6 +158,20 @@ class Pregunta(models.Model):
                 'respuesta':respuesta_obj.respuesta
             })
         return data
+
+    def toJSON(self):##Me devuelve un diccionario con todos los atributos de mi entidad
+        item=model_to_dict(self) #Mi atributo self contiene mi modelo, se convierte en un diccionario
+        item['respuesta']= self.get_respuestas()
+        return item
+
+    def __str__(self):
+        return self.pregunta
+
+    class Meta:
+        verbose_name = 'Pregunta'
+        verbose_name_plural = 'Preguntas'
+        ordering = ['id']
+
 ##################Respuesta######################
 
 class Respuesta(models.Model):

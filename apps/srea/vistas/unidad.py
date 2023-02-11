@@ -34,7 +34,7 @@ class UnidadListView(LoginRequiredMixin,ValidatePermissionRequiredMixin,ListView
                         data.append(item)#Incrusto cada uno de mis elemntos dentro de mi array
                         position+=1
                 if  not request.user.is_staff:
-                    pass                   
+                    pass
             else:
                 data["error"]='Ha ocurrido un error'
         except Exception as e: #Llamamos a la clase Exceptio para indicar el error
@@ -68,14 +68,13 @@ class UnidadesListView(LoginRequiredMixin,ValidatePermissionRequiredMixin,ListVi
                 position = 1
                 if request.user.is_staff :
                     unidad=Unidad.objects.all()
-                    
                     for i in unidad:
                         item= i.toJSON()
                         item['position']=position
                         data.append(item)#Incrusto cada uno de mis elemntos dentro de mi array
                         position+=1
                 if  not request.user.is_staff:
-                    pass                   
+                    pass
             else:
                 data["error"]='Ha ocurrido un error'
         except Exception as e: #Llamamos a la clase Exceptio para indicar el error
@@ -85,7 +84,7 @@ class UnidadesListView(LoginRequiredMixin,ValidatePermissionRequiredMixin,ListVi
     def get_context_data(self, **kwargs): #Método que devuelve un diccionario que representa el contexto de la plantilla
         context = super().get_context_data(**kwargs) #Obtengo el diccionario que devuelve el método
         context['title']='Listado de Unidad' #Puedo enviar variables
-        #context['url_create']=reverse_lazy('srea:unidad')#Ruta abosluta creación de usuario
+        context['url_create']=reverse_lazy('srea:unidad_create')#Ruta abosluta creación de usuario
         #context['url_list']=reverse_lazy('srea:unidad')#Ruta abosluta lista de usuario
         context['modelo']='Unidades'#Nombre de identidad
        
@@ -134,19 +133,19 @@ class UnidadCreateView(LoginRequiredMixin,ValidatePermissionRequiredMixin,Create
         context = super().get_context_data(**kwargs) #Obtengo el diccionario que devuelve el método
         context['title']='Creación de una unidad' #Puedo enviar variables
         context['modelo']='Unidad'#Nombre de identidad
-        context['url_list']=reverse_lazy('srea:p_unidad')#Ruta abosluta lista de asignatura
+        context['url_list']=reverse_lazy('srea:unidad')#Ruta abosluta lista de asignatura
         context['action']='add'#Enviar variable action
         return context
 
 
 class UnidadUpdateView(LoginRequiredMixin,ValidatePermissionRequiredMixin,UpdateView):
-    model = Asignatura #Indicar el modelo con el cual se va ha trabajar
-    form_class = AsignaturaCreateForm #Importando el formulario con el que voy a trabajar
-    template_name = 'asignatura/asignatura_create.html' #Debo indicarle la ubicación de mi plantilla
-    permission_required='change_asignatura'
+    model = Unidad #Indicar el modelo con el cual se va ha trabajar
+    form_class = UnidadCreateForm #Importando el formulario con el que voy a trabajar
+    template_name = 'unidad/unidad_create.html' #Debo indicarle la ubicación de mi plantilla
+    permission_required='change_unidad'
 
 
-    success_url = reverse_lazy('srea:asignatura') #Me permite direccionar a otra plantilla, la función reverse_lazy me recibe una url como parámetro
+    success_url = reverse_lazy('srea:unidad_create') #Me permite direccionar a otra plantilla, la función reverse_lazy me recibe una url como parámetro
     #@method_decorator(csrf_exempt) #Mecanismo de defensa de django
 
     def dispatch(self, request, *args, **kwargs):
@@ -168,17 +167,17 @@ class UnidadUpdateView(LoginRequiredMixin,ValidatePermissionRequiredMixin,Update
         
     def get_context_data(self, **kwargs): #Método que devuelve un diccionario que representa el contexto de la plantilla
         context = super().get_context_data(**kwargs) #Obtengo el diccionario que devuelve el método
-        context['title']='Actualización de una asignatura' #Puedo enviar variables
-        context['modelo']='Asignatura'#Nombre de identidad
-        context['url_list']=reverse_lazy('srea:p_asignatura')#Ruta abosluta lista de asignatura
+        context['title']='Actualización de una unidad' #Puedo enviar variables
+        context['modelo']='Unidad'#Nombre de identidad
+        context['url_list']=reverse_lazy('srea:unidad')#Ruta abosluta lista de asignatura
         context['action']='edit'#Enviar variable action
         return context
 
 class UnidadDeleteView(LoginRequiredMixin,ValidatePermissionRequiredMixin,DeleteView):
-    model = Asignatura #Indicar el modelo con el cual se va ha trabajar
-    template_name = 'asignatura/asignatura_delete.html' #Debo indicarle la ubicación de mi plantilla
-    success_url= reverse_lazy('srea:p_asignatura')#Me permite direccionar a otra plantilla, la función reverse_lazy me recibe una url como parámetro
-    permission_required='delete_asignatura'
+    model = Unidad #Indicar el modelo con el cual se va ha trabajar
+    template_name = 'unidad/unidad_delete.html' #Debo indicarle la ubicación de mi plantilla
+    success_url= reverse_lazy('srea:unidad')#Me permite direccionar a otra plantilla, la función reverse_lazy me recibe una url como parámetro
+    permission_required='delete_unidad'
  
     def dispatch(self, request, *args, **kwargs):
         self.object = self.get_object() #Le decimos que la clase object va a hacer igual a lo que tenemos en lainstancia de nuestro objeto, para que el funcionamiento no se altere
@@ -194,9 +193,9 @@ class UnidadDeleteView(LoginRequiredMixin,ValidatePermissionRequiredMixin,Delete
             
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = 'Eliminación de una asignatura'
-        context['modelo'] = 'Asignatura'
-        context['url_list'] = reverse_lazy('srea:p_asignatura')
+        context['title'] = 'Eliminación de una unidad'
+        context['modelo'] = 'Unidad'
+        context['url_list'] = reverse_lazy('srea:unidad')
         return context
 
 
