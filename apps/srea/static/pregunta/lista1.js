@@ -16,7 +16,6 @@ $(function () {
             
             {"data": "position"},
             {"data": "pregunta"},
-            {"data": "tipoPregunta"},
             {"data": "respuesta"},
             {"data": "position"}
 

@@ -1,7 +1,7 @@
 from django.forms import *
 from apps.srea.models import*
 from apps.user.models import*
-
+from betterforms.multiform import MultiModelForm
 
 class FacultadCreateForm(ModelForm):
 
@@ -121,6 +121,14 @@ class PreguntaCreateForm(ModelForm):
         model=Pregunta
         fields= '__all__'
 
+        widgets = {
+           'test': Select(attrs={
+                'class': 'form-control select2',
+                'style': 'width: 100%',
+                'multiple': 'multiple'
+            })
+        }#tipoPregunta
+
     def save(self, commit=True):
         data = {}
         form = super()
@@ -132,6 +140,41 @@ class PreguntaCreateForm(ModelForm):
         except Exception as e:
             data['error'] = str(e)
         return data
+
+
+class RespuestaCreateForm(ModelForm):
+
+    class Meta:
+        model=Respuesta
+        fields= ['pregunta','respuesta']
+
+        widgets = {
+           'pregunta': Select(attrs={
+                'class': 'form-control select2',
+                'style': 'width: 100%',
+                'multiple': 'multiple'
+            }),
+        }
+
+    def save(self, commit=True):
+        data = {}
+        form = super()
+        try:
+            if form.is_valid():
+                form.save()
+            else:
+                data['error'] = form.errors
+        except Exception as e:
+            data['error'] = str(e)
+        return data
+
+
+class PreguntaRespuestaMultiForm(MultiModelForm):
+    form_classes = {
+        'pregunta': PreguntaCreateForm,
+        'respuesta':RespuestaCreateForm,
+    }
+
 
 
 

@@ -126,6 +126,8 @@ class Test(models.Model):
     unidad = models.ManyToManyField(Unidad,blank=True,related_name="unidad", verbose_name="Unidad")
     titulo = models.CharField(max_length=150, verbose_name='Título')
     descripcion = models.TextField(null=True, blank=True,verbose_name="Descripción")
+    numero_preguntas=models.IntegerField(verbose_name="Numero de preguntas")
+    tiempo=models.IntegerField(verbose_name="Duración del Test")
     fecha = models.DateTimeField(auto_now_add=True, verbose_name="Fecha de publicación") 
     
     def toJSON(self):##Me devuelve un diccionario con todos los atributos de mi entidad
@@ -137,6 +139,9 @@ class Test(models.Model):
     def __str__(self):
         return self.titulo
 
+    def get_pregunta(self):
+        return self.pregunta_set.all()[:self.numero_preguntas]
+
     class Meta:
         verbose_name = 'Test'
         verbose_name_plural = 'Tests'
@@ -146,9 +151,8 @@ class Test(models.Model):
 class Pregunta(models.Model):
     test=models.ForeignKey(Test, on_delete=models.CASCADE, related_name="test")
     pregunta=models.TextField(null=True, blank=True,verbose_name='Texto de la pregunta')
-    tipoPregunta= models.CharField(max_length = 2, choices=tipo_preguntas, verbose_name='Tipo de preguntas')
     
-
+        
     def get_respuestas(self):
         respuesta_objs=list(Respuesta.objects.filter(pregunta = self))
         random.shuffle(respuesta_objs)
@@ -177,6 +181,8 @@ class Pregunta(models.Model):
 class Respuesta(models.Model):
     pregunta=models.ForeignKey(Pregunta, on_delete=models.CASCADE, related_name="pregunta_respuesta")
     respuesta=models.TextField(verbose_name='Texto de la respuesta')
+    correcta = models.BooleanField(default=False)
+
 
     def __str__(self):
         return self.respuesta

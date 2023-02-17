@@ -62,14 +62,18 @@ path('index1/',IndexView.as_view(), name="index1"),
 #    path('test/',TestCreateView.as_view(), name="test"), #crear test
 #    path('t_lista/updateT/<int:pk>/',TestUpdateView.as_view(), name="update_test"),
 #    path('t_lista/deleteT/<int:pk>/',TestDeleteView.as_view(), name="delete_test"),
+    path('cuestionario/',CuestionarioView.as_view(), name="main-view"),
+    path('cuestionario/<pk>/',cuestionario_view, name="cuestionario-view"),
+    
 #-------------------------Pregunta-----------------------------------------
     path('p_lista/',PreguntaListView.as_view(), name="pregunta"), #Listar preguntas
-    path('pregunta/',PreguntaCreateView.as_view(), name="r_pregunta"), #crear ficha
+    path('pregunta/',PreguntaCreateView.as_view(), name="r_pregunta"), #crear pregunta
     path('p_lista/u_pregunta/<int:pk>/', PreguntaUpdateView.as_view(), name="u_pregunta"),
     path('p_lista/d_pregunta/<int:pk>/', PreguntaDeleteView.as_view(), name="d_pregunta"),
-    path('api/get_test/', get_test, name="get_test")
+    path('api/get_test/', get_test, name="get_test"),
 
-    
+ #-------------------------Respuesta-----------------------------------------
+    path('respuesta/',RespuestaCreateView.as_view(), name="r_respuesta"), #crear respuesta  
 ]
 
 

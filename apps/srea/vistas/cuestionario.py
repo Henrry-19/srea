@@ -50,3 +50,11 @@ class CuestionarioListView(LoginRequiredMixin,ValidatePermissionRequiredMixin,Li
         context['modelo']='Unidades'#Nombre de identidad
        
         return context
+
+class CuestionarioView(ListView):
+    model= Test
+    template_name = 'cuestionario/main.html'
+
+def cuestionario_view(request, pk):
+    cuestionario = Test.objects.get(pk=pk)
+    return render(request, 'cuestionario/cuestionario.html', {'obj':cuestionario})

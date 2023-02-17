@@ -89,8 +89,6 @@ class PreguntaUpdateView(LoginRequiredMixin,ValidatePermissionRequiredMixin,Upda
     form_class = PreguntaCreateForm #Importando el formulario con el que voy a trabajar
     template_name = 'pregunta/pregunta_create.html' #Debo indicarle la ubicación de mi plantilla
     #permission_required='change_pregunta'
-
-
     success_url = reverse_lazy('srea:pregunta') #Me permite direccionar a otra plantilla, la función reverse_lazy me recibe una url como parámetro
     #@method_decorator(csrf_exempt) #Mecanismo de defensa de django
 
