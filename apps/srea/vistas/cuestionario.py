@@ -58,3 +58,19 @@ class CuestionarioView(ListView):
 def cuestionario_view(request, pk):
     cuestionario = Test.objects.get(pk=pk)
     return render(request, 'cuestionario/cuestionario.html', {'obj':cuestionario})
+
+def cuestionario_data_view( request, pk):
+    cuestionario = Test.objects.get(pk=pk)
+    preguntas = []
+    for p in cuestionario.get_preguntas():
+    #    print(p)
+        respuestas = []
+        for  r in p.get_respuestas():
+    #        print(r)
+           respuestas.append(r.respuesta)
+        preguntas.append({str(p):respuestas})
+    
+    return JsonResponse({
+        'data':preguntas,
+        'time':cuestionario.tiempo,
+    })

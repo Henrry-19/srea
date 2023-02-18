@@ -129,6 +129,9 @@ class Test(models.Model):
     numero_preguntas=models.IntegerField(verbose_name="Numero de preguntas")
     tiempo=models.IntegerField(verbose_name="Duración del Test")
     fecha = models.DateTimeField(auto_now_add=True, verbose_name="Fecha de publicación") 
+
+
+
     
     def toJSON(self):##Me devuelve un diccionario con todos los atributos de mi entidad
         item=model_to_dict(self) #Mi atributo self contiene mi modelo, se convierte en un diccionario
@@ -140,7 +143,21 @@ class Test(models.Model):
         return self.titulo
 
     def get_pregunta(self):
-        return self.pregunta_set.all()[:self.numero_preguntas]
+        #return self.pregunta_set.all()[:self.numero_preguntas]
+        pregunta_objs=list(Pregunta.objects.filter(test=self.numero_preguntas))
+        random.shuffle(pregunta_objs)
+        data = []
+        for pregunta_obj  in pregunta_objs:
+            data.append({
+                'pregunta':pregunta_obj.texto
+            })
+        return data
+
+    def get_preguntas(self):
+        #return Test.pregunta_set.all()
+        preguntas=list(self.test.all())
+        random.shuffle(preguntas)
+        return preguntas[:self.numero_preguntas]
 
     class Meta:
         verbose_name = 'Test'
@@ -150,10 +167,10 @@ class Test(models.Model):
 ##################Pregunta######################
 class Pregunta(models.Model):
     test=models.ForeignKey(Test, on_delete=models.CASCADE, related_name="test")
-    pregunta=models.TextField(null=True, blank=True,verbose_name='Texto de la pregunta')
+    texto=models.TextField(null=True, blank=True,verbose_name='Texto de la pregunta')
     
         
-    def get_respuestas(self):
+    def get_respuesta(self):
         respuesta_objs=list(Respuesta.objects.filter(pregunta = self))
         random.shuffle(respuesta_objs)
         data = []
@@ -163,13 +180,18 @@ class Pregunta(models.Model):
             })
         return data
 
+    def get_respuestas(self):
+        respuesta=list(self.pregunta_respuesta.all())
+        random.shuffle(respuesta)
+        return respuesta
+
     def toJSON(self):##Me devuelve un diccionario con todos los atributos de mi entidad
         item=model_to_dict(self) #Mi atributo self contiene mi modelo, se convierte en un diccionario
         item['respuesta']= self.get_respuestas()
         return item
 
     def __str__(self):
-        return self.pregunta
+        return self.texto
 
     class Meta:
         verbose_name = 'Pregunta'

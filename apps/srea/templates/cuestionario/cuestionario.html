@@ -1,7 +1,15 @@
 {% extends 'base_list.html' %}
-
+{% load static %}
+{% block head_list %}
+    <script src="{% static 'cuestionario/cuestionario.js' %}" defer></script>
+{% endblock head_list %}
 
 {% block content %}
    {{obj.titulo}} 
+   <form id="quiz-form" class="mt-3 mb-3">
+      {% csrf_token %}
+      <div id="quiz-box"></div>
+      <button type="submit"class="btn btn-primary mt-3">Guardar</button>
+   </form>
 {% endblock content %}
     

@@ -64,6 +64,7 @@ path('index1/',IndexView.as_view(), name="index1"),
 #    path('t_lista/deleteT/<int:pk>/',TestDeleteView.as_view(), name="delete_test"),
     path('cuestionario/',CuestionarioView.as_view(), name="main-view"),
     path('cuestionario/<pk>/',cuestionario_view, name="cuestionario-view"),
+    path('cuestionario/<pk>/data',cuestionario_data_view, name="cuestionario-data-view"),
     
 #-------------------------Pregunta-----------------------------------------
     path('p_lista/',PreguntaListView.as_view(), name="pregunta"), #Listar preguntas
