@@ -43,12 +43,12 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',
     #libs
     'widget_tweaks', #Me permite incrustar atributos en mis componentes
+    'ckeditor',
     #Apps
     'apps.srea',
     'apps.login',
-    'apps.user'
-
-   
+    'apps.user',
+    'apps.quiz',
 
 ]
 

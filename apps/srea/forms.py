@@ -1,6 +1,7 @@
 from django.forms import *
 from apps.srea.models import*
 from apps.user.models import*
+from apps.quiz.models import*
 from betterforms.multiform import MultiModelForm
 
 class FacultadCreateForm(ModelForm):

@@ -41,8 +41,8 @@ class PreguntaListView(LoginRequiredMixin,ValidatePermissionRequiredMixin,ListVi
     def get_context_data(self, **kwargs): #Método que devuelve un diccionario que representa el contexto de la plantilla
         context = super().get_context_data(**kwargs) #Obtengo el diccionario que devuelve el método
         context['title']='Listado de preguntas' #Puedo enviar variables
-        context['url_create']=reverse_lazy('srea:r_pregunta')#Ruta abosluta creación de usuario
-        context['url_list']=reverse_lazy('srea:pregunta')#Ruta abosluta lista de usuario
+        context['url_create']=reverse_lazy('quiz:r_pregunta')#Ruta abosluta creación de usuario
+        context['url_list']=reverse_lazy('quiz:pregunta')#Ruta abosluta lista de usuario
         context['modelo']='Preguntas'#Nombre de identidad
         return context
 
@@ -52,7 +52,7 @@ class PreguntaCreateView(LoginRequiredMixin,ValidatePermissionRequiredMixin,Crea
     form_class=PreguntaCreateForm #Importando el formulario con el que voy a trabajar
     template_name='pregunta/pregunta_create.html' # Debo indicarle la ubicación de mi plantilla
     #permission_required='add_pregunta'
-    success_url= reverse_lazy('srea:pregunta') #Me permite direccionar a otra plantilla, la funnción reverse_lazy me recibe una url como parámetro
+    success_url= reverse_lazy('quiz:pregunta') #Me permite direccionar a otra plantilla, la funnción reverse_lazy me recibe una url como parámetro
 
    
     def dispatch(self, request, *args, **kwargs):
@@ -79,7 +79,7 @@ class PreguntaCreateView(LoginRequiredMixin,ValidatePermissionRequiredMixin,Crea
         context = super().get_context_data(**kwargs) #Obtengo el diccionario que devuelve el método
         context['title']='Creación de una pregunta' #Puedo enviar variables
         context['modelo']='Pregunta'#Nombre de identidad
-        context['url_list']=reverse_lazy('srea:pregunta')#Ruta abosluta lista de asignatura
+        context['url_list']=reverse_lazy('quiz:pregunta')#Ruta abosluta lista de asignatura
         context['action']='add'#Enviar variable action
         return context
 
@@ -113,14 +113,14 @@ class PreguntaUpdateView(LoginRequiredMixin,ValidatePermissionRequiredMixin,Upda
         context = super().get_context_data(**kwargs) #Obtengo el diccionario que devuelve el método
         context['title']='Actualización de una pregunta' #Puedo enviar variables
         context['modelo']='Pregunta'#Nombre de identidad
-        context['url_list']=reverse_lazy('srea:pregunta')#Ruta abosluta lista de asignatura
+        context['url_list']=reverse_lazy('quiz:pregunta')#Ruta abosluta lista de asignatura
         context['action']='edit'#Enviar variable action
         return context
 
 class PreguntaDeleteView(LoginRequiredMixin,ValidatePermissionRequiredMixin,DeleteView):
     model = Pregunta #Indicar el modelo con el cual se va ha trabajar
     template_name = 'pregunta/pregunta_delete.html' #Debo indicarle la ubicación de mi plantilla
-    success_url= reverse_lazy('srea:pregunta')#Me permite direccionar a otra plantilla, la función reverse_lazy me recibe una url como parámetro
+    success_url= reverse_lazy('quiz:pregunta')#Me permite direccionar a otra plantilla, la función reverse_lazy me recibe una url como parámetro
     #permission_required='delete_pregunta'
  
     def dispatch(self, request, *args, **kwargs):
@@ -139,7 +139,7 @@ class PreguntaDeleteView(LoginRequiredMixin,ValidatePermissionRequiredMixin,Dele
         context = super().get_context_data(**kwargs)
         context['title'] = 'Eliminación de una pregunta'
         context['modelo'] = 'Pregunta'
-        context['url_list'] = reverse_lazy('srea:pregunta')
+        context['url_list'] = reverse_lazy('quiz:pregunta')
         return context
 
 

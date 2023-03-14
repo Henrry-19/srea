@@ -1,5 +1,5 @@
 from django.views.generic import* #importando la vista genérica
-from apps.srea.models import  Asignatura #importando los modelos
+from apps.quiz.models import * #importando los modelos
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator #importando el método decorador
@@ -12,7 +12,7 @@ from apps.srea.forms import*
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 class CuestionarioListView(LoginRequiredMixin,ValidatePermissionRequiredMixin,ListView): #Primera vista basada en clase ListView, permite sobrescribir métodos
-    model= Test#Primero se indica el modelo o entidad
+    model= Cuestionario#Primero se indica el modelo o entidad
     template_name = 'cuestionario/test_lista.html' #Indicarle cual es la plantilla
     permission_required='view_test'
     
@@ -28,7 +28,7 @@ class CuestionarioListView(LoginRequiredMixin,ValidatePermissionRequiredMixin,Li
                 data=[]
                 position = 1
                 if request.user.is_staff :
-                    test=Test.objects.all()
+                    test=Cuestionario.objects.all()
                     for i in test:
                         item= i.toJSON()
                         item['position']=position
@@ -52,15 +52,15 @@ class CuestionarioListView(LoginRequiredMixin,ValidatePermissionRequiredMixin,Li
         return context
 
 class CuestionarioView(ListView):
-    model= Test
+    model= Cuestionario
     template_name = 'cuestionario/main.html'
 
 def cuestionario_view(request, pk):
-    cuestionario = Test.objects.get(pk=pk)
+    cuestionario = Cuestionario.objects.get(pk=pk)
     return render(request, 'cuestionario/cuestionario.html', {'obj':cuestionario})
 
 def cuestionario_data_view( request, pk):
-    cuestionario = Test.objects.get(pk=pk)
+    cuestionario = Cuestionario.objects.get(pk=pk)
     preguntas = []
     for p in cuestionario.get_preguntas():
     #    print(p)
@@ -74,3 +74,56 @@ def cuestionario_data_view( request, pk):
         'data':preguntas,
         'time':cuestionario.tiempo,
     })
+
+def is_ajax(request): #Método usado debito a que está en desuso --->request.is_ajax()
+    return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
+
+
+def save_cuestionario_view(request, pk):
+    #print(request.POST)
+    if is_ajax(request): #reemplaza a --> request.is_ajax()
+        preguntas=[]
+        data = request.POST
+        data_= dict(data.lists())
+    
+        data_.pop('csrfmiddlewaretoken')
+     
+        for k in data_.keys():
+            #print('key: ', k)
+            pregunta=Pregunta.objects.get(texto=k)
+            preguntas.append(pregunta)
+        #print(preguntas)
+
+        user=request.user
+        test=Cuestionario.objects.get(pk=pk)
+
+        puntaje=0
+        multipli=100/test.numero_preguntas
+        resultado=[]
+        respuesta_correcta=None
+
+        for q in preguntas:
+            a_selected = request.POST.get(q.texto)
+            #print('select', a_selected)
+
+            if a_selected !="":
+                pregunta_respuestas = Respuesta.objects.filter(pregunta=q)
+                for a in pregunta_respuestas:
+                    if a_selected == a.respuesta:
+                        if a.correcta:
+                            puntaje +=1
+                            respuesta_correcta = a.respuesta
+                    else:
+                        if a.correcta:
+                            respuesta_correcta
+                resultado.append({str(q):{'respuesta_correcta' : respuesta_correcta, 'contestada': a_selected}})
+            else:
+                resultado.append({str(q):'No contestada'})
+
+        puntaje_= puntaje*multipli
+        Resultado.objects.create(cuestionario=test, user=user, score=puntaje_)
+
+        if puntaje_>= test.required_score_to_pass:
+            return JsonResponse({'passed':True, 'puntaje':puntaje_, 'resultado':resultado})
+        else:
+            return JsonResponse({'passed':False, 'puntaje':puntaje_, 'resultado':resultado})

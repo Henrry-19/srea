@@ -1,6 +1,6 @@
 from django.contrib import admin
+from apps.quiz.models import *
 from .models import *
-
 admin.site.site_header = 'Admin SREA'
 admin.site.index_title = 'Panel de Control'
 
@@ -12,7 +12,8 @@ class AsignaturaAdmin(admin.ModelAdmin):
 admin.site.register(Asignatura, AsignaturaAdmin)
 
 admin.site.register(Unidad)
-admin.site.register(Test)
+admin.site.register(Cuestionario)
+admin.site.register(Resultado)
 
 class RespuestaInline(admin.StackedInline):
     model = Respuesta

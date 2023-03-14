@@ -16,7 +16,7 @@ import random
 #############################################################
 
 class TestListView(LoginRequiredMixin,ValidatePermissionRequiredMixin,ListView): #Primera vista basada en clase ListView, permite sobrescribir métodos
-    model= Test #Primero se indica el modelo o entidad
+    model= Cuestionario #Primero se indica el modelo o entidad
     template_name = 'test/test_lista.html' #Indicarle cual es la plantilla
     #permission_required='view_asignatura'
     
@@ -31,7 +31,7 @@ class TestListView(LoginRequiredMixin,ValidatePermissionRequiredMixin,ListView):
             if action == 'searchdata':
                 data=[]
                 position = 1
-                for i in Test.objects.all():
+                for i in Cuestionario.objects.all():
                     item= i.toJSON()
                     item['position']=position
                     data.append(item)#Incrusto cada uno de mis elemntos dentro de mi array

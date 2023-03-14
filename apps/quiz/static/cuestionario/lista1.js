@@ -15,8 +15,10 @@ $(function () {
         columns: [
             
             {"data": "position"},
-            {"data": "texto"},
-            {"data": "respuesta"},
+            {"data": "titulo"},
+            {"data": "descripcion"},
+            {"data": "fecha"},
+            {"data": "unidad"},
             {"data": "position"}
 
         ],
@@ -27,8 +29,8 @@ $(function () {
                 orderable: false,
                 render: function (data, type, row) {
                     var html = '';
-                    $.each(row.respuesta, function (key, value) {
-                        html += '<span class="badge badge-success">' + value.respuesta + '</span> ';
+                    $.each(row.unidad, function (key, value) {
+                        html += '<span class="badge badge-success">' + value.nombre + '</span> ';
                     });
                     return html;
                 }
@@ -39,8 +41,9 @@ $(function () {
                 class: 'text-center',
                 orderable: false,
                 render: function (data, type, row) {
-                    var buttons = '<a href="/srea/p_lista/u_pregunta/' + row.id + '/" class="btn btn-warning btn-xs btn-flat"><i class="fas fa-edit"></i></a> ';
-                    buttons += '<a href="/srea/p_lista/d_pregunta/' + row.id + '/" type="button" class="btn btn-danger btn-xs btn-flat"><i class="fas fa-trash-alt"></i></a>';
+                    var buttons = '<a href="#" class="btn btn-warning btn-xs btn-flat"><i class="fas fa-edit"></i></a> ';
+                    buttons += '<a href="#" type="button" class="btn btn-danger btn-xs btn-flat"><i class="fas fa-trash-alt"></i></a>';
+                    buttons += '<a href="/srea/pregunta/" type="button" class="btn btn-accent-blue btn-accent-gray"><i class="fa fa-plus-square">Agregar pregunta</i></a>';
                     return buttons;
                 }
             },

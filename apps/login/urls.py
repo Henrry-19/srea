@@ -12,3 +12,5 @@ urlpatterns = [
     path('reset/password',ResetPasswordView.as_view(), name='reset_password'), #Permite resetear la clave
     path('change/password/<str:token>/',ChangePasswordView.as_view(), name='change_password'), #Permite crear el formulario para cambiar la clave
 ]
+
+
