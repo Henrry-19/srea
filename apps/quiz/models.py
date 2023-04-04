@@ -5,50 +5,85 @@ from django.forms import model_to_dict # Librería que permite convertir mi mode
 from core.settings import MEDIA_URL, STATIC_URL
 from apps.user.models import User
 #from django.contrib.auth.models import User
-from apps.srea.models import Asignatura
 from datetime import date
-from ckeditor.fields import RichTextField
+from ckeditor.fields import RichTextField ###Aquí está####
 import  random
+from apps.srea.encryption_util import*
+from cryptography.fernet import Fernet
 
-##################Unidad####################
-class Unidad(models.Model):
-    nombre = models.CharField(max_length=150, verbose_name='Nombre', unique=True)
-    descripcion =models.TextField(verbose_name='Descripción')
-    asignaturas=models.ManyToManyField(Asignatura, blank=True, related_name="asignaturas", verbose_name="Asignatura")
+##################Facultad######################
+class Facultad(models.Model):
+	nombre = models.CharField(max_length=150, verbose_name='Nombre', unique=True)
+	descripcion =models.TextField(verbose_name='Descripción')
+	#carrera = models.ManyToManyField(Carrera, blank=True,related_name="carrera", verbose_name="Carreras")
 
-    def get_test(self):
-        test_objs=list(Cuestionario.objects.filter(unidad=self))
+	###Crear un método llamado toJSON###
+	def toJSON(self):##Me devuelve un diccionario con todos los atributos de mi entidad
+		item=model_to_dict(self) #Mi atributo self contiene mi modelo
+		#item['carrera']=[{'id':g.id, 'nombre':g.nombre}for g  in self.carrera.all()]
+		return item
+
+	def __str__(self):
+		return self.nombre
+##################Respuesta######################
+class Respuesta(models.Model):
+    #pregunta=models.ForeignKey(Pregunta, on_delete=models.CASCADE, related_name="pregunta_respuesta")
+    respuesta=models.TextField(verbose_name='Texto de la respuesta')
+    correcta = models.BooleanField(default=False)
+
+
+    def __str__(self):
+        return self.respuesta
+
+    class Meta:
+        verbose_name = 'Respuesta'
+        verbose_name_plural = 'Respuestas'
+        ordering = ['id']
+##################Pregunta######################
+class Pregunta(models.Model):
+    respuesta=models.ForeignKey(Respuesta, on_delete=models.CASCADE, related_name="pregunta_respuesta")
+    texto=models.TextField(null=True, blank=True,verbose_name='Texto de la pregunta')
+    
+    
+    def get_respuesta(self):
+        respuesta_objs=list(Respuesta.objects.filter(pregunta = self))
+        random.shuffle(respuesta_objs)
         data = []
-        for u_obj  in test_objs:
-            print(u_obj)
-            data.append(u_obj)
+        for respuesta_obj  in respuesta_objs:
+            data.append({
+                'respuesta':respuesta_obj.respuesta
+            })
         return data
+
+    def get_respuestas(self):
+        respuesta=list(self.pregunta_respuesta.all())
+        random.shuffle(respuesta)
+        return respuesta
 
     def toJSON(self):##Me devuelve un diccionario con todos los atributos de mi entidad
         item=model_to_dict(self) #Mi atributo self contiene mi modelo, se convierte en un diccionario
-        item['test']=[{'id':t.id, 'titulo':t.titulo}for t  in self.get_test()]
-        item['asignaturas']=[{'id':c.id, 'nombre':c.nombre}for c  in self.asignaturas.all()]
+        #item['respuesta']= self.get_respuesta()
         return item
 
     def __str__(self):
-        return self.nombre
+        return self.texto
 
     class Meta:
-        verbose_name = 'Unidad'
-        verbose_name_plural = 'Unidades'
+        verbose_name = 'Pregunta'
+        verbose_name_plural = 'Preguntas'
         ordering = ['id']
 
 ##################Quiz######################
 class Cuestionario(models.Model):
-    unidad = models.ManyToManyField(Unidad,blank=True,related_name="unidades", verbose_name="Unidad")
+    #unidad = models.ManyToManyField(Unidad,blank=True,related_name="unidades", verbose_name="Unidad")
     titulo = models.CharField(max_length=150, verbose_name='Título')
     descripcion = models.TextField(null=True, blank=True,verbose_name="Descripción")
     numero_preguntas=models.IntegerField(verbose_name="Numero de preguntas")
     tiempo=models.IntegerField(verbose_name="Duración del Test")
     required_score_to_pass = models.IntegerField(verbose_name="Puntaje requerido")
     fecha = models.DateTimeField(auto_now_add=True, verbose_name="Fecha de publicación") 
-
-    
+    pregunta=models.ManyToManyField(Pregunta,blank=True, related_name="preguntas", verbose_name="Pregunta")
+    facultades=models.ManyToManyField(Facultad,blank=True, related_name="facultades", verbose_name="Facultades")
     def toJSON(self):##Me devuelve un diccionario con todos los atributos de mi entidad
         item=model_to_dict(self) #Mi atributo self contiene mi modelo, se convierte en un diccionario
         item['unidad']=[{'id':u.id, 'nombre':u.nombre}for u  in self.unidad.all()]
@@ -80,54 +115,6 @@ class Cuestionario(models.Model):
         verbose_name_plural = 'Tests'
         ordering = ['id']
 
-##################Pregunta######################
-class Pregunta(models.Model):
-    test=models.ForeignKey(Cuestionario, on_delete=models.CASCADE, related_name="test")
-    texto=models.TextField(null=True, blank=True,verbose_name='Texto de la pregunta')
-    
-    
-    def get_respuesta(self):
-        respuesta_objs=list(Respuesta.objects.filter(pregunta = self))
-        random.shuffle(respuesta_objs)
-        data = []
-        for respuesta_obj  in respuesta_objs:
-            data.append({
-                'respuesta':respuesta_obj.respuesta
-            })
-        return data
-
-    def get_respuestas(self):
-        respuesta=list(self.pregunta_respuesta.all())
-        random.shuffle(respuesta)
-        return respuesta
-
-    def toJSON(self):##Me devuelve un diccionario con todos los atributos de mi entidad
-        item=model_to_dict(self) #Mi atributo self contiene mi modelo, se convierte en un diccionario
-        item['respuesta']= self.get_respuesta()
-        return item
-
-    def __str__(self):
-        return self.texto
-
-    class Meta:
-        verbose_name = 'Pregunta'
-        verbose_name_plural = 'Preguntas'
-        ordering = ['id']
-
-##################Respuesta######################
-class Respuesta(models.Model):
-    pregunta=models.ForeignKey(Pregunta, on_delete=models.CASCADE, related_name="pregunta_respuesta")
-    respuesta=models.TextField(verbose_name='Texto de la respuesta')
-    correcta = models.BooleanField(default=False)
-
-
-    def __str__(self):
-        return self.respuesta
-
-    class Meta:
-        verbose_name = 'Respuesta'
-        verbose_name_plural = 'Respuestas'
-        ordering = ['id']
 
 ##################Perfil--Resultado######################
 class Resultado(models.Model):
@@ -150,7 +137,7 @@ class Answer(models.Model):
     
 class Question(models.Model):
     question_text = models.CharField(max_length=900)
-    answer = models.ManyToManyField(Answer)
+    answers = models.ManyToManyField(Answer) #Respuesta
     points = models.PositiveIntegerField()
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
@@ -159,18 +146,22 @@ class Question(models.Model):
     
 class Quizzes(models.Model):#Cuestionarios
     user= models.ForeignKey(User, on_delete=models.CASCADE)
-    title = models.CharField(max_length=200)
-    description = RichTextField()
-    date = models.DateTimeField(auto_now_add=True)
-    due = models.DateField()
-    allowed_attemps = models.PositiveIntegerField()
-    time_limit_mins = models.PositiveIntegerField()
-    questions = models.ManyToManyField(Question)
+    title = models.CharField(max_length=200, verbose_name="Título")
+    description = RichTextField(verbose_name="Descripción")
+    date = models.DateTimeField(auto_now_add=True) # Fecha de creación del cuestionario
+    due = models.DateField(default=datetime.now, verbose_name='Fecha') # Fecha de realización del cuestionario
+    allowed_attemps = models.PositiveIntegerField() # Veces que se permite a la persona dar el test
+    time_limit_mins = models.PositiveIntegerField(verbose_name='Tiempo límite') # Límite de tiempo
+    questions = models.ManyToManyField(Question) # Preguntas
 
     def __str__(self):
         return self.title
+    class Meta:
+        #permissions = (("view_quizzes","add_quizzes"))
+        verbose_name = 'Quizze'
+        verbose_name_plural = 'Quizzes'
     
-class Attempter(models.Model): #Intentos
+class Attempter(models.Model): #Intentos correctos
     user= models.ForeignKey(User, on_delete=models.CASCADE)
     quiz= models.ForeignKey(Quizzes, on_delete=models.CASCADE)
     score = models.PositiveIntegerField()
@@ -191,4 +182,42 @@ class Attempt(models.Model): #Intentar
     
 
     
+##################Unidad####################
+class Unidad(models.Model):
+    docente=models.ForeignKey(User, on_delete=models.CASCADE, related_name='unidad_docente', verbose_name='Docente')
+    nombre = models.CharField(max_length=150, verbose_name='Nombre', unique=False)
+    descripcion =models.TextField(verbose_name='Descripción')
+    cuestionario=models.ManyToManyField(Quizzes, blank=True, related_name="cuestionarios", verbose_name="Cuestionario")
+    #asignaturas=models.ManyToManyField(Asignatura, blank=True, related_name="asignaturas", verbose_name="Asignatura")
+
+    def get_test(self):
+        test_objs=list(Cuestionario.objects.filter(unidad=self))
+        data = []
+        for u_obj  in test_objs:
+            print(u_obj)
+            data.append(u_obj)
+        return data
+    def get_docente(self):
+        if self.docente:
+            nombre=str(self.docente)
+            return nombre
+        return ''
+
+    def toJSON(self):##Me devuelve un diccionario con todos los atributos de mi entidad
+        item=model_to_dict(self) #Mi atributo self contiene mi modelo, se convierte en un diccionario
+        #item['test']=[{'id':t.id, 'titulo':t.titulo}for t  in self.get_test()]
+        item['cuestionario']=[{'id':c.id, 'titulo':c.titulo}for c  in self.cuestionario.all()]
+        item['docente']=self.get_docente()
+        return item
+
+    def __str__(self):
+        return self.nombre
+
+    class Meta:
+        verbose_name = 'Unidad'
+        verbose_name_plural = 'Unidades'
+        ordering = ['id']
+
+
+
 

@@ -7,6 +7,8 @@ from apps.quiz.vistas.respuesta import *
 from django.conf import settings
 from django.conf.urls.static import static
 
+#----------------------------------------------
+from apps.quiz.views import*
 
 app_name = "apps.quiz"
 
@@ -26,5 +28,8 @@ urlpatterns = [
 
  #-------------------------Respuesta-----------------------------------------
     path('respuesta/',RespuestaCreateView.as_view(), name="r_respuesta"), #crear respuesta  
+
+#---------------------------Nueva versión de cuestionario---------------------------------------
+
 ]
 

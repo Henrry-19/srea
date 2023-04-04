@@ -42,16 +42,43 @@
     <a href="{{url_create}}" class="btn btn-primary btn-flat btnTest">
       <i class="fas fa-plus"></i>Nuevo registro
     </a>
-    <a href="{{list_url}}" class="btn btn-success btn-flat">
+    <a href="{{url_list}}" class="btn btn-success btn-flat">
       <i class="fas fa-sync"></i> Actualizar
     </a>
     {% else %}
-    <a href="{{list_url}}" class="btn btn-success btn-flat">
+    <a href="{{url_list}}" class="btn btn-success btn-flat">
       <i class="fas fa-sync"></i> Actualizar
     </a>
     {% endif %}  
     {% endblock%}
   </div>
 </div>
+{% endblock %}
+
+{% block javascript %}
+    <script type="application/javascript">
+          $(function(){
+              $('#data').DataTable({
+                responsive: true,
+                autoWidth: false
+              });
+
+              $('.btnTest').on('click',function () { 
+                $.ajax({
+                  url:'{% url 'srea:p_asignatura' %}', 
+                  type: 'POST',
+                  data: {id:30},
+                  dataType: 'json'
+                }).done(function(data){
+                  console.log(data)
+
+                }).fail(function(jqXHR,textStatus,errorThrown){
+                  alert(textStatus+':'+errorThrown)
+                }).always(function(data){
+                  
+                });
+              });
+          });
+    </script>
 {% endblock %}
 

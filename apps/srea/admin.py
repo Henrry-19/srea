@@ -13,16 +13,32 @@ admin.site.register(Asignatura, AsignaturaAdmin)
 
 admin.site.register(Unidad)
 admin.site.register(Cuestionario)
+
+admin.site.register(Answer)
+
 admin.site.register(Resultado)
 
-class RespuestaInline(admin.StackedInline):
-    model = Respuesta
-    extra=0
-
-class PreguntaAdmin(admin.ModelAdmin):
-    inlines = [RespuestaInline]
 
 
+class QuestionInline(admin.TabularInline):
+    model = Question
+    extra = 20
+
+class AnswerInline(admin.TabularInline):
+    pass
+
+class QuestionAdmin(admin.ModelAdmin):
+    pass
+
+
+class AnswerAdmin(admin.ModelAdmin):
+    pass
+
+class QuizAdmin(admin.ModelAdmin):
+    inlines = [QuestionInline]
+
+admin.site.register(Question, QuestionAdmin)
+admin.site.register(Quizzes)
 # Register your models here.
 #admin.site.register(Usuario)
 #-------------------------------------
@@ -35,9 +51,10 @@ class MatriculaAdmin(admin.ModelAdmin):
     search_fields = ['user']
 
 admin.site.register(Facultad)
-admin.site.register(Curso)
+admin.site.register(Ciclo)
 admin.site.register(Carrera)
-admin.site.register(Pregunta, PreguntaAdmin)
+#admin.site.register(Pregunta, PreguntaAdmin)
+admin.site.register(Pregunta)
 admin.site.register(Respuesta)
 
 

@@ -1,0 +1,98 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% block head %}
+    <link rel="stylesheet" href="{% static 'lib/datatables-1.10.20/css/dataTables.bootstrap4.min.css' %}"/>
+    <link rel="stylesheet" href="{% static 'lib/datatables-1.10.20/plugins/responsive-2.2.3/css/responsive.bootstrap4.min.css' %}"/>
+    <script src="{% static 'lib/datatables-1.10.20/js/jquery.dataTables.js' %}"></script>
+    <script src="{% static 'lib/datatables-1.10.20/js/dataTables.bootstrap4.min.js' %}"></script>
+    <script src="{% static 'lib/datatables-1.10.20/plugins/responsive-2.2.3/js/dataTables.responsive.min.js' %}"></script>
+    <script src="{% static 'lib/datatables-1.10.20/plugins/responsive-2.2.3/js/responsive.bootstrap4.min.js' %}"></script>
+
+    {% block head_list %}
+    
+    {% endblock %}
+
+{% endblock %}
+
+{% block content %}
+<div class="card card-primary">
+  <div class="card-header">
+    <h3 class="card-title">
+      {{title}}
+    </h3>
+</div>
+  <div class="card-body">
+      <table class="table" id="data">
+        <thead>
+        {%block colums%}
+        <tr>
+          <th scope="col" style="width: 15%;">Rol</th>
+          <th scope="col" style="width: 15%;">Nombre</th>
+          <th scope="col" style="width: 15%;">Apellido</th>
+          <th scope="col" style="width: 15%;">Ciclo</th>
+          <th scope="col" style="width: 0%;">Foto</th>
+        </tr>
+        {%endblock%}
+        </thead>
+        <tbody>
+        {%block rows%}
+          {% for u in lista.toJSON.users %}
+            <tr>
+              <td>
+                {% for g in u.groups %}
+                    <span class="badge badge-success">{{g}}</span>
+                {% endfor %}       
+              </td>
+              <td>
+                {{u.firts_name}}
+              </td>
+              <td>
+                {{u.last_name}}
+              </td>
+              <td>
+                  {{lista.ciclo}}
+              </td>
+              <td>
+                
+                  {% if u.imagen %}
+                    <img src="/media/{{u.imagen}}" class="img-fluid d-block mx-auto" style="width: 55px;height: 55px;border-radius:150px;">
+                  {% else %}
+                    <img src="/static/img/usuario.png" class="img-fluid d-block mx-auto" style="width: 55px;height: 55px;border-radius:150px;">
+                  {% endif %}
+                    
+                  <!--<img src="/media/{{u.imagen}}" class="img-fluid d-block mx-auto" style="width: 90px;height: 80px;">-->
+                
+              </td>
+            </tr> 
+          {% endfor %}  
+        {%endblock%}
+        </tbody>
+      </table>
+  </div>
+  <div class="card-footer">
+    {% block buttons_list %}
+   
+    <a href="{% url 'srea:course' asignatura_id %}" class="btn btn-primary btn-flat btnTest">
+      <i class="fas fa-book-reader"></i> Regresar
+    </a>
+    <a href="{{list_url}}" class="btn btn-success btn-flat">
+      <i class="fas fa-sync"></i> Actualizar
+    </a>
+   
+
+  
+    {% endblock%}
+  </div>
+</div>
+{% endblock %}
+
+{% block javascript %}
+<script type="application/javascript">
+    $(function(){
+        $('#data').DataTable({
+          responsive: true,
+          autoWidth: false
+        });
+    });
+  </script>
+{% endblock %}

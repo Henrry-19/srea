@@ -3,6 +3,7 @@ from apps.srea.models import*
 from apps.user.models import*
 from apps.quiz.models import*
 from betterforms.multiform import MultiModelForm
+from django import forms
 
 class FacultadCreateForm(ModelForm):
 
@@ -34,10 +35,10 @@ class CarreraCreateForm(ModelForm):
 
     class Meta:
         model=Carrera
-        fields= ['nombre','duracion','curso']
+        fields= ['facultad','nombre','duracion']
 
         widgets = {
-           'curso': SelectMultiple(attrs={
+           'facultad': Select(attrs={
                 'class': 'form-control select2',
                 'style': 'width: 100%',
                 'multiple': 'multiple'
@@ -62,10 +63,20 @@ class AsignaturaCreateForm(ModelForm):
 
     class Meta:
         model=Asignatura
-        fields= ['users','nombre','detalle','imagen']
+        fields= ['ciclo','nombre','detalle','imagen']
 
         widgets = {
            'users': SelectMultiple(attrs={
+                'class': 'form-control select2',
+                'style': 'width: 100%',
+                'multiple': 'multiple'
+            }),
+            'unidad': SelectMultiple(attrs={
+                'class': 'form-control select2',
+                'style': 'width: 100%',
+                'multiple': 'multiple'
+            }),
+            'ciclo': Select(attrs={
                 'class': 'form-control select2',
                 'style': 'width: 100%',
                 'multiple': 'multiple'
@@ -87,16 +98,22 @@ class AsignaturaCreateForm(ModelForm):
             data['error'] = str(e)
         return data
     
-    
+class NewModuleForm(forms.ModelForm):
+	#nombre = forms.CharField(widget=forms.TextInput(attrs={'class': 'validate'}), required=True)
+	#descripcion = forms.CharField(widget=forms.TextInput(attrs={'class': 'validate'}), required=True)
+
+	class Meta:
+		model = Unidad
+		fields= ['nombre','descripcion','cuestionario']
+        
 
 class UnidadCreateForm(ModelForm):
-
     class Meta:
         model=Unidad
-        fields= '__all__'
+        fields= ['nombre','descripcion']
 
         widgets = {
-           'asignaturas': SelectMultiple(attrs={
+           'cuestionario': SelectMultiple(attrs={
                 'class': 'form-control select2',
                 'style': 'width: 100%',
                 'multiple': 'multiple'
@@ -147,15 +164,8 @@ class RespuestaCreateForm(ModelForm):
 
     class Meta:
         model=Respuesta
-        fields= ['pregunta','respuesta']
+        fields= ['respuesta']
 
-        widgets = {
-           'pregunta': Select(attrs={
-                'class': 'form-control select2',
-                'style': 'width: 100%',
-                'multiple': 'multiple'
-            }),
-        }
 
     def save(self, commit=True):
         data = {}
@@ -185,11 +195,11 @@ class PreguntaRespuestaMultiForm(MultiModelForm):
 class CursoCreateForm(ModelForm):
 
     class Meta:
-        model=Curso
-        fields= ['nombre_ciclo','asignatura']
+        model=Ciclo
+        fields= ['nombre_ciclo','carrera']
         
         widgets = {
-           'asignatura': SelectMultiple(attrs={
+           'carrera': Select(attrs={
                 'class': 'form-control select2',
                 'style': 'width: 100%',
                 'multiple': 'multiple'

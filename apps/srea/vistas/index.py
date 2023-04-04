@@ -3,6 +3,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from datetime import datetime
+from django.shortcuts import render, redirect, get_object_or_404
 
 class IndexView(LoginRequiredMixin,TemplateView):
     template_name = 'index1.html'
@@ -28,3 +29,13 @@ class IndexView(LoginRequiredMixin,TemplateView):
 class IndexViewAsignatura(LoginRequiredMixin,TemplateView):
     template_name = 'htz/body.html'
 
+def index(request):
+	user = request.user
+    
+
+	#courses = Course.objects.filter(enrolled=user)
+
+	#context = {
+	#	'courses': courses
+	#}
+	return render(request, 'index.html')

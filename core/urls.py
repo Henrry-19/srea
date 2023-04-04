@@ -10,6 +10,7 @@ urlpatterns = [
     path('srea/',include('apps.srea.urls', namespace='srea')),
     path('user/',include('apps.user.urls', namespace='user')),
     path('quiz/',include('apps.quiz.urls', namespace='quiz')),
+    path('ckeditor/', include('ckeditor_uploader.urls')),
 
 ]
 urlpatterns += static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT) #Configuracón para que se puedan leer los archivos

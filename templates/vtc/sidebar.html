@@ -13,7 +13,7 @@
                 <img src="{{ request.user.get_image }}" class="img-fluid rounded-circle" alt="User Image">
             </div>
             <div class="info">
-                <a href="#" class="d-block">{{request.user.username}}</a>
+                <a href="#" class="d-block">{{request.user.first_name}} {{request.user.last_name}}</a>
             </div>
         </div>
         <nav class="mt-2">
@@ -69,7 +69,7 @@
                         <a href="{% url 'srea:curso' %}" class="nav-link">
                             <i class="fas fa-laptop"></i>
                             <p>
-                                Curso
+                                Ciclo
                             </p>    
                         </a>
                     </li>
@@ -82,29 +82,21 @@
                             </p>  
                         </a>
                     </li>
-                    {% if request.user.is_staff %}
+                    <!--{% if request.user.is_staff %}
                     <li class="nav-item">
-                        <a href="{% url 'srea:unidad' %}" class="nav-link"> 
+                        <a href="#" class="nav-link"> 
                             <i class="fa fa-folder"></i>
                             <p>
                             Unidad
                             </p>  
                         </a>
                     </li>
-                    {% endif %}
+                    {% endif %}-->
                 <li class="nav-item">
                     <a href="{% url 'user:ficha_list' %}" class="nav-link">
                         <i class="fas fa-chalkboard-teacher"></i>
                         <p>
                             Ficha
-                        </p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="fas fa-comments"></i>
-                        <p>
-                            Mensajes
                         </p>
                     </a>
                 </li>
@@ -117,16 +109,26 @@
                         </p>  
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a href="{% url 'quiz:pregunta' %}" class="nav-link"> 
+
+
+                <!--<li class="nav-item">
+                    <a href="#" class="nav-link"> 
                         <i class="fas fa-clipboard"></i>
                         <p>
                             Pregunta
                         </p>  
                     </a>
-                </li>
+                </li>-->
                 {% endif %}
-               
+                <li><div class="user-panel mt-3 pb-3 mb-3 d-flex"></div></li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="fas fa-comments"></i>
+                        <p>
+                            Mensajes
+                        </p>
+                    </a>
+                </li>       
             </ul>
         </nav>
     </div>

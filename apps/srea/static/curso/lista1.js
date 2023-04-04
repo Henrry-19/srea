@@ -15,8 +15,8 @@ $(function () {
         columns: [
             
             {"data": "position"},
-            {"data": "numero_ciclo"},
-            {"data": "asignatura"},
+            {"data": "nombre_ciclo"},
+            {"data": "carrera"},
             {"data": "fecha"},
             {"data": "position"}
 

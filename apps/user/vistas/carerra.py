@@ -40,7 +40,7 @@ class CarreraListView(LoginRequiredMixin,IsSuperuserMixin,ListView): #Primera vi
         context['title']='Listado de Carreras' #Puedo enviar variables
         #context['url_create_login']=reverse_lazy('user:user_login')#Ruta abosluta creación de usuario
         context['url_create']=reverse_lazy('user:carrera')#Ruta abosluta creación de usuario
-        context['url_list']=reverse_lazy('user:carrera_list')#Ruta abosluta lista de usuario
+        context['list_url']=reverse_lazy('user:carrera_list')#Ruta abosluta lista de usuario
         context['modelo']='Carrera'#Nombre de identidad
         return context
 

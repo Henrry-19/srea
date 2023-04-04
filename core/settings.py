@@ -18,6 +18,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent #Directorio de nuestro proyect
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get('SECRET_KEY')
+ENCRYPT_KEY = b'dh_yk8cL9FguH4fib9exTNJkRhlY9AZtPzunyujuoDk='
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG')
@@ -213,6 +214,9 @@ EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
 
 DOMAIN = ''
+
+##CKEDITOR_UPLOAD_PATH
+CKEDITOR_UPLOAD_PATH = "uploads/"
 
 #Django session timeout
 AUTO_LOGOUT = {

@@ -1,0 +1,86 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% block head %}
+    <link rel="stylesheet" href="{% static 'lib/datatables-1.10.20/css/dataTables.bootstrap4.min.css' %}"/>
+    <link rel="stylesheet" href="{% static 'lib/datatables-1.10.20/plugins/responsive-2.2.3/css/responsive.bootstrap4.min.css' %}"/>
+    <script src="{% static 'lib/datatables-1.10.20/js/jquery.dataTables.js' %}"></script>
+    <script src="{% static 'lib/datatables-1.10.20/js/dataTables.bootstrap4.min.js' %}"></script>
+    <script src="{% static 'lib/datatables-1.10.20/plugins/responsive-2.2.3/js/dataTables.responsive.min.js' %}"></script>
+    <script src="{% static 'lib/datatables-1.10.20/plugins/responsive-2.2.3/js/responsive.bootstrap4.min.js' %}"></script>
+
+    {% block head_list %}
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="{% static 'css/materialize.css' %}" type="text/css" rel="stylesheet" media="screen,projection"/>
+    <link href="{% static 'css/style.css' %}" type="text/css" rel="stylesheet" media="screen,projection"/>
+    {% endblock %}
+
+{% endblock %}
+
+{% block content %}
+<div class="card card-primary">
+  <div class="card-header">
+      <h3 class="card-title">
+      </h3>
+  </div>
+  <div class="card-body">
+      <table class="table" id="data">
+        <thead>
+        {%block colums%}
+          <div class="section">
+            <h4>{{ asigna.nombre }}</h4>
+            <div class="divider"></div>
+          </div>
+
+          <div class="row">
+
+            <div class="col s3">
+              <ul class="collection with-header">
+                <li class="collection-header"><h4>Aula</h4></li>
+                <a href="{% url 'srea:course' asigna.id%}" class="collection-item active">Inicio</a>
+                <a href="{% url 'srea:primeraU' asigna.id%}" class="collection-item">Unidad</a>
+                <!--<a href="#" class="collection-item">Submissions</a>
+                <a href="#" class="collection-item">Preguntas</a>-->
+                <a href="{% url 'srea:estudiantes' asigna.id %}" class="collection-item">Participantes</a>
+        
+                {% if teacher_mode == True and not request.user.is_staff%}
+                  <li class="collection-header"><h4>Docente</h4></li>
+                  <a href="#" class="collection-item">Actividades de los estudiantes</a>
+                {% endif %}
+                
+                {% if request.user.is_staff %}
+                  <li class="collection-header"><h4>Docente</h4></li>
+                  <a href="#" class="collection-item">Actividades de los estudiantes</a>
+                  <a href="{% url 'srea:matricula-lista' asigna.id user.id  %}" class="collection-item">Matrícular</a>
+                {% endif %}
+                  
+              </ul>
+            </div>
+
+            <div class="col s9">
+  
+              {% if request.user.is_staff %}
+              <a href="#" class="btn-floating btn-large waves-effect waves-light red right"><i class="material-icons">add</i></a>
+              {% endif %}
+                
+              <div class="section">
+                <h4>Anuncios recientes</h4>
+                <div class="divider"></div>
+                <div>
+                  <h1>Mensajes</h1>
+                </div>
+                {{ course.syllabus | safe }}
+              </div>
+            </div>
+          </div> 
+        {%endblock%}
+        </thead>
+        <tbody>
+        {%block rows%}
+
+        {%endblock%}
+        </tbody>
+      </table>
+  </div>
+</div>
+{% endblock %}
+

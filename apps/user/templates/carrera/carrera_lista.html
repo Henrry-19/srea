@@ -9,7 +9,7 @@
     <th scope="col" style="width: 5%;">Nro</th>
     <th scope="col" style="width: 20%;">Nombre</th>
     <th scope="col" style="width: 20%;">Duración</th>
-    <th scope="col" style="width: 20%;">Ciclos</th>
+    <th scope="col" style="width: 20%;">Facultad</th>
     <th scope="col" style="width: 15%;">Opciones</th>
 </tr>
 {%endblock%}
@@ -20,7 +20,8 @@
         <td>{{m.id}}</td>
         <td>{{m.nombre}}</td>
         <td>{{m.duracion}}</td>
-        <td>{% for a in m.curso.all %}<span class="badge badge-success"> {{ a.nombre_ciclo }}</span> <br> {% endfor %}</td>
+        <td>{{m.facultad}}</td>
+        <!--<td>{% for a in m.curso.all %}<span class="badge badge-success"> {{ a.nombre_ciclo }}</span> <br> {% endfor %}</td>-->
         <td>
         <a href="/user/carrera_list/u_carrera/{{m.id}}" class="btn btn-warning btn-xs btn-flat"><i class="fas fa-edit"></i></a>
         <a href="/user/carrera_list/d_carrera/{{m.id}}" class="btn btn-danger btn-xs"><i class="fas fa-trash-alt"></i></a>

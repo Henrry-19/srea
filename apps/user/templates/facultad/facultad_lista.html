@@ -9,25 +9,22 @@
     <th scope="col" style="width: 5%;">Nro</th>
     <th scope="col" style="width: 20%;">Nombre</th>
     <th scope="col" style="width: 20%;">Descripción</th>
-    <th scope="col" style="width: 20%;">Carreras</th>
     <th scope="col" style="width: 15%;">Opciones</th>
 </tr>
 {%endblock%}
 
 {%block rows%}
-{%for f in object_list%} 
-    <tr>           
-    <td>{{f.id}}</td>
-    <td>{{f.nombre}}</td>
-    <td>{{f.descripcion}}</td>    
-    <td> {% for a in f.carrera.all %}<span class="badge badge-success"> {{ a.nombre }}</span> <br> {% endfor %}</td>
-    <td>
-    <a href="/user/facultad_list/u_facultad/{{f.id}}" class="btn btn-warning btn-xs btn-flat"><i class="fas fa-edit"></i></a>
-    <a href="/user/facultad_list/d_facultad/{{f.id}}" class="btn btn-danger btn-xs"><i class="fas fa-trash-alt"></i></a>
-    </td>
-    </tr>
-{%endfor%}
-
+  {%for f in object_list%} 
+      <tr>           
+      <td>{{f.id}}</td>
+      <td>{{f.nombre}}</td>
+      <td>{{f.descripcion}}</td>    
+      <td>
+      <a href="/user/facultad_list/u_facultad/{{f.id}}" class="btn btn-warning btn-xs btn-flat"><i class="fas fa-edit"></i></a>
+      <a href="/user/facultad_list/d_facultad/{{f.id}}" class="btn btn-danger btn-xs"><i class="fas fa-trash-alt"></i></a>
+      </td>
+      </tr>
+  {%endfor%}
 {%endblock%}
 
 

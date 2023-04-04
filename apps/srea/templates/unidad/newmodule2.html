@@ -1,0 +1,57 @@
+{% extends 'formulario.html' %}
+{% load static %}
+{% load widget_tweaks %} {#Importamos la librería#}
+{% block head %}
+    {% block head_form %}
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="{% static 'css/materialize.css' %}" type="text/css" rel="stylesheet" media="screen,projection"/>
+    <link href="{% static 'css/style.css' %}" type="text/css" rel="stylesheet" media="screen,projection"/>
+      
+    <!--  Scripts-->
+    <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script src="{% static 'js/materialize.js' %}"></script>
+    <script src="{% static 'js/init.js' %}"></script>
+    <script type="text/javascript" src="{% static 'ckeditor/ckeditor-init.js' %}"></script>
+    <script type="text/javascript" src="{% static 'ckeditor/ckeditor/ckeditor.js' %}"></script>
+    {% endblock%}
+{% endblock%} 
+
+        
+{% block content %}
+
+<div class="row center-align">
+  <div class="col s12">
+
+
+    <form method="post" enctype="multipart/form-data" action="" role="form">
+      {% csrf_token %}
+    <h3 class="title is-3">¡Creemos un nuevo módulo!</h3>
+
+        {% for field in form.visible_fields %}<!--Recorrer el formulario a través de la propiedad visible_fields se accede a todos los componentes-->
+        <div class="form-group">
+            <label for="">{{ field.label }}:</label>
+            {{ field|add_class:'form-control'|attr:'autocomplete:off' }}
+        </div>
+        {% endfor %}
+
+      <div class="row">
+        <div class="col s12">
+          <span style="color: red; font-weight: bold;">{{ form.errors }}</span>
+        </div>
+      </div>
+
+
+      <div class="field">
+      <p class="control">
+        <button type="submit" value="login" class="btn waves-effect waves-light">
+          Guardar registro
+        </button>
+      </p>
+    </div>
+
+    </form>
+
+</div>
+</div>
+
+{% endblock %}

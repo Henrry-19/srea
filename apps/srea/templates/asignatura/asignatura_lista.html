@@ -1,21 +1,50 @@
 {% extends 'base_list.html' %}
+{% load widget_tweaks %}
 {% load static %}
 {% block head_list %}
-    <script src="{% static 'asignatura/lista1.js' %}"></script>
+    
 {% endblock %}
 {%block colums%}
 <tr>
-    <th scope="col" style="width: 5%;">id</th>
     <th scope="col" style="width: 16%;">Nombre</th>
+    <th scope="col" style="width: 20%;">Docente</th>
     <th scope="col" style="width: 20%;">Detalle</th>
+    <th scope="col" style="width: 20%;">Ciclo</th>
+    <th scope="col" style="width: 20%;">N° Participantes</th>
     <th scope="col" style="width: 10%;">Imagen</th>
-    <th scope="col" style="width: 10%;">Opciones</th>
+    <th scope="col" style="width: 15%;">Opciones</th>
 </tr>
 {%endblock%}
 
 {%block rows%}
-
+    {% for c in asignatura %}
+    <tr>           
+        <td>{{c.nombre}}</td>
+        <td>{{c.get_curso}}</td>
+        <td>{{c.detalle}}</td>
+        <td>{{c.ciclo}}</td> 
+        <td>{{c.users.count}} 
+        </td> <!--toJSON-->  <!--<td>{{c.users.count}}</td>-->
+        <td>
+          <img src="{{c.get_image}}" class="img-fluid d-block mx-auto" style="width: 30px;height: 30px;">
+        </td>    
+        <td>
+        <a href="/srea/ad_asignatura/{{c.id}}/" class="btn btn-warning btn-xs btn-flat"><i class="fas fa-edit"></i></a>
+        <a href="/srea/d_asignatura/{{c.id}}" class="btn btn-danger btn-xs"><i class="fas fa-trash-alt"></i></a>
+        <a href="/srea/asignatura/{{c.id}}" class="btn btn-primary btn-xs"><i class="fa fa-search"> Ver</i></a>
+        </td><!--/user/facultad_list/u_facultad/{{f.id}}-->
+        </tr>
+    {% endfor %}
 {%endblock%}
 
 {% block javascript %}
-{% endblock %}
+<script type="application/javascript">
+    $(function(){
+        $('#data').DataTable({
+          responsive: true,
+          autoWidth: false
+        });
+    });
+</script>
+
+{% endblock  %}

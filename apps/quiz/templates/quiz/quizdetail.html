@@ -1,0 +1,82 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% block head %}
+    <link rel="stylesheet" href="{% static 'lib/datatables-1.10.20/css/dataTables.bootstrap4.min.css' %}"/>
+    <link rel="stylesheet" href="{% static 'lib/datatables-1.10.20/plugins/responsive-2.2.3/css/responsive.bootstrap4.min.css' %}"/>
+    <script src="{% static 'lib/datatables-1.10.20/js/jquery.dataTables.js' %}"></script>
+    <script src="{% static 'lib/datatables-1.10.20/js/dataTables.bootstrap4.min.js' %}"></script>
+    <script src="{% static 'lib/datatables-1.10.20/plugins/responsive-2.2.3/js/dataTables.responsive.min.js' %}"></script>
+    <script src="{% static 'lib/datatables-1.10.20/plugins/responsive-2.2.3/js/responsive.bootstrap4.min.js' %}"></script>
+    
+
+
+    {% block head_list %}
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="{% static 'css/materialize.css' %}" type="text/css" rel="stylesheet" media="screen,projection"/>
+    <link href="{% static 'css/style.css' %}" type="text/css" rel="stylesheet" media="screen,projection"/>
+    
+    <!--  Scripts-->
+    <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script src="{% static 'js/materialize.js' %}"></script>
+    <script src="{% static 'js/init.js' %}"></script>
+    <script type="text/javascript" src="{% static 'ckeditor/ckeditor-init.js' %}"></script>
+    <script type="text/javascript" src="{% static 'ckeditor/ckeditor/ckeditor.js' %}"></script>
+
+    {% endblock %}
+
+{% endblock %}
+
+{% block content %}
+<div class="card card-primary">
+  <div class="card-header">
+      <h3 class="card-title">
+      </h3>
+  </div>
+  <div class="card-body">
+      <table class="table" id="data">
+        <thead>
+          {%block colums%}
+          <tr>
+            <th scope="col" style="width: 16%;">Nombre del Test</th>
+            <th scope="col" style="width: 16%;">Fecha</th>
+            <th scope="col" style="width: 20%;">Intentos permitidos:</th>
+            <th scope="col" style="width: 20%;">Tiempo limite:</th>
+            <th scope="col" style="width: 20%;">Descripción</th>
+            <th scope="col" style="width: 20%;">Mis intentos</th>
+            <th scope="col" style="width: 15%;">Opciones</th>
+          </tr>
+          {%endblock%}
+        </thead>
+        <tbody>
+          {%block rows%}
+            <div class="col s4">
+              <tr>
+                <td>{{ quiz.title }}</td>
+                <td>{{ quiz.due }}</td>
+                <td>{{ quiz.allowed_attemps }}</td>
+                <td>{{ quiz.time_limit_mins }} min</td>
+                <td>{{ quiz.description | safe }}</td>
+                <td>
+                  <div class="col s12">
+                    <ul class="collection with-header">
+                      {% for attempt in  mis_intentos %}
+                        <li class="collection-item">
+                          <a href="{% url 'srea:attempt-detail' asignatura_id unidad_id quiz.id attempt.id %}"><h5>Puntuación:{{ attempt.score }}</h5></a>
+                        </li>
+                      {% endfor %}    
+                    </ul>  
+                  </div>
+                </td>
+                <td>
+                  <div class="col s12">
+                    <a class="btn" href="{% url 'srea:take-quiz' asignatura_id unidad_id quiz.id %}">Evaluar</a>      
+                  </div>
+                </td>
+              </tr>
+            </div>
+          {%endblock%}
+        </tbody>
+      </table>
+  </div>
+</div>
+{% endblock %}

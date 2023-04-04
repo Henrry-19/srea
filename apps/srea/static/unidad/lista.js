@@ -15,26 +15,29 @@ $(function () {
         columns: [
             {"data": "position"},
             {"data": "nombre"},
+            {"data": "docente"},
             {"data": "descripcion"},
-            {"data": "asignaturas"},
-            {"data": "test"},
+            {"data": "cuestionario"},
             {"data": "position"},
         ],
         columnDefs: [
+            
             {
-                targets: [-3],
+                targets: [-2],
                 class: 'text-center',
                 orderable: false,
                 render: function (data, type, row) {
                     var html = '';
-                    $.each(row.asignaturas, function (key, value) {
-                        html += '<span class="badge badge-success">' + value.nombre + '</span> ';
+                    $.each(row.cuestionario, function (key, value) {
+                        html += '<span class="badge badge-success">' + value.titulo + '</span> ';
                     });
                     return html;
                 }
             },
 
-            {
+            
+
+            /*{
                 targets: [-2],
                 class: 'text-center',
                 orderable: false,
@@ -45,7 +48,7 @@ $(function () {
                     });
                     return html;
                 }
-            },
+            },*/
 
             /*{
                 targets: [-2],

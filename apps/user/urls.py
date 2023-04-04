@@ -1,6 +1,6 @@
 from django.urls import path
 from apps.user.views import *
-from apps.user.vistas.facultad import*
+from apps.srea.vistas.facultad import*
 from apps.user.vistas.carerra import*
 from apps.user.vistas.ficha import*
 

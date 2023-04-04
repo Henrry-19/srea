@@ -5,11 +5,11 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator #importando el método decorador
 from django.http import *
 from django.urls import reverse_lazy
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from apps.srea.mixins import*
-
 from apps.srea.forms import*
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import permission_required
 
 class UnidadListView(LoginRequiredMixin,ValidatePermissionRequiredMixin,ListView): #Primera vista basada en clase ListView, permite sobrescribir métodos
     model= Unidad#Primero se indica el modelo o entidad
@@ -91,14 +91,80 @@ class UnidadesListView(LoginRequiredMixin,ValidatePermissionRequiredMixin,ListVi
         return context
 
 #############################################PRIMERA UNIDAD##############################################################
-class PrimeraUnidadListView(LoginRequiredMixin,ValidatePermissionRequiredMixin,ListView): #Primera vista basada en clase ListView, permite sobrescribir métodos
-    model= Unidad#Primero se indica el modelo o entidad
-    template_name = 'unidad/unidad_I/unidad_list.html' #Indicarle cual es la plantilla
-    permission_required='view_unidad'
+@login_required
+def AsignaturaUnidades(request, asignatura_id):
+    user=request.user
+    course=get_object_or_404(Asignatura, id=asignatura_id)
+
+    theacher_mode=False
+    if user == course.docente:
+       theacher_mode=True
     
-    @method_decorator(csrf_exempt)#Mecanismo de defensa de django
-    def dispatch(self, request, *args, **kwargs):
-        return super().dispatch(request, *args, **kwargs)
+    context = {
+        'course':course,
+        'theacher_mode':theacher_mode,
+        #'url_list':reverse_lazy('srea:p_asignatura')
+    }
+    return render(request, 'unidad/unidades.html', context)
+
+
+@login_required
+@permission_required('unidad.add_unidad')
+def NewModule(request, asignatura_id):
+    user = request.user
+    
+    course = get_object_or_404(Asignatura, id=asignatura_id)#calculo
+    if not request.user.is_staff :
+        return HttpResponseForbidden()
+    else:
+        if request.method == 'POST':
+            form = UnidadCreateForm(request.POST, request.FILES)
+            if form.is_valid():
+                nombre=form.cleaned_data.get('nombre')
+                descripcion=form.cleaned_data.get('descripcion')
+                m = Unidad.objects.create(nombre=nombre,descripcion=descripcion,docente=user)# en docente registramos directamente en launidad
+                course.unidad.add(m)# registramos la unidad en la asignatura
+                course.save()
+                return redirect('srea:primeraU', asignatura_id=asignatura_id)
+        else:
+            form = UnidadCreateForm()
+    context = {
+		'form': form,
+        'asignatura_id':asignatura_id,
+        'url_list':reverse_lazy('srea:p_asignatura')
+	}
+    return render(request, 'unidad/newmodule.html', context)
+
+
+@login_required
+@permission_required('unidad.change_unidad')
+def EditMudule(request, unidad_id, asignatura_id):#Editar unidad
+    course = get_object_or_404(Unidad, id=unidad_id)
+    #quiz = get_object_or_404(Quizzes, id=quiz_id)
+    #print(quiz)
+    if request.user.is_staff:
+		#return HttpResponseForbidden()
+        if request.method == 'POST':
+            form = UnidadCreateForm(request.POST, request.FILES, instance=course)
+            if form.is_valid():
+                course.nombre = form.cleaned_data.get('nombre')
+                course.descripcion = form.cleaned_data.get('descripcion')
+                #course.cuestionario=form.cleaned_data.get('cuestionario')
+                #quiz=Quizzes.objects.filter(pk=course.cuestionario)
+                #print(quiz, '--Tob--')
+                #course.cuestionario.set(quiz_id)
+                course.save()
+                return redirect('srea:primeraU', asignatura_id=asignatura_id)
+        else:
+            form = UnidadCreateForm(instance=course)
+    context = {
+		'form': form,
+		'course': course,
+        'asignatura_id':asignatura_id,
+        'unidad_id':unidad_id,
+        'url_list': reverse_lazy('srea:p_asignatura'),
+	}
+    return render(request, 'unidad/newmodule.html', context)
 
 
 class UnidadCreateView(LoginRequiredMixin,ValidatePermissionRequiredMixin,CreateView):
@@ -106,7 +172,7 @@ class UnidadCreateView(LoginRequiredMixin,ValidatePermissionRequiredMixin,Create
     form_class=UnidadCreateForm #Importando el formulario con el que voy a trabajar
     template_name='unidad/unidad_create.html' # Debo indicarle la ubicación de mi plantilla
     permission_required='add_unidad'
-    success_url= reverse_lazy('srea:unidad') #Me permite direccionar a otra plantilla, la funnción reverse_lazy me recibe una url como parámetro
+    success_url= reverse_lazy('srea:primeraU') #Me permite direccionar a otra plantilla, la funnción reverse_lazy me recibe una url como parámetro
 
    
     def dispatch(self, request, *args, **kwargs):
@@ -133,10 +199,9 @@ class UnidadCreateView(LoginRequiredMixin,ValidatePermissionRequiredMixin,Create
         context = super().get_context_data(**kwargs) #Obtengo el diccionario que devuelve el método
         context['title']='Creación de una unidad' #Puedo enviar variables
         context['modelo']='Unidad'#Nombre de identidad
-        context['url_list']=reverse_lazy('srea:unidad')#Ruta abosluta lista de asignatura
+        #context['url_list']=reverse_lazy('srea:primeraU')#Ruta abosluta lista de asignatura
         context['action']='add'#Enviar variable action
         return context
-
 
 class UnidadUpdateView(LoginRequiredMixin,ValidatePermissionRequiredMixin,UpdateView):
     model = Unidad #Indicar el modelo con el cual se va ha trabajar
@@ -195,7 +260,7 @@ class UnidadDeleteView(LoginRequiredMixin,ValidatePermissionRequiredMixin,Delete
         context = super().get_context_data(**kwargs)
         context['title'] = 'Eliminación de una unidad'
         context['modelo'] = 'Unidad'
-        context['url_list'] = reverse_lazy('srea:unidad')
+        context['url_list'] = reverse_lazy('srea:p_asignatura')
         return context
 
 

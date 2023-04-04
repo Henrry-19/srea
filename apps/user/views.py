@@ -44,7 +44,7 @@ class UserListView(LoginRequiredMixin,ValidatePermissionRequiredMixin,ListView):
                      #user=User.objects.filter(carrera=request.user.carrera.pk)
                      user=User.objects.filter(pk=request.user.pk)
                      for u in user:
-                         for c in Curso.objects.filter(curso=u.id):
+                         for c in Ciclo.objects.filter(curso=u.id):
                             for i  in User.objects.filter(curso=c.id):
                             #   print(a)
                                 item= i.toJSON()

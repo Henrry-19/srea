@@ -10,10 +10,10 @@ from apps.srea.mixins import*
 
 from apps.srea.forms import*
 from django.contrib.auth.mixins import LoginRequiredMixin
-
+from apps.srea.encryption_util import*
 
 class CursoListView(LoginRequiredMixin,ValidatePermissionRequiredMixin,ListView): #Primera vista basada en clase ListView, permite sobrescribir métodos
-    model= Curso#Primero se indica el modelo o entidad
+    model= Ciclo#Primero se indica el modelo o entidad
     template_name = 'curso/curso_lista.html' #Indicarle cual es la plantilla
     permission_required='view_curso'
     
@@ -28,7 +28,7 @@ class CursoListView(LoginRequiredMixin,ValidatePermissionRequiredMixin,ListView)
             if action == 'searchdata':
                 data=[]
                 position = 1
-                for i in Curso.objects.all():
+                for i in Ciclo.objects.all():
                         item= i.toJSON()
                         item['position']=position
                         data.append(item)#Incrusto cada uno de mis elemntos dentro de mi array
@@ -41,21 +41,21 @@ class CursoListView(LoginRequiredMixin,ValidatePermissionRequiredMixin,ListView)
 
     def get_context_data(self, **kwargs): #Método que devuelve un diccionario que representa el contexto de la plantilla
         context = super().get_context_data(**kwargs) #Obtengo el diccionario que devuelve el método
-        context['title']='Listado de cursos' #Puedo enviar variables
+        context['title']='Listado de ciclos' #Puedo enviar variables
         context['url_create']=reverse_lazy('srea:r_curso')#Ruta abosluta creación de matrícula
-        context['url_list']=reverse_lazy('srea:curso')#Ruta abosluta lista de usuario
-        context['modelo']='Curso'#Nombre de identidad
+        context['list_url']=reverse_lazy('srea:curso')#Ruta abosluta lista de usuario
+        context['modelo']='Ciclo'#Nombre de identidad
         return context
 
 
-class CursoCreateView(LoginRequiredMixin,ValidatePermissionRequiredMixin,CreateView):
-    model=Curso #Indicar el modelo con el cual se va ha trabajar
+class CursoCreateViewP(LoginRequiredMixin,ValidatePermissionRequiredMixin,CreateView):
+    model=Ciclo #Indicar el modelo con el cual se va ha trabajar
     form_class=CursoCreateForm #Importando el formulario con el que voy a trabajar
     template_name='curso/curso_create.html' # Debo indicarle la ubicación de mi plantilla
     permission_required='add_curso'
-    success_url= reverse_lazy('srea:curso') #Me permite direccionar a otra plantilla, la funnción reverse_lazy me recibe una url como parámetro
+    success_url = reverse_lazy('srea:curso') #Me permite direccionar a otra plantilla, la funnción reverse_lazy me recibe una url como parámetro
 
-   
+    
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
@@ -80,13 +80,69 @@ class CursoCreateView(LoginRequiredMixin,ValidatePermissionRequiredMixin,CreateV
         context = super().get_context_data(**kwargs) #Obtengo el diccionario que devuelve el método
         context['title']='Creación de un curso' #Puedo enviar variables
         context['modelo']='Curso'#Nombre de identidad
-        context['url_list']=reverse_lazy('srea:curso')#Ruta abosluta lista de asignatura
+        context['list_url']=reverse_lazy('srea:curso')#Ruta absoluta lista de asignatura
         context['action']='add'#Enviar variable action
         return context
 
 
+class CursoCreateView(LoginRequiredMixin,ValidatePermissionRequiredMixin,CreateView):
+    model=Ciclo #Indicar el modelo con el cual se va ha trabajar
+    form_class=CursoCreateForm #Importando el formulario con el que voy a trabajar
+    template_name='curso/curso_create.html' # Debo indicarle la ubicación de mi plantilla
+    success_url = reverse_lazy('srea:curso') #Me permite direccionar a otra plantilla, la funnción reverse_lazy me recibe una url como parámetro
+    permission_required='add_curso'
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):###Implementación de ajax en mi método sobrescrito POST###
+        data={} #Se declara un diccionario llamado data
+        try: #controlar el error
+            action= request.POST['action']#Recupero la variable action en mi método POST, cada vez que se haga una petición
+            if action=='add': #Se indica el proceso add
+                form=self.get_form() #Llamamos a nuestro formulario
+                if form.is_valid():# Preguntamos si nuestro formulario es valido
+                    form.save()
+                else:
+                    data['error']=form.errors # Data va a hacer igual al formulario con los errores 
+            else:
+                data['error']='No ingreso por ninguna opción'
+        except Exception as e: #Llamamos a la clase Exception para indicar el error
+            data['error']=str(e) #Me devuelve el objeto e-->convertido a un string
+        return JsonResponse(data)
+
+
+    def get_context_data(self, **kwargs): #Método que devuelve un diccionario que representa el contexto de la plantilla
+        context = super().get_context_data(**kwargs) #Obtengo el diccionario que devuelve el método
+        context['title']='Creación de un ciclo' #Puedo enviar variables
+        context['modelo']='Ciclo'#Nombre de identidad
+        context['url_list']=self.success_url#Ruta abosluta lista de asignatura
+        context['action']='add'#Enviar variable action
+        return context
+
+class CursoCreateView2(LoginRequiredMixin,ValidatePermissionRequiredMixin,CreateView):
+    model=Ciclo #Indicar el modelo con el cual se va ha trabajar
+    form_class=CursoCreateForm #Importando el formulario con el que voy a trabajar
+    template_name='curso/curso_create.html' # Debo indicarle la ubicación de mi plantilla
+    permission_required='add_curso'
+    success_url= reverse_lazy('srea:curso') #Me permite direccionar a otra plantilla, la funnción reverse_lazy me recibe una url como parámetro
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):###Implementación de ajax en mi método sobrescrito POST###
+         if request.method == 'POST':
+              form = AsignaturaCreateForm(request.POST, request.FILES)
+              #print(form)
+              if form.is_valid():
+                   nombre_ciclo = form.cleaned_data.get('nombre_ciclo')
+                   carrera = form.cleaned_data.get('carrera')
+                   Ciclo.objects.create(nombre_ciclo=nombre_ciclo, carrera=carrera)
+                   return redirect('srea:curso')
+         else:
+            form=CursoCreateForm()
+         return render(request, 'curso/curso_create.html', {'form':form})
+
 class CursoUpdateView(LoginRequiredMixin,ValidatePermissionRequiredMixin,UpdateView):
-    model = Curso #Indicar el modelo con el cual se va ha trabajar
+    model = Ciclo #Indicar el modelo con el cual se va ha trabajar
     form_class = CursoCreateForm #Importando el formulario con el que voy a trabajar
     template_name = 'curso/curso_create.html' #Debo indicarle la ubicación de mi plantilla
     permission_required='change_curso'
@@ -118,9 +174,8 @@ class CursoUpdateView(LoginRequiredMixin,ValidatePermissionRequiredMixin,UpdateV
         context['action']='edit'#Enviar variable action
         return context
 
-
 class CursoDeleteView(LoginRequiredMixin,ValidatePermissionRequiredMixin,DeleteView):
-    model = Curso #Indicar el modelo con el cual se va ha trabajar
+    model = Ciclo #Indicar el modelo con el cual se va ha trabajar
     template_name = 'curso/curso_delete.html' #Debo indicarle la ubicación de mi plantilla
     success_url= reverse_lazy('srea:curso')#Me permite direccionar a otra plantilla, la función reverse_lazy me recibe una url como parámetro
     permission_required='delete_curso'
@@ -139,9 +194,26 @@ class CursoDeleteView(LoginRequiredMixin,ValidatePermissionRequiredMixin,DeleteV
             
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = 'Eliminación de una matrícula'
-        context['modelo'] = 'Matricula'
-        context['url_list'] = reverse_lazy('srea:matricula')
+        context['title'] = 'Eliminación de una ciclo'
+        context['modelo'] = 'Ciclo'
+        context['url_list'] = reverse_lazy('srea:curso')
         return context
 
 
+@login_required
+def CursoList(request):
+        user = request.user
+        #print(user)
+        if request.user.is_staff :  
+            courses = Ciclo.objects.all()
+            #print(courses)
+        else:
+            courses = Ciclo.objects.filter(users=user)
+            #courses = Asignatura.objects.all()
+            #print(courses)
+        context = {
+                'courses': courses,
+                'url_create':reverse_lazy('srea:r_curso'),
+                'title':'Ciclos' #Puedo enviar variables
+        }
+        return render(request, 'curso/curso_lista.html', context)

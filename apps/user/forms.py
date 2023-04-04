@@ -9,6 +9,10 @@ class FichaCreateForm(ModelForm):
         fields= '__all__'
 
         widgets = {
+            'user': Select(attrs={
+                'class': 'form-control select2',
+                'style': 'width: 100%',
+            }),
             'genero': Select(attrs={
                 'class': 'form-control select2',
                 'style': 'width: 100%',
