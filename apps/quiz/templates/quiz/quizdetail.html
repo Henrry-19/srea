@@ -77,6 +77,17 @@
           {%endblock%}
         </tbody>
       </table>
+      {% if request.user.is_staff %}
+      <div class="col s3">
+        <ul class="collection with-header">
+          <li class="collection-header"><h4>Editar</h4></li>
+          <a href="#" class="collection-item">Quiz</a>
+          <a href="#" class="collection-item">Pregunta</a>
+          <a href="#" class="collection-item">Respuesta</a>
+        </ul>
+      </div>
+        {% endif %}
+     
   </div>
 </div>
 {% endblock %}

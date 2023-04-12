@@ -45,6 +45,7 @@ class FacultadListView(LoginRequiredMixin,ValidatePermissionRequiredMixin,ListVi
         context['title']='Listado de Facultad' #Puefacultaddo enviar variables
         context['url_create']=reverse_lazy('user:facultad')#Ruta abosluta creación de matrícula
         context['list_url']=reverse_lazy('user:facultad_list')#Ruta abosluta lista de usuario
+        context['date_now']=datetime.now() #Se obtiene la fecha de hoy
         context['modelo']='Facultad'#Nombre de identidad
         return context
 

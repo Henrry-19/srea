@@ -101,14 +101,14 @@
                     </a>
                 </li>
                 {% if request.user.is_staff %}
-                <li class="nav-item">
-                    <a href="{% url 'quiz:main-view' %}" class="nav-link"> 
+                <!--<li class="nav-item">
+                    <a href="#" class="nav-link"> 
                         <i class="fas fa-clipboard"></i>
                         <p>
                             Test
                         </p>  
                     </a>
-                </li>
+                </li>-->
 
 
                 <!--<li class="nav-item">
@@ -120,6 +120,15 @@
                     </a>
                 </li>-->
                 {% endif %}
+                <li class="nav-item">
+                    <a href="{% url 'quiz:resultado' %}" class="nav-link">
+                        <i class="fas fa-chalkboard-teacher"></i>
+                        <p>
+                            Resultados
+                        </p>
+                    </a>
+                </li>
+
                 <li><div class="user-panel mt-3 pb-3 mb-3 d-flex"></div></li>
                 <li class="nav-item">
                     <a href="#" class="nav-link">

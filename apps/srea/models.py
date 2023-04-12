@@ -39,6 +39,13 @@ class Ciclo(models.Model): ###-->Ciclos-->Categoria
 				#print(name)
 				return name
 		return ''
+	
+	def get_carrera_ciclo(self):
+		if self.ciclo:
+				name=str(self.ciclo.nombre)
+				#print(name)
+				return name
+		return ''
 
 		###Crear un método llamado toJSON###
 	def toJSON(self):##Me devuelve un diccionario con todos los atributos de mi entidad
@@ -64,8 +71,8 @@ class Asignatura(models.Model):
 	detalle=models.TextField(verbose_name='Detalle de la asignatura')
 	imagen = models.ImageField(upload_to='asignatura/%Y/%m/%d', null=True, blank=True)
 	ciclo=models.ForeignKey(Ciclo,on_delete=models.CASCADE, related_name="ciclo", verbose_name="Ciclo")
-	docente = models.ForeignKey(User, on_delete=models.CASCADE, related_name='course_owner', verbose_name='Docente')
-	users= models.ManyToManyField(User,blank=True,related_name="users", verbose_name="Usuario" )
+	docente = models.ForeignKey(User,on_delete=models.CASCADE, related_name='course_owner', verbose_name='Docente')
+	users= models.ManyToManyField(User,blank=True,related_name="users", verbose_name="Usuario" )#Matriculados
 	unidad= models.ManyToManyField(Unidad,blank=True,related_name="unidad", verbose_name="Unidad" )
   
 	def get_image(self):
@@ -114,3 +121,14 @@ class Asignatura(models.Model):
 		verbose_name = 'Asignatura'
 		verbose_name_plural = 'Asignaturas'
 		ordering = ['id']   
+
+#######################################Completion##########################################################
+
+class Completion(models.Model):
+	user = models.ForeignKey(User, on_delete=models.CASCADE)
+	asignatura = models.ForeignKey(Asignatura, on_delete=models.CASCADE)
+	completed = models.DateTimeField(auto_now_add=True)
+	quiz = models.ForeignKey(Quizzes, on_delete=models.CASCADE, blank=True, null=True)
+
+	def __str__(self):
+		return self.user.username

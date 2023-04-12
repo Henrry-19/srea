@@ -63,6 +63,7 @@ class UserListView(LoginRequiredMixin,ValidatePermissionRequiredMixin,ListView):
         context['url_create_login']=reverse_lazy('user:user_login')#Ruta abosluta creación de usuario
         context['url_create']=reverse_lazy('user:user')#Ruta abosluta creación de usuario
         context['url_list']=reverse_lazy('user:user_list')#Ruta abosluta lista de usuario
+        context['date_now']=datetime.now() #Se obtiene la fecha de hoy
         context['modelo']='Usuarios'#Nombre de identidad
         return context
 

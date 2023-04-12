@@ -63,14 +63,16 @@ urlpatterns = [
 
     #-----------------------------------QUIZ--------------------------------------------------
 
-    path('<asignatura_id>/unidades/<unidad_id>/quiz/newquiz', NewQuiz, name='new-quiz'),
+    path('<asignatura_id>/unidades/<int:unidad_id>/quiz/newquiz', NewQuiz, name='new-quiz'),
     
-    path('<asignatura_id>/unidades/<unidad_id>/quiz/<int:quiz_id>/newquestion', NewQuestion, name='new-question'),
-    path('<asignatura_id>/unidades/<unidad_id>/quiz/<quiz_id>/', QuizDetail, name='quiz-detail'),
-    path('<asignatura_id>/unidades/<unidad_id>/quiz/<quiz_id>/take', TakeQuiz, name='take-quiz'),
-    path('<asignatura_id>/unidades/<unidad_id>/quiz/<quiz_id>/take/submit', SubmitAttempt, name='submit-quiz'),
-    path('<asignatura_id>/unidades/<unidad_id>/quiz/<quiz_id>/<attempt_id>/result', AttemptDetail, name='attempt-detail'),
+    path('<asignatura_id>/unidades/<int:unidad_id>/quiz/<int:quiz_id>/newquestion', NewQuestion, name='new-question'),
+    path('<asignatura_id>/unidades/<int:unidad_id>/quiz/<quiz_id>/', QuizDetail, name='quiz-detail'),
+    path('<asignatura_id>/unidades/<int:unidad_id>/quiz/<quiz_id>/take', TakeQuiz, name='take-quiz'),
+    path('<asignatura_id>/unidades/<int:unidad_id>/quiz/<quiz_id>/take/submit', SubmitAttempt, name='submit-quiz'),
+    path('<asignatura_id>/unidades/<int:unidad_id>/quiz/<quiz_id>/<attempt_id>/result', AttemptDetail, name='attempt-detail'),
 
+
+    
 
 ]
 

@@ -44,12 +44,12 @@
         
                 {% if teacher_mode == True and not request.user.is_staff%}
                   <li class="collection-header"><h4>Docente</h4></li>
-                  <a href="#" class="collection-item">Actividades de los estudiantes</a>
+                  <a href="{% url 'quiz:resultado' %}" class="collection-item">Resultados</a>
                 {% endif %}
                 
                 {% if request.user.is_staff %}
                   <li class="collection-header"><h4>Docente</h4></li>
-                  <a href="#" class="collection-item">Actividades de los estudiantes</a>
+                  <a href="{% url 'quiz:resultado' %}" class="collection-item">Resultados</a>
                   <a href="{% url 'srea:matricula-lista' asigna.id user.id  %}" class="collection-item">Matrícular</a>
                 {% endif %}
                   

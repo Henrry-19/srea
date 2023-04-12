@@ -28,32 +28,15 @@
         </td>
     </tr>
     {%endfor%}
-
 {%endblock%}
 
 
 {% block javascript %}
-<script type="application/javascript">
+  <script type="application/javascript">
     $(function(){
         $('#data').DataTable({
           responsive: true,
           autoWidth: false
-        });
-
-        $('.btnTest').on('click',function () { 
-          $.ajax({
-            url:'{% url 'user:carrera_list' %}', 
-            type: 'POST',
-            data: {id:30},
-            dataType: 'json'
-          }).done(function(data){
-            console.log(data)
-
-          }).fail(function(jqXHR,textStatus,errorThrown){
-            alert(textStatus+':'+errorThrown)
-          }).always(function(data){
-            
-          });
         });
     });
   </script>

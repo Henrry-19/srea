@@ -111,8 +111,7 @@ def AsignaturaUnidades(request, asignatura_id):
 @login_required
 @permission_required('unidad.add_unidad')
 def NewModule(request, asignatura_id):
-    user = request.user
-    
+    #user = request.user 
     course = get_object_or_404(Asignatura, id=asignatura_id)#calculo
     if not request.user.is_staff :
         return HttpResponseForbidden()
@@ -122,7 +121,8 @@ def NewModule(request, asignatura_id):
             if form.is_valid():
                 nombre=form.cleaned_data.get('nombre')
                 descripcion=form.cleaned_data.get('descripcion')
-                m = Unidad.objects.create(nombre=nombre,descripcion=descripcion,docente=user)# en docente registramos directamente en launidad
+                #cuestionario=form.cleaned_data.get('cuestionario')
+                m = Unidad.objects.create(nombre=nombre,descripcion=descripcion)# en docente registramos directamente en launidad
                 course.unidad.add(m)# registramos la unidad en la asignatura
                 course.save()
                 return redirect('srea:primeraU', asignatura_id=asignatura_id)
@@ -140,23 +140,19 @@ def NewModule(request, asignatura_id):
 @permission_required('unidad.change_unidad')
 def EditMudule(request, unidad_id, asignatura_id):#Editar unidad
     course = get_object_or_404(Unidad, id=unidad_id)
-    #quiz = get_object_or_404(Quizzes, id=quiz_id)
-    #print(quiz)
     if request.user.is_staff:
-		#return HttpResponseForbidden()
         if request.method == 'POST':
-            form = UnidadCreateForm(request.POST, request.FILES, instance=course)
+            form = UnidadEditarCreateForm(request.POST, request.FILES, instance=course)
             if form.is_valid():
                 course.nombre = form.cleaned_data.get('nombre')
                 course.descripcion = form.cleaned_data.get('descripcion')
-                #course.cuestionario=form.cleaned_data.get('cuestionario')
-                #quiz=Quizzes.objects.filter(pk=course.cuestionario)
-                #print(quiz, '--Tob--')
-                #course.cuestionario.set(quiz_id)
-                course.save()
+                cuestionario=form.cleaned_data.get('cuestionario')
+                quiz=Quizzes.objects.filter(pk__in=cuestionario)
+                course.cuestionario.set(quiz)
+                course.save()   
                 return redirect('srea:primeraU', asignatura_id=asignatura_id)
         else:
-            form = UnidadCreateForm(instance=course)
+            form = UnidadEditarCreateForm(instance=course)
     context = {
 		'form': form,
 		'course': course,

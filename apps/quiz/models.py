@@ -26,6 +26,9 @@ class Facultad(models.Model):
 	def __str__(self):
 		return self.nombre
 ##################Respuesta######################
+
+
+################################Borrador--Modelos##########################################################3
 class Respuesta(models.Model):
     #pregunta=models.ForeignKey(Pregunta, on_delete=models.CASCADE, related_name="pregunta_respuesta")
     respuesta=models.TextField(verbose_name='Texto de la respuesta')
@@ -72,7 +75,6 @@ class Pregunta(models.Model):
         verbose_name = 'Pregunta'
         verbose_name_plural = 'Preguntas'
         ordering = ['id']
-
 ##################Quiz######################
 class Cuestionario(models.Model):
     #unidad = models.ManyToManyField(Unidad,blank=True,related_name="unidades", verbose_name="Unidad")
@@ -114,8 +116,6 @@ class Cuestionario(models.Model):
         verbose_name = 'Test'
         verbose_name_plural = 'Tests'
         ordering = ['id']
-
-
 ##################Perfil--Resultado######################
 class Resultado(models.Model):
     cuestionario = models.ForeignKey(Cuestionario, on_delete=models.CASCADE, verbose_name="Cuestionario")
@@ -125,9 +125,11 @@ class Resultado(models.Model):
     def __str__(self):
         return str(self.pk)
     
-################################Borrador##########################################################3
 
-class Answer(models.Model):
+
+#####################################Nuevos--Modelos#####################################################
+
+class Answer(models.Model):##--> Respuesta
     answer_text=models.CharField(max_length=900)
     is_correct = models.BooleanField(default=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -135,17 +137,16 @@ class Answer(models.Model):
     def __str__(self):
         return self.answer_text
     
-class Question(models.Model):
+class Question(models.Model):##--> Pregunta
     question_text = models.CharField(max_length=900)
     answers = models.ManyToManyField(Answer) #Respuesta
     points = models.PositiveIntegerField()
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.question_text
     
 class Quizzes(models.Model):#Cuestionarios
-    user= models.ForeignKey(User, on_delete=models.CASCADE)
+    #user= models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=200, verbose_name="Título")
     description = RichTextField(verbose_name="Descripción")
     date = models.DateTimeField(auto_now_add=True) # Fecha de creación del cuestionario
@@ -161,20 +162,20 @@ class Quizzes(models.Model):#Cuestionarios
         verbose_name = 'Quizze'
         verbose_name_plural = 'Quizzes'
     
-class Attempter(models.Model): #Intentos correctos
+class Attempter(models.Model): #IntentosResultado--->Resultado:Guardo mis intentos
     user= models.ForeignKey(User, on_delete=models.CASCADE)
     quiz= models.ForeignKey(Quizzes, on_delete=models.CASCADE)
     score = models.PositiveIntegerField()
-    completed = models.DateTimeField(auto_now_add=True)
+    completed = models.DateTimeField(auto_now_add=True)#Fecha
 
 
     def __str__(self):
         return self.user.username
     
-class Attempt(models.Model): #Intentar
-    quiz= models.ForeignKey(Quizzes, on_delete=models.CASCADE)
-    attempter = models.ForeignKey(Attempter, on_delete=models.CASCADE)
-    questions = models.ForeignKey(Question, on_delete=models.CASCADE)
+class Attempt(models.Model): #Intento--Enviar--->Contestar
+    quiz = models.ForeignKey(Quizzes, on_delete=models.CASCADE)
+    attempter = models.ForeignKey(Attempter, on_delete=models.CASCADE)#Mis intentos
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
     answer = models.ForeignKey(Answer, on_delete=models.CASCADE)
 
     def __str__(self):
@@ -184,7 +185,7 @@ class Attempt(models.Model): #Intentar
     
 ##################Unidad####################
 class Unidad(models.Model):
-    docente=models.ForeignKey(User, on_delete=models.CASCADE, related_name='unidad_docente', verbose_name='Docente')
+    #docente=models.ForeignKey(User, on_delete=models.CASCADE, related_name='unidad_docente', verbose_name='Docente')
     nombre = models.CharField(max_length=150, verbose_name='Nombre', unique=False)
     descripcion =models.TextField(verbose_name='Descripción')
     cuestionario=models.ManyToManyField(Quizzes, blank=True, related_name="cuestionarios", verbose_name="Cuestionario")
@@ -217,7 +218,5 @@ class Unidad(models.Model):
         verbose_name = 'Unidad'
         verbose_name_plural = 'Unidades'
         ordering = ['id']
-
-
 
 

@@ -12,11 +12,11 @@ class AsignaturaAdmin(admin.ModelAdmin):
 admin.site.register(Asignatura, AsignaturaAdmin)
 
 admin.site.register(Unidad)
-admin.site.register(Cuestionario)
+#admin.site.register(Cuestionario)
 
 admin.site.register(Answer)
 
-admin.site.register(Resultado)
+#admin.site.register(Resultado)
 
 
 
@@ -39,6 +39,9 @@ class QuizAdmin(admin.ModelAdmin):
 
 admin.site.register(Question, QuestionAdmin)
 admin.site.register(Quizzes)
+admin.site.register(Attempt)
+admin.site.register(Attempter)
+admin.site.register(Completion)
 # Register your models here.
 #admin.site.register(Usuario)
 #-------------------------------------
@@ -54,8 +57,8 @@ admin.site.register(Facultad)
 admin.site.register(Ciclo)
 admin.site.register(Carrera)
 #admin.site.register(Pregunta, PreguntaAdmin)
-admin.site.register(Pregunta)
-admin.site.register(Respuesta)
+#admin.site.register(Pregunta)
+#admin.site.register(Respuesta)
 
 
 

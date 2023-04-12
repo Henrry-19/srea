@@ -52,7 +52,8 @@ class FichaListView(LoginRequiredMixin,ValidatePermissionRequiredMixin,ListView)
         #context['url_create_login']=reverse_lazy('user:user_login')#Ruta abosluta creación de usuario
         context['url_create']=reverse_lazy('user:ficha')#Ruta abosluta creación de usuario
         context['url_list']=reverse_lazy('user:ficha_list')#Ruta abosluta lista de usuario
-        context['modelo']='Ficha'#Nombre de identidad
+        context['date_now']=datetime.now() #Se obtiene la fecha de hoy
+        context['modelo']='Ficha'#Nombre de identidad  'date_now':datetime.now()  
         return context
 
 class FichaCreateView(LoginRequiredMixin,ValidatePermissionRequiredMixin,CreateView):

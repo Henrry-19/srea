@@ -14,6 +14,8 @@ from django.views.decorators.csrf import csrf_protect
 from apps.srea.encryption_util import*
 
 class AsignaturaListView(LoginRequiredMixin,ValidatePermissionRequiredMixin,View):
+    model= Asignatura
+    template_name = 'asignatura/asignatura_lista.html'
     permission_required='view_asignatura'
     def get(self,request, *args, **kwargs):
         user=request.user
@@ -21,15 +23,28 @@ class AsignaturaListView(LoginRequiredMixin,ValidatePermissionRequiredMixin,View
             asignatura = Asignatura.objects.all()
         if  not request.user.is_staff:
             asignatura = Asignatura.objects.filter(users=user)
+
         context={
             'asignatura':asignatura,
             'url_create':reverse_lazy('srea:asignatura'),
             'list_url':reverse_lazy('srea:p_asignatura'),
-            'title':'Lista de asignaturas'  
+            'title':'Lista de asignaturas',
+            'modelo':'Asignaturas',
+            'date_now':datetime.now()  
         }
-        return render(request, 'asignatura/asignatura_lista.html', context)
 
-class AsignaturaCreateView(LoginRequiredMixin,ValidatePermissionRequiredMixin,CreateView):
+        return render(request, 'asignatura/asignatura_lista.html', context)
+    
+    def get_context_data(self, **kwargs): #Método que devuelve un diccionario que representa el contexto de la plantilla
+        context = super().get_context_data(**kwargs) #Obtengo el diccionario que devuelve el método
+        context['title']='Lista de asignaturas' #Puedo enviar variables
+        context['url_create']=reverse_lazy('srea:asignatura')#Ruta abosluta creación de usuario
+        context['url_list']=reverse_lazy('srea:p_asignatura')#Ruta abosluta lista de usuario
+        context['modelo']='Asignaturas'#Nombre de identidad
+        return context
+
+##Este método no sirve
+class AsignaturaCreateView2(LoginRequiredMixin,ValidatePermissionRequiredMixin,CreateView):
     model=Asignatura #Indicar el modelo con el cual se va ha trabajar
     form_class=AsignaturaCreateForm #Importando el formulario con el que voy a trabajar
     template_name='asignatura/asignatura_create.html' # Debo indicarle la ubicación de mi plantilla
@@ -41,26 +56,108 @@ class AsignaturaCreateView(LoginRequiredMixin,ValidatePermissionRequiredMixin,Cr
         return super().dispatch(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):###Implementación de ajax en mi método sobrescrito POST###
-         user = request.user
-         if request.method == 'POST':
-              form = AsignaturaCreateForm(request.POST, request.FILES)
-              #print(form)
-              if form.is_valid():
-                   ciclo = form.cleaned_data.get('ciclo')
-                   nombre = form.cleaned_data.get('nombre')
-                   detalle = form.cleaned_data.get('detalle')
-                   imagen = form.cleaned_data.get('imagen')
-                   Asignatura.objects.create(ciclo=ciclo, nombre=nombre, detalle=detalle,imagen=imagen, docente=user)
-                   return redirect('srea:p_asignatura')
-         else:
-            form=AsignaturaCreateForm()
-         context = {
-		        'form': form,
-                'list_url':reverse_lazy('srea:p_asignatura')
-	     }
-         return render(request, 'asignatura/asignatura_create.html', context)
+         #user = request.user
+        data={}
+        try:
+            action= request.POST['action']
+            if action=='add':
+                form=self.get_form() #Llamamos a nuestro formulario
+                if form.is_valid():
+                    form.save()
+                    return redirect('srea:p_asignatura')
+                else:
+                    data['error']=form.errors # Data va a hacer igual al formulario con los errores 
+            else:
+                data['error']='No ingreso por ninguna opción'
+        except Exception as e:
+            data['error']=str(e) #Me devuelve el objeto e-->convertido a un string
+        return HttpResponse(data) 
+    
 
+    def get_context_data(self, **kwargs): #Método que devuelve un diccionario que representa el contexto de la plantilla
+        context = super().get_context_data(**kwargs) #Obtengo el diccionario que devuelve el método
+        context['title']='Creación de una Asignatura' #Puedo enviar variables
+        context['modelo']='Asignatura'#Nombre de identidad
+        context['url_list']=reverse_lazy('srea:p_asignatura')#Ruta abosluta lista de asignatura
+        context['action']='add'#Enviar variable action
+        return context
+
+        #return render(request, 'asignatura/asignatura_create.html', context)
+
+
+##Este método sirve
+class AsignaturaCreateView(LoginRequiredMixin,ValidatePermissionRequiredMixin,CreateView):
+    model=Asignatura #Indicar el modelo con el cual se va ha trabajar
+    form_class=AsignaturaCreateForm #Importando el formulario con el que voy a trabajar
+    template_name='asignatura/asignatura_create.html' # Debo indicarle la ubicación de mi plantilla
+    success_url= reverse_lazy('srea:asignatura') #Me permite direccionar a otra plantilla, la funnción reverse_lazy me recibe una url como parámetro
+    permission_required='add_asignatura'
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):###Implementación de ajax en mi método sobrescrito POST###
+        data={} #Se declara un diccionario llamado data
+        try: #controlar el error
+            action= request.POST['action']#Recupero la variable action en mi método POST, cada vez que se haga una petición
+            if action=='add': #Se indica el proceso add
+                form=self.get_form() #Llamamos a nuestro formulario
+                if form.is_valid():# Preguntamos si nuestro formulario es valido
+                    form.save()
+                else:
+                    data['error']=form.errors # Data va a hacer igual al formulario con los errores 
+            else:
+                data['error']='No ingreso por ninguna opción'
+        except Exception as e: #Llamamos a la clase Exception para indicar el error
+            data['error']=str(e) #Me devuelve el objeto e-->convertido a un string
+        return JsonResponse(data)
+
+
+    def get_context_data(self, **kwargs): #Método que devuelve un diccionario que representa el contexto de la plantilla
+        context = super().get_context_data(**kwargs) #Obtengo el diccionario que devuelve el método
+        context['title']='Creación de una Asignatura' #Puedo enviar variables
+        context['modelo']='Asignatura'#Nombre de identidad
+        context['url_list']=reverse_lazy('srea:p_asignatura')#Ruta abosluta lista de asignatura
+        context['action']='add'#Enviar variable action
+        return context
+
+
+##Este método sirve
 class AsignaturaUpdateView(LoginRequiredMixin,ValidatePermissionRequiredMixin,UpdateView):
+    model = Asignatura #Indicar el modelo con el cual se va ha trabajar
+    form_class = AsignaturaModificarCreateForm #Importando el formulario con el que voy a trabajar
+    template_name = 'asignatura/asignatura_create.html' #Debo indicarle la ubicación de mi plantilla
+    permission_required='change_asignatura'
+    success_url = reverse_lazy('srea:p_asignatura') #Me permite direccionar a otra plantilla, la función reverse_lazy me recibe una url como parámetro
+    #@method_decorator(csrf_exempt) #Mecanismo de defensa de django
+
+    def dispatch(self, request, *args, **kwargs):
+        self.object = self.get_object()#Le decimos que la clase object va a hacer igual a lo que tenemos en lainstancia de nuestro objeto, para que el funcionamiento no se altere
+        return super().dispatch(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        data ={}                                     
+        try:
+            action= request.POST['action']
+            if action =='edit':
+                form = self.get_form()
+                data=form.save()
+            else:
+                data['error']='No realiza ninguna acción'
+        except Exception as e:
+            data['error']=str(e)
+        return JsonResponse(data)
+        
+    def get_context_data(self, **kwargs): #Método que devuelve un diccionario que representa el contexto de la plantilla
+        context = super().get_context_data(**kwargs) #Obtengo el diccionario que devuelve el método
+        context['title']='Actualización de una Asignatura' #Puedo enviar variables
+        context['modelo']='Asignatura'#Nombre de identidad
+        context['url_list']=reverse_lazy('srea:p_asignatura')#Ruta abosluta lista de asignatura
+        context['action']='edit'#Enviar variable action
+        return context
+
+
+##Este método no sirve
+class AsignaturaUpdateView2(LoginRequiredMixin,ValidatePermissionRequiredMixin,UpdateView):
     model=Asignatura
     form_class = AsignaturaCreateForm
     permission_required='change_asignatura'
@@ -69,6 +166,13 @@ class AsignaturaUpdateView(LoginRequiredMixin,ValidatePermissionRequiredMixin,Up
     def get_success_url(self): #Me regresa a la ventana
         pk = self.kwargs['pk']
         return reverse_lazy('srea:p_asignatura')
+    
+    def get_context_data(self, **kwargs): #Método que devuelve un diccionario que representa el contexto de la plantilla
+        context = super().get_context_data(**kwargs) #Obtengo el diccionario que devuelve el método
+        context['title']='Editar Asignatura' #Puedo enviar variables
+        context['modelo']='Asignatura'#Nombre de identidad
+        context['url_list']=reverse_lazy('srea:p_asignatura')#Ruta abosluta lista de asignatura
+        return context
 
 
 class AsignaturaDeleteView(LoginRequiredMixin,ValidatePermissionRequiredMixin,DeleteView):
@@ -146,7 +250,7 @@ def MatricularLista(request, asignatura_id, user_id):
     return render(request, 'asignatura/matricular_estudiantes.html', context)   
 
 @login_required
-def Enroll(request, asignatura_id, user_id):
+def Enroll(request, asignatura_id, user_id):#Matricular estudiantes
     #user = request.user
     usuarios= User.objects.all()
     course = get_object_or_404(Asignatura, id=asignatura_id)
@@ -156,3 +260,5 @@ def Enroll(request, asignatura_id, user_id):
         course.users.add(user)
     #return redirect('srea:matricula-lista', asignatura_id=asignatura_id, user_id=user_id)
     return redirect('srea:p_asignatura')
+
+

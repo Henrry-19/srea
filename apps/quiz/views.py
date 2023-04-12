@@ -10,9 +10,13 @@ from django.views.generic import* #importando la vista genérica
 
 from django.contrib.auth.decorators import permission_required
 # Create your views here.
+
+
+
+
 @login_required
 @permission_required('quizzes.add_quizzes')
-def NewQuiz(request,asignatura_id, unidad_id):#Vistas basadas en funciones
+def NewQuiz1(request,asignatura_id, unidad_id):#Vistas basadas en funciones
     user = request.user
     unidad=get_object_or_404(Unidad, id=unidad_id)
     if request.method=='POST':
@@ -31,9 +35,40 @@ def NewQuiz(request,asignatura_id, unidad_id):#Vistas basadas en funciones
         form = NewQuizForm
     context={
         'form':form,
-
     }
     return render(request, 'quiz/newquiz.html', context)
+
+##########################################Doble---Quiz##################################################33
+@login_required
+@permission_required('quizzes.add_quizzes')
+def NewQuiz(request,asignatura_id, unidad_id):#Vistas basadas en funciones
+    #user = request.user
+    unidad=get_object_or_404(Unidad, id=unidad_id)
+    if request.method=='POST':
+        form = NewQuizForm(request.POST)
+        if form.is_valid():
+            title = form.cleaned_data.get('title')
+            description = form.cleaned_data.get('description')
+            due = form.cleaned_data.get('due')
+            allowed_attemps = form.cleaned_data.get('allowed_attemps')
+            time_limit_mins = form.cleaned_data.get('time_limit_mins')
+            quiz = Quizzes.objects.create(title=title,description=description,due=due,allowed_attemps=allowed_attemps,time_limit_mins=time_limit_mins)
+            unidad.cuestionario.add(quiz)
+            unidad.save()
+            return redirect('srea:new-question', asignatura_id=asignatura_id, unidad_id=unidad_id, quiz_id=quiz.id)
+    else:
+        form = NewQuizForm
+    context={
+        'form':form,
+    }
+    return render(request, 'quiz/newquiz.html', context)
+
+
+
+
+
+
+
 
 
 @login_required
@@ -50,7 +85,7 @@ def NewQuestion(request, asignatura_id, unidad_id, quiz_id):
                     is_correct = request.POST.getlist('is_correct')
                     #print(is_correct , '------>')
                     #print(is_correct)
-                    question= Question.objects.create(question_text=question_text, user=user, points=points)
+                    question= Question.objects.create(question_text=question_text, points=points)
                     for a, c in zip(answer_text, is_correct):
                         answer = Answer.objects.create(answer_text=a, is_correct=c, user=user)
                         question.answers.add(answer)
@@ -66,11 +101,13 @@ def NewQuestion(request, asignatura_id, unidad_id, quiz_id):
     context={
          
             'form':form,
-            
-
     }
 
     return render(request,'quiz/newquestion.html', context)
+
+
+
+
 @login_required
 def QuizDetail(request,asignatura_id, unidad_id,quiz_id):
     user = request.user
@@ -86,7 +123,7 @@ def QuizDetail(request,asignatura_id, unidad_id,quiz_id):
 
     return render(request, 'quiz/quizdetail.html', context)
 @login_required
-def TakeQuiz(request,asignatura_id, unidad_id, quiz_id):
+def TakeQuiz(request,asignatura_id, unidad_id, quiz_id):#Tomar el cuestionario
     quiz=get_object_or_404(Quizzes, id=quiz_id)
 
     context={
@@ -102,7 +139,7 @@ def SubmitAttempt(request,asignatura_id, unidad_id,quiz_id):#Envíar intento
     quiz=get_object_or_404(Quizzes, id=quiz_id)
     puntos_ganados= 0
     if request.method=='POST':
-        questions=request.POST.getlist('questions')
+        questions=request.POST.getlist('question')
         answers = request.POST.getlist('answer')
         attempter=Attempter.objects.create(user=user, quiz=quiz, score=0)
 
@@ -110,8 +147,9 @@ def SubmitAttempt(request,asignatura_id, unidad_id,quiz_id):#Envíar intento
         question= Question.objects.get(id=q)
         answer = Answer.objects.get(id=a)
 
-        Attempt.objects.create(quiz=quiz, attempter=attempter, questions=question, answer=answer)
-        if answer.is_correct==True:
+        Attempt.objects.create(quiz=quiz, attempter=attempter, question=question, answer=answer)
+        Completion.objects.create(user=user, asignatura_id=asignatura_id, quiz=quiz)
+        if answer.is_correct==True:#Podemos trabajar en esta parate para los estilos de aprendizaje
             puntos_ganados += question.points
             attempter.score += puntos_ganados
             attempter.save()
@@ -122,7 +160,7 @@ def AttemptDetail(request,asignatura_id, unidad_id,quiz_id, attempt_id):#Resulta
     user=request.user
     quiz=get_object_or_404(Quizzes, id=quiz_id)
     attempts= Attempt.objects.filter(quiz=quiz, attempter__user=user)
-    print(attempts)
+    
     context = {
         'quiz':quiz,
         'attempts':attempts,

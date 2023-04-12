@@ -44,6 +44,7 @@ class CursoListView(LoginRequiredMixin,ValidatePermissionRequiredMixin,ListView)
         context['title']='Listado de ciclos' #Puedo enviar variables
         context['url_create']=reverse_lazy('srea:r_curso')#Ruta abosluta creación de matrícula
         context['list_url']=reverse_lazy('srea:curso')#Ruta abosluta lista de usuario
+        context['date_now']=datetime.now() #Se obtiene la fecha de hoy
         context['modelo']='Ciclo'#Nombre de identidad
         return context
 
