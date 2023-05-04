@@ -1,6 +1,6 @@
 estado_civil_ficha_informacion=(
-    ('S','Soltero/a'),
-    ('C','Casado/a'),
-    ('D','Divorciado/a'),
-    ('V','Viudo/a')
+    ('Soltero/a','Soltero/a'),
+    ('Casado/a','Casado/a'),
+    ('Divorciado/a','Divorciado/a'),
+    ('Viudo/a','Viudo/a')
 )

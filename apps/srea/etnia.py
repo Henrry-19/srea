@@ -1,11 +1,11 @@
 etnia_ficha=(
-    ('A', 'Afroecuatoriano'),
-    ('B', 'Blanco'),
-    ('C', 'Cholo'),
-    ('I', 'Indigena'),
-    ('Mo', 'Montubio'),
-    ('Mu', 'Mulato'),
-    ('Me', 'Mestizo'),
-    ('N', 'Negro'),
-    ('O', 'Otro')
+    ('Afroecuatoriano', 'Afroecuatoriano'),
+    ('Blanco', 'Blanco'),
+    ('Cholo', 'Cholo'),
+    ('Indigena', 'Indigena'),
+    ('Montubio', 'Montubio'),
+    ('Mulato', 'Mulato'),
+    ('Mestizo', 'Mestizo'),
+    ('Negro', 'Negro'),
+    ('Otro', 'Otro')
 )

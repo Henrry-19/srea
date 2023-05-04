@@ -40,7 +40,7 @@ $(function () {
                 render: function (data, type, row) {
                     var buttons = '<a href="/user/ficha_list/u_ficha/' + row.id + '/" class="btn btn-warning btn-xs btn-flat"><i class="fas fa-edit"></i></a> ';
                     buttons += '<a href="/user/ficha_list/d_ficha/' + row.id + '/" type="button" class="btn btn-danger btn-xs btn-flat"><i class="fas fa-trash-alt"></i></a>';
-                    buttons += ' <a href="#" type="button" class="btn btn-primary btn-xs btn-flat"><i class="fa fa-print"></i></a>';
+                    buttons += ' <a href="/user/ficha_list/pdf/' + row.id + '/" target="_blank" type="button" class="btn btn-info btn-xs btn-flat"><i class="fa fa-file-pdf"></i></a>';
                     return buttons;
                 }
             },

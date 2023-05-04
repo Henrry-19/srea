@@ -39,6 +39,9 @@ urlpatterns = [
     path('ficha_list/u_ficha/<int:pk>/',FichaUpdateView.as_view(), name="u_ficha"),
     path('ficha_list/d_ficha/<int:pk>/', FichaDeleteView.as_view(), name="d_ficha"),
 
+    ###################################PDF###########################################
+     path('ficha_list/pdf/<int:pk>/', FichaPdfView.as_view(), name="ficha_pdf"),
+
 ]
 
 

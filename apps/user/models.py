@@ -3,16 +3,16 @@ from django.db import models
 from core.settings import MEDIA_URL, STATIC_URL
 from django.forms import model_to_dict
 from crum import get_current_request
-
-from apps.srea.genero import genero_ficha_informacion
-from apps.srea.estado_civil import estado_civil_ficha_informacion
-from apps.srea.etnia import etnia_ficha
 from datetime import datetime
 from datetime import date
 
-#from apps.srea.models import Asignatura
-##################FichaUser######################
-##################User######################
+#####################CHOICES#########################
+from apps.user.vistas.choices.nacionalidad import nacionalidad_pais
+from apps.srea.etnia import etnia_ficha
+from apps.srea.estado_civil import estado_civil_ficha_informacion
+from apps.srea.genero import genero_ficha_informacion
+#####################################################
+
 class User(AbstractUser):
     imagen=models.ImageField(upload_to='users/%Y/%m/%d',null=True,blank=True)
     email=models.EmailField(max_length=254,unique=True,verbose_name='Correo Electrónico')
@@ -48,7 +48,6 @@ class User(AbstractUser):
         except:
             pass
 
-
 class Ficha(models.Model):
     user= models.OneToOneField(User,blank=True,on_delete=models.CASCADE,related_name="userF", verbose_name="Usuario")
     dni = models.CharField(max_length=10, unique=True, verbose_name='Dni')
@@ -57,11 +56,15 @@ class Ficha(models.Model):
     direccion=models.CharField(max_length=50, verbose_name='Dirección')
     ocupacion=models.CharField(max_length=50, verbose_name='Ocupación') #Ingresar como lista-clase ocupación
     tecnica_estudio=models.CharField(max_length=50,null=True, verbose_name='Técnica de estudio')
-    etnia=models.CharField(choices=etnia_ficha,max_length=10, verbose_name='Etnia')
-    estado_civil= models.CharField(choices=estado_civil_ficha_informacion, max_length=10, verbose_name='Estado civil')
+    etnia=models.CharField(choices=etnia_ficha,max_length=100, verbose_name='Etnia')
+    nacionalidad=models.CharField(choices=nacionalidad_pais,max_length=100, verbose_name='Nacionalidad')
+    estado_civil= models.CharField(choices=estado_civil_ficha_informacion, max_length=100, verbose_name='Estado civil')
     
 
-
+    def get_image(self):
+        if self.user:
+           return '{}{}'.format(MEDIA_URL, self.user.imagen) 
+        return '{}{}'.format(STATIC_URL, 'img/usuario.png')
     
     def calcular_años(self):
         return date.today().year - self.birthday.year
@@ -70,6 +73,11 @@ class Ficha(models.Model):
         if self.user:
             name=str(self.user.get_full_name())
             return name
+        return ''
+    def get_email(self):
+        if self.user:
+            email=str(self.user.email)
+            return email
         return ''
  ###Crear un método llamado toJSON###
     def toJSON(self):##Me devuelve un diccionario con todos los atributos de mi entidad

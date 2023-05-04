@@ -9,7 +9,7 @@ from .vistas.unidad import *
 from apps.quiz.views import*
 
 from .vistas.index import *
-
+from apps.quiz.vistas.attempter import *
 ######################################################
 from django.views import View
 ######################################################
@@ -64,14 +64,22 @@ urlpatterns = [
     #-----------------------------------QUIZ--------------------------------------------------
 
     path('<asignatura_id>/unidades/<int:unidad_id>/quiz/newquiz', NewQuiz, name='new-quiz'),
-    
+    #path('<asignatura_id>/unidades/<int:unidad_id>/quiz/<quiz_id>/take', TakeQuiz, name='take-quiz'),
+    path('<str:asignatura_id>/unidades/<int:unidad_id>/quiz/<int:quiz_id>/take/edit', EditQuiz,name='edit-quiz'),
+
+
     path('<asignatura_id>/unidades/<int:unidad_id>/quiz/<int:quiz_id>/newquestion', NewQuestion, name='new-question'),
+    path('<str:asignatura_id>/unidades/<int:unidad_id>/quiz/<int:quiz_id>/<int:question_id>/take/edit', EditQuestion,name='edit-question'),
+    path('<str:asignatura_id>/unidades/<int:unidad_id>/quiz/<int:quiz_id>/<int:question_id>/<int:answer_id>/take/edit', EditAnswer,name='edit-answer'),    
+    
+    
     path('<asignatura_id>/unidades/<int:unidad_id>/quiz/<quiz_id>/', QuizDetail, name='quiz-detail'),
     path('<asignatura_id>/unidades/<int:unidad_id>/quiz/<quiz_id>/take', TakeQuiz, name='take-quiz'),
     path('<asignatura_id>/unidades/<int:unidad_id>/quiz/<quiz_id>/take/submit', SubmitAttempt, name='submit-quiz'),
     path('<asignatura_id>/unidades/<int:unidad_id>/quiz/<quiz_id>/<attempt_id>/result', AttemptDetail, name='attempt-detail'),
-
-
+    #####################################Resultado##############################################
+    #path('asignatura/<str:asignatura_id>/', AsignaturaDetail, name='course'),
+    path('resultado/',ListarResultadosEstudiantes, name="resultado"), #presentar
     
 
 ]

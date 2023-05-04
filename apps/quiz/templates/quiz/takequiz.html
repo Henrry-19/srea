@@ -45,6 +45,7 @@
             <th scope="col" style="width: 20%;">Tiempo limite:</th>
             <th scope="col" style="width: 20%;">Descripción</th>
             <th scope="col" style="width: 20%;">Mis intentos</th>
+            <th scope="col" style="width: 20%;">Opciones</th>
         </tr>
           {%endblock%}
         </tbody>
@@ -67,6 +68,19 @@
                 </ul>  
               </div>
             </td>
+            
+            {% if request.user.is_staff %}
+            <td>
+              <a href="{% url 'srea:edit-quiz' asignatura_id unidad_id quiz.id %}" class="btn btn-warning btn-xs btn-flat"><i class="fas fa-edit"></i></a>
+              
+              <a href="{% url 'srea:new-question' asignatura_id unidad_id quiz.id %}" class="btn btn-primary btn-flat btnTest"><i class="fas fa-plus"></i></a>  
+            
+            </td>
+            {% endif %}
+            <div class="col s12">
+              <a class="btn" href="{% url 'srea:quiz-detail' asignatura_id unidad_id quiz.id  %}"><i class="fa fa-arrow-circle-left"></i></a>
+            </div>
+              
           </tr>
         </div>
         {%endblock%}
@@ -81,7 +95,13 @@
                 {% for question in quiz.questions.all %}
                   <div class="col s12">
                     <br>
-                    <p><b>{{question.id}}. {{question.question_text }}</b></p>
+                    <p><b>{{question.id}}. {{question.question_text }}</b> 
+                      
+                      {% if request.user.is_staff  %}
+                      <a href="{% url 'srea:edit-question' asignatura_id unidad_id quiz.id question.id %}" class="btn btn-warning btn-xs btn-flat"><i class="fas fa-edit"></i></a>
+                      {% endif %}
+        
+                   </p>
                     <input type="hidden" name="question" value="{{ question.id }}">
                   </div>
                   {% for answer in question.answers.all %}
@@ -89,6 +109,10 @@
                       <label>
                         <input name="answer" type="checkbox" value="{{ answer.id }}" />
                         <span>{{ answer.answer_text }}</span>
+                        {% if request.user.is_staff  %}
+                        <a href="{% url 'srea:edit-answer' asignatura_id unidad_id quiz.id question.id answer.id %}" class="btn btn-warning btn-xs btn-flat"><i class="fas fa-edit"></i></a>
+                        {% endif %}
+
                       </label>          
                     </div>
                   {% endfor %}

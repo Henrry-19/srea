@@ -34,19 +34,21 @@
         </thead>
         <tbody>
         {%block rows%}
-          {% for u in lista %}
+        
+          {% for c  in lista  %}
             <tr>
               <td>
-                {{u.user}}
+                {{c.user}}
               </td>
               <td>
-                {{u.quiz}}
+                {{c.quiz}}
               </td>
               <td> 
-                {{u.score}}      
+                {{c.score}}      
               </td> 
             </tr> 
-          {% endfor %} 
+          {% endfor %}
+
         {%endblock%}
         </tbody>
       </table>

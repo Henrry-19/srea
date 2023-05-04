@@ -5,5 +5,3 @@ $(function () {
         placeholder: 'Buscar..'
     });
 });
-
-

@@ -82,49 +82,11 @@
                             </p>  
                         </a>
                     </li>
-                    <!--{% if request.user.is_staff %}
-                    <li class="nav-item">
-                        <a href="#" class="nav-link"> 
-                            <i class="fa fa-folder"></i>
-                            <p>
-                            Unidad
-                            </p>  
-                        </a>
-                    </li>
-                    {% endif %}-->
                 <li class="nav-item">
                     <a href="{% url 'user:ficha_list' %}" class="nav-link">
                         <i class="fas fa-chalkboard-teacher"></i>
                         <p>
                             Ficha
-                        </p>
-                    </a>
-                </li>
-                {% if request.user.is_staff %}
-                <!--<li class="nav-item">
-                    <a href="#" class="nav-link"> 
-                        <i class="fas fa-clipboard"></i>
-                        <p>
-                            Test
-                        </p>  
-                    </a>
-                </li>-->
-
-
-                <!--<li class="nav-item">
-                    <a href="#" class="nav-link"> 
-                        <i class="fas fa-clipboard"></i>
-                        <p>
-                            Pregunta
-                        </p>  
-                    </a>
-                </li>-->
-                {% endif %}
-                <li class="nav-item">
-                    <a href="{% url 'quiz:resultado' %}" class="nav-link">
-                        <i class="fas fa-chalkboard-teacher"></i>
-                        <p>
-                            Resultados
                         </p>
                     </a>
                 </li>

@@ -1,0 +1,129 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<style>
+    .img-invoice {
+        width: 50px;
+        text-align: center;
+        margin: 0 auto;
+    }
+
+    .head {
+        text-align: center;
+        text-transform: uppercase;
+    }
+
+    #invoice thead tr th {
+        text-align: left;
+        border-bottom: 1px solid black;
+        border-top: 1px solid black;
+        padding-top: 4px;
+    }
+
+    #invoice thead tr {
+        margin-bottom: 0;
+        padding-bottom: 0;
+    }
+
+    #invoice tbody tr {
+        padding: 0;
+    }
+
+    .text-center{
+        text-align: center;
+    }
+</style>
+<body>
+<img src="/media/{{sale.get_image}}" class="img-invoice">
+{{sale.get_image}}<!--Colocar Imagen en ficha-->
+<p class="head">
+    <b>{{ comp.name|upper }}</b><br>
+</p>
+<p>
+    <b>Fecha de Impresión:</b> {{ fecha_impresion }}<br>
+</p>
+<table id="invoice">
+    <thead>
+    <!--Datos personales-->
+    1. Datos personales
+        <tr style="border: 1px solid blanchedalmond;">
+            <th style="border: 1px solid blanchedalmond;"> Cedula: <th style="border: 1px solid blanchedalmond;">{{sale.dni}}</th></th>
+        </tr>
+        <tr style="border: 1px solid blanchedalmond;" >
+            <th style="border: 1px solid blanchedalmond;">Nombres y Apellidos: <th style="border: 1px solid blanchedalmond;">{{sale.get_user}}</th></th>
+        </tr>
+        <tr style="border: 1px solid blanchedalmond;" >
+            <th style="border: 1px solid blanchedalmond;">Fecha de nacimiento: <th style="border: 1px solid blanchedalmond;">{{sale.birthday}}</th></th>
+        </tr>
+        <tr style="border: 1px solid blanchedalmond;" >
+            <th style="border: 1px solid blanchedalmond;">Edad: <th style="border: 1px solid blanchedalmond;"> {{sale.calcular_años}} años</th></th>
+        </tr>
+        <tr style="border: 1px solid blanchedalmond;" >
+            <th style="border: 1px solid blanchedalmond;">Nacionalidad:<th style="border: 1px solid blanchedalmond;"> {{sale.nacionalidad}} </th></th>
+        </tr>
+        <tr style="border: 1px solid blanchedalmond;" >
+            <th style="border: 1px solid blanchedalmond;">Género: <th style="border: 1px solid blanchedalmond;">{{sale.genero}}</th></th>
+        </tr>
+        <tr style="border: 1px solid blanchedalmond;" >
+            <th style="border: 1px solid blanchedalmond;">Correo electrónico: <th style="border: 1px solid blanchedalmond;">{{sale.get_email}}</th></th>
+        </tr>
+        <tr style="border: 1px solid blanchedalmond;" >
+            <th style="border: 1px solid blanchedalmond;">Dirección: <th style="border: 1px solid blanchedalmond;">{{sale.direccion}}</th></th>
+        </tr>
+        <tr style="border: 1px solid blanchedalmond;" >
+            <th style="border: 1px solid blanchedalmond;">Estado civil: <th style="border: 1px solid blanchedalmond;">{{sale.estado_civil}}</th></th>
+        </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+
+<table id="invoice">
+    <thead>
+    <!--Datos personales-->
+        <br> 2. Información Adicional
+        <tr style="border: 1px solid blanchedalmond;" >
+            <th style="border: 1px solid blanchedalmond;">Etnia: <th style="border: 1px solid blanchedalmond;">{{sale.etnia}}</th></th>
+        </tr>
+        <tr style="border: 1px solid blanchedalmond;">
+            <th style="border: 1px solid blanchedalmond;">Ocupación: <th style="border: 1px solid blanchedalmond;">{{sale.ocupacion}}</th></th>
+        </tr>
+        <tr style="border: 1px solid blanchedalmond;" >
+            <th style="border: 1px solid blanchedalmond;">Técnica de estudio: <th style="border: 1px solid blanchedalmond;">{{sale.tecnica_estudio}}</th></th>
+        </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+
+
+<table id="invoice">
+    <thead>
+    <!--Datos personales-->
+        <br> 3. Estilos de Aprendizaje
+        <tr style="border: 1px solid blanchedalmond;" >
+            <th style="border: 1px solid blanchedalmond;">Modelo de evaluación</th>
+            <th style="border: 1px solid blanchedalmond;">Estilo dominante</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr style="border: 1px solid blanchedalmond;" >
+            <td>------</td>
+            <td>------</td>
+        </tr>
+    </tbody>
+</table>
+
+<table style="margin-top: 250px;">
+    <thead>
+    <tr>
+        <th>********</th>
+    </tr>
+    <tr>
+        <th>----</th>
+    </tr>
+    </thead>
+</table>
+</body>
+</html>
