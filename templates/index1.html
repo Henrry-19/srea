@@ -10,16 +10,71 @@
 
 
 {% block content %}
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-lg-12">
-                <div id="container"></div>
-            </div>
+<div class="container-fluid">
+  <div class="row">
+      <div class="col-lg-12">
+          <div id="container"></div> 
+          <div class="card card-primary">
+              <div class="card-header">
+                  <h3 class="card-title">
+                      Perfil
+                  </h3>
+              </div>
+              <div class="main_div">
+                  <table class="table" id="data">
+                    <thead>
+                    {%block colums%}
+                    <div class="main_div2">
+                      <labe><b>Nombre:</b></labe>
+                        {{request.user.get_full_name}}
+                      {% for fic in ficha %}
+                          {% for f in fic %}
+                            <br> <labe><b>Estilo Dominante:</b></labe>
+                                  {{estilo_dominate_usuario}}
+                            <br> <labe><b>Ocupación:</b></labe>
+                                  {{f.ocupacion}}
+                            <br> <labe><b>Téctica de Estudio:</b></labe>
+                                  {{f.tecnica_estudio}}
+                          {% endfor %}
+                     {% endfor %}
+                    </div>
+                    {%endblock%}
+                    </thead>
+                    <tbody>
+                    {%block rows%}
+            
+                    {%endblock%}
+                    </tbody>
+                  </table>
+              </div>
+          </div>
+          <!--<div>
+            <h1>ESTILOS DE ENSEÑANZA DOCENTE</h1>
+            <article>
+              <h2>Abierto, Formal, Estructurado y Funcional.</h2>-->
+              <!--<img src="/img/cluster.png">
+              <p>Dentro del Estilo de Enseñanza <b>ABIERTO</b> se encuentran aquellos docentes que con
+              sus comportamientos de enseñanza favorecen con preferencia ALTA o MUY ALTA al
+              alumnado del Estilo de Aprendizaje <b>ACTIVO</b>.</p>
+              <p>Dentro del Estilo de Enseñanza <b>FORMAL</b> se encuentran aquellos docentes que con
+                sus comportamientos de enseñanza favorecen con preferencia ALTA o MUY ALTA al alumnado del Estilo de Aprendizaje <b>REFLEXIVO</b></p>
+              <p>Dentro del Estilo de Enseñanza <b>ESTRUCTURADO</b> se encuentran aquellos docentes
+                que con sus comportamientos de enseñanza favorecen con preferencia ALTA o MUY ALTA al alumnado del Estilo de Aprendizaje <b>TEORICO</b>.
+              </p>
+              <p>Dentro del Estilo de Enseñanza <b>FUNCIONAL</b> se encuentran aquellos docentes que
+                con sus comportamientos de enseñanza favorecen con preferencia ALTA o MUY ALTA al alumnado del Estilo de Aprendizaje <b>PRAGMATICO</b>.
+                </p>
+              <p></p>
 
-        </div>
+            </article>
+          </div>-->       
+      </div>
+  </div>
 
-    </div>
+</div>
     <script type="application/javascript">
+      estilos_a={{estilos|safe}}
+      categorias={{count|safe}}
         Highcharts.chart('container', {
             chart: {
               type: 'column'
@@ -31,19 +86,7 @@
               text: 'Estilos de Aprendizaje'
             },
             xAxis: {
-              categories: [
-                'Activo',
-                'Reflexivo',
-                'Teórico',
-                'Pragmático',
-                'Auditivo',
-                'Visual',
-                'Kinestésico',
-                'Verbal',
-                'Lógico matemático',
-                'Social o interpersonal',
-                'Intrapersonal'
-              ],
+              categories: estilos_a,
               crosshair: true
             },
             yAxis: {
@@ -70,8 +113,7 @@
               name: 'Estilos de Aprendizaje',
               showInLegend:false,
               colorByPoint:true,
-              data: [49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4,
-                194.1, 95.6]
+              data: categorias,
             }]
           });
     </script>

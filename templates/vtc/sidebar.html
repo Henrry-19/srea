@@ -10,10 +10,10 @@
     <div class="sidebar">
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
             <div class="image">
-                <img src="{{ request.user.get_image }}" class="img-fluid rounded-circle" alt="User Image">
+                <img src="{{ request.user.get_image }}" class="img-fluid rounded-circle" alt="User Image"> 
             </div>
             <div class="info">
-                <a href="#" class="d-block">{{request.user.first_name}} {{request.user.last_name}}</a>
+                <a href="#" class="d-block">{{request.user.first_name}}<br>{{request.user.last_name}}</a>
             </div>
         </div>
         <nav class="mt-2">
@@ -93,10 +93,10 @@
 
                 <li><div class="user-panel mt-3 pb-3 mb-3 d-flex"></div></li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="fas fa-comments"></i>
+                    <a href="{% url 'user:ayuda' %}" class="nav-link">
+                        <i class="fas fa-question-circle"></i>
                         <p>
-                            Mensajes
+                            Ayuda
                         </p>
                     </a>
                 </li>       

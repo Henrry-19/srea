@@ -1,0 +1,19 @@
+{% extends "base_delete.html" %}
+{%block title%}Eliminar mensaje{%endblock%}
+{% block content %}
+<form method="POST">
+    {% csrf_token %}
+    <div class="alert alert-danger alert-dismissible"> 
+        <h5><i class="icon fas fa-trash"></i> Notificación!</h5>
+        ¿Desea eliminar el registro de {{mensaje.titulo}}?
+    </div>
+    <div class="card-footer">
+        <button type="submit" class="btn btn-primary btn-flat">
+            <i class="fas fa-save"></i> Si, aceptar
+        </button>
+        <a href="/srea/mensaje_asignatura/{{asignatura_id}}/" class="btn btn-info btn-flat">
+            <i class="fas fa-times"></i> Cancelar
+        </a>
+    </div>
+</form>
+{% endblock content %}

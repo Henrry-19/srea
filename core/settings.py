@@ -45,6 +45,8 @@ INSTALLED_APPS = [
     #libs
     'widget_tweaks', #Me permite incrustar atributos en mis componentes
     'ckeditor',
+    'crispy_forms',
+    'crispy_bootstrap4',
     #Apps
     'apps.srea',
     'apps.login',

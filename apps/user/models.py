@@ -5,13 +5,20 @@ from django.forms import model_to_dict
 from crum import get_current_request
 from datetime import datetime
 from datetime import date
-
+import uuid
+####################################################
+from django.db.models.signals import pre_save, post_save
+from django.utils.text import slugify
 #####################CHOICES#########################
 from apps.user.vistas.choices.nacionalidad import nacionalidad_pais
+from apps.user.vistas.choices.tecnicas_estudio import tecnicas_de_estudio
+from apps.user.vistas.choices.ocupaciones import ocupaciones_de_usuarios
+
+
 from apps.srea.etnia import etnia_ficha
 from apps.srea.estado_civil import estado_civil_ficha_informacion
 from apps.srea.genero import genero_ficha_informacion
-#####################################################
+####################################################
 
 class User(AbstractUser):
     imagen=models.ImageField(upload_to='users/%Y/%m/%d',null=True,blank=True)
@@ -49,13 +56,14 @@ class User(AbstractUser):
             pass
 
 class Ficha(models.Model):
+    uuid = models.UUIDField(unique=True, default=uuid.uuid4, editable=False)
     user= models.OneToOneField(User,blank=True,on_delete=models.CASCADE,related_name="userF", verbose_name="Usuario")
     dni = models.CharField(max_length=10, unique=True, verbose_name='Dni')
     birthday = models.DateField(default=datetime.now, verbose_name='Fecha de nacimiento')
     genero = models.CharField(max_length=10, choices=genero_ficha_informacion, default='Masculino', verbose_name='Genero')
     direccion=models.CharField(max_length=50, verbose_name='Dirección')
-    ocupacion=models.CharField(max_length=50, verbose_name='Ocupación') #Ingresar como lista-clase ocupación
-    tecnica_estudio=models.CharField(max_length=50,null=True, verbose_name='Técnica de estudio')
+    ocupacion=models.CharField(choices=ocupaciones_de_usuarios,max_length=200, verbose_name='Ocupación') #Ingresar como lista-clase ocupación
+    tecnica_estudio=models.CharField(choices=tecnicas_de_estudio,max_length=100,null=True, verbose_name='Técnica de estudio')
     etnia=models.CharField(choices=etnia_ficha,max_length=100, verbose_name='Etnia')
     nacionalidad=models.CharField(choices=nacionalidad_pais,max_length=100, verbose_name='Nacionalidad')
     estado_civil= models.CharField(choices=estado_civil_ficha_informacion, max_length=100, verbose_name='Estado civil')
@@ -63,8 +71,10 @@ class Ficha(models.Model):
 
     def get_image(self):
         if self.user:
-           return '{}{}'.format(MEDIA_URL, self.user.imagen) 
-        return '{}{}'.format(STATIC_URL, 'img/usuario.png')
+           #return '{}{}'.format(MEDIA_URL, self.user.imagen) 
+           print(self.user)
+        #return '{}{}'.format(STATIC_URL, 'img/usuario.png')
+            
     
     def calcular_años(self):
         return date.today().year - self.birthday.year
@@ -74,6 +84,13 @@ class Ficha(models.Model):
             name=str(self.user.get_full_name())
             return name
         return ''
+    
+    def get_uuid(self):
+        if self.uuid:
+            name=str(self.uuid)
+            return name
+        return ''
+
     def get_email(self):
         if self.user:
             email=str(self.user.email)
@@ -83,6 +100,9 @@ class Ficha(models.Model):
     def toJSON(self):##Me devuelve un diccionario con todos los atributos de mi entidad
         item=model_to_dict(self) #Mi atributo self contiene mi modelo
         item['user']=self.get_user()
+        item['uuid']=self.get_uuid()
+        item['get_image']=self.get_image()
+        #item['user']=self.get_quiz()
         return item
 
     def __str__(self):
@@ -96,15 +116,18 @@ class Ficha(models.Model):
 
 ##################Indicación######################
 class Indicacion(models.Model):
-    users= models.ManyToManyField(User,blank=True,related_name="user", verbose_name="Usuario" )
-    titulo=models.CharField(max_length=100, verbose_name="Título")
-    descripcion=models.TextField(verbose_name='Descripción')
+    titulo=models.CharField(max_length=100, verbose_name="Título", blank=True, null=True)
+    descripcion=models.TextField(max_length=500,blank=True, null=True,verbose_name='Descripción')
     fecha=models.DateTimeField(auto_now_add=True, verbose_name="Fecha de publicación")
-    
+    documento = models.FileField(upload_to="pdf/%Y/%m/%d", blank=True, null=True, verbose_name="Subir documento")
+    user_indicacion=models.ManyToManyField(User,blank=True,related_name="user_ind", verbose_name="Indicacion de usuarios" )
+    ###Podemos tener un campo para cargar el manual de usuario
+
     def __str__(self):
         return self.titulo
     
     class Meta:
-        verbose_name = 'Indicación'
+        verbose_name = 'Indicacion'
         verbose_name_plural = 'Indicaciones'
         ordering = ['id']
+

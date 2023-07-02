@@ -1,0 +1,62 @@
+{% extends 'base_list.html' %}
+{% load widget_tweaks %}
+{% load static %}
+{%block title%}Lista de Archivos{%endblock%}
+{% block head_list %}
+    
+{% endblock %}
+{%block colums%}
+<tr>
+    <th scope="col" style="width: 10%;"><i class="fas fa-download"> Archivo<i></th>
+    <th scope="col" style="width: 20%;">Descripción</th>
+    <th scope="col" style="width: 15%;">Opciones</th>
+</tr>
+{%endblock%}
+
+{%block rows%}
+    {% for a in file %}
+    <tr>           
+        <td> 
+            <a href="/media/{{a.archivo}}"><b><i class="fas fa-download"></i> {{a.nombre}}</b></a>    
+        </td>
+        <td>{{a.observacion}}</td>
+        </td> <!--toJSON-->  <!--<td>{{c.users.count}}</td>-->  
+        <td>
+        {% for g in request.user.groups.all %}
+            {% if g.name == "Docente" %}
+                <!--<a href="#" class="btn btn-warning btn-xs btn-flat"><i class="fas fa-edit"></i></a>
+                <a href="#" class="btn btn-danger btn-xs"><i class="fas fa-trash-alt"></i></a>-->
+            {% endif %}
+        {% endfor %}
+        {% if request.user.is_staff %}
+            <a href="/media/{{a.file}}" class="btn btn-primary btn-xs"><i class="fas fa-download"></i></a> 
+        {% endif %} 
+       
+        </td>
+        </tr>
+    {% endfor %}
+
+
+{%endblock%}
+
+{% block buttons_list %}
+   
+</a>
+{% if request.user.is_staff %}
+<a href="{{url_list}}" class="btn btn-success btn-flat">
+<i class="fas fa-sync"></i> Actualizar
+</a>
+{% endif %}
+
+{% endblock%}
+{% block javascript %}
+<script type="application/javascript">
+    $(function(){
+        $('#data').DataTable({
+          responsive: true,
+          autoWidth: false
+        });
+    });
+</script>
+
+{% endblock  %}

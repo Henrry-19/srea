@@ -1,0 +1,129 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% block head %}
+    <link rel="stylesheet" href="{% static 'lib/datatables-1.10.20/css/dataTables.bootstrap4.min.css' %}"/>
+    <link rel="stylesheet" href="{% static 'lib/datatables-1.10.20/plugins/responsive-2.2.3/css/responsive.bootstrap4.min.css' %}"/>
+    <script src="{% static 'lib/datatables-1.10.20/js/jquery.dataTables.js' %}"></script>
+    <script src="{% static 'lib/datatables-1.10.20/js/dataTables.bootstrap4.min.js' %}"></script>
+    <script src="{% static 'lib/datatables-1.10.20/plugins/responsive-2.2.3/js/dataTables.responsive.min.js' %}"></script>
+    <script src="{% static 'lib/datatables-1.10.20/plugins/responsive-2.2.3/js/responsive.bootstrap4.min.js' %}"></script>
+    
+
+
+    {% block head_list %}
+    <link href="{% static 'css/material-icons.css' %}" rel="stylesheet"><!--Bajar está librería-->
+    <link href="{% static 'css/materialize.css' %}" type="text/css" rel="stylesheet" media="screen,projection"/>
+    <link href="{% static 'css/style.css' %}" type="text/css" rel="stylesheet" media="screen,projection"/>
+    
+    <script src="{% static 'quiz/quiz.js' %}" defer></script>
+    
+    <!--  Scripts-->
+
+    {% endblock %}
+
+{% endblock %}
+
+{% block content %}
+
+<div class="card card-primary">
+  <div class="card-header">
+      <h3 class="card-title">
+      </h3>
+  </div>
+  <div class="card-body">
+      <table class="table" id="data">
+        <thead>
+        {%block colums%}
+
+        <tr>
+          <th scope="col" style="width: 10%;">Nombre del Test</th>
+            <th scope="col" style="width: 10%;">Fecha de Finalización</th>
+            <th scope="col" style="width: 10%;">Intentos permitidos:</th>
+            <th scope="col" style="width: 10%;">Tiempo limite:</th>
+            <th scope="col" style="width: 30%;">Descripción</th>
+            <th scope="col" style="width: 10%;">Mis intentos</th>
+            <th scope="col" style="width: 20%;">Opciones</th>
+        </tr>
+          {%endblock%}
+        </tbody>
+        {%block rows%}
+        <div class="col s4">
+          <tr>
+            <td>{{ quiz.name }}</td>
+            <td>{{ quiz.end_date }}</td>
+            <td>{{ quiz.attempts }}</td>
+            <td>
+              {{quiz.time_limit}}
+            </td>
+            <td>{{ quiz.description}}</td>
+            <td>
+                 
+            </td>
+            
+            {% if request.user.is_staff %}
+            <td>
+              <a href="{% url 'srea:edit-quiz' asignatura_id unidad_id quiz.id %}" class="btn btn-warning btn-xs btn-flat"><i class="fas fa-edit"></i></a>
+            
+            </td>
+            {% endif %}
+            <div class="col s12">
+              <a class="btn" href="{% url 'srea:quiz-detail-user' asignatura_id  quiz.id  %}"><i class="fa fa-arrow-circle-left"></i></a>
+            </div>
+              
+          </tr>
+        </div>
+        {%endblock%}
+      </table>
+
+      <tr>
+        <div class="col s4" id="datos">
+          <div class="row">
+            <div class="col s12">
+              <form id="quiz-form" method="post" action="{% url 'srea:submit-quiz-user' asignatura_id quiz.id %}" role="form" class="col s12">
+                {% csrf_token %}
+                <!--<div id="quiz-box" ></div>-->
+                {% for q in question %}
+                <div class="col s12">
+                  <br>
+                  <p><b><i class="fas fa-grin-alt"></i>* {{q}}</b> 
+                    
+                    {% if request.user.is_staff  %}
+                    <a href="{% url 'srea:edit-question' asignatura_id unidad_id quiz.id q.id %}" class="btn btn-warning btn-xs btn-flat"><i class="fas fa-edit"></i></a>
+                    {% endif %}
+      
+                 </p>
+                  <input type="hidden" name="preguntas" value="{{ q.id }}" />
+                </div>
+                {% for answer in q.question_answer.all %}
+                  <div class="input col s12">
+                    <label>
+                      <input type="checkbox" name="respuestas"  value="{{ answer.id }}" class="only-check"/>
+                      
+                      <span>{{ answer.text }}</span>
+
+                      {% if request.user.is_staff  %}
+                      <a href="{% url 'srea:edit-answer' asignatura_id unidad_id quiz.id q.id answer.id %}" class="btn btn-warning btn-xs btn-flat"><i class="fas fa-edit"></i></a>
+                      {% endif %}
+
+                    </label>          
+                  </div>
+                {% endfor %}
+              {% endfor %}
+                    <button type="submit" value="login" class="btn waves-effect waves-light">
+                      Submit
+                    </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </tr>
+
+  </div>
+</div>
+
+<script>
+
+</script>
+
+
+{% endblock %}

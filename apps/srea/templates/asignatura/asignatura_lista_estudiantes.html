@@ -30,7 +30,15 @@
           <th scope="col" style="width: 15%;">Nombre</th>
           <th scope="col" style="width: 15%;">Apellido</th>
           <th scope="col" style="width: 15%;">Ciclo</th>
-          <th scope="col" style="width: 0%;">Foto</th>
+          {% for g in request.user.groups.all %}
+            {% if g.name == "Docente" %}
+              <th scope="col" style="width: 15%;">Resultados</th>
+            {% endif %}
+          {% endfor %}
+          {% if request.user.is_staff %}
+              <th scope="col" style="width: 15%;">Resultados</th>
+          {% endif %}
+          <th scope="col" style="width: 12%;">Foto</th>
         </tr>
         {%endblock%}
         </thead>
@@ -52,6 +60,20 @@
               <td>
                   {{lista.ciclo}}
               </td>
+              
+                {% for g in request.user.groups.all %}
+                  {% if g.name == "Docente" %}
+                  <td>  
+                      <a href="{% url 'quiz:presentar_resultado_usuario' u.id %}" class="btn-small">Perfil</a>
+                  </td>
+                  {% endif %}
+                {% endfor %}
+                {% if request.user.is_staff %}
+                  <td>
+                      <a href="{% url 'quiz:presentar_resultado_usuario' u.id %}" class="btn-small">Perfil</a>
+                  </td>
+                {% endif %}
+              
               <td>
                 
                   {% if u.imagen %}
@@ -60,28 +82,38 @@
                     <img src="/static/img/usuario.png" class="img-fluid d-block mx-auto" style="width: 55px;height: 55px;border-radius:150px;">
                   {% endif %}
                     
-                  <!--<img src="/media/{{u.imagen}}" class="img-fluid d-block mx-auto" style="width: 90px;height: 80px;">-->
-                
+                  <!--<img src="/media/{{u.imagen}}" class="img-fluid d-block mx-auto" style="width: 90px;height: 80px;">-->             
               </td>
-            </tr> 
+            </tr>  
           {% endfor %}  
         {%endblock%}
         </tbody>
       </table>
   </div>
   <div class="card-footer">
-    {% block buttons_list %}
+  {% block buttons_list %}
    
     <a href="{% url 'srea:course' asignatura_id %}" class="btn btn-primary btn-flat btnTest">
       <i class="fas fa-book-reader"></i> Regresar
     </a>
-    <a href="{{list_url}}" class="btn btn-success btn-flat">
-      <i class="fas fa-sync"></i> Actualizar
+    {% for g in request.user.groups.all %}
+      {% if g.name != "Estudiante" %}
+        <a href="{% url 'quiz:presentar_tod_resultado' asignatura_id %}" class="btn btn-success btn-flat">
+          <i class="fas fa-sync"></i> Resultado de todos los usuarios
+        </a>
+      {% endif %}
+    {% endfor %}
+
+    {% if request.user.is_staff %}
+    <a href="{% url 'quiz:presentar_tod_resultado' asignatura_id %}" class="btn btn-success btn-flat">
+      <i class="fas fa-sync"></i> Resultado de todos los usuarios
     </a>
+    {% endif %}
+
    
 
   
-    {% endblock%}
+  {% endblock%}
   </div>
 </div>
 {% endblock %}

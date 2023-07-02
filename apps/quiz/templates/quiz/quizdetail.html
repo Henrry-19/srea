@@ -37,12 +37,12 @@
         <thead>
           {%block colums%}
           <tr>
-            <th scope="col" style="width: 16%;">Nombre del Test</th>
-            <th scope="col" style="width: 16%;">Fecha</th>
-            <th scope="col" style="width: 20%;">Intentos permitidos:</th>
-            <th scope="col" style="width: 20%;">Tiempo limite:</th>
+            <th scope="col" style="width: 10%;">Nombre del Test</th>
+            <th scope="col" style="width: 10%;">Fecha de Inicio</th>
+            <th scope="col" style="width: 10%;">Fecha de Fin</th>
+            <th scope="col" style="width: 15%;">Intentos permitidos:</th>
+            <th scope="col" style="width: 15%;">Tiempo limite:</th>
             <th scope="col" style="width: 20%;">Descripción</th>
-            <th scope="col" style="width: 20%;">Resultado</th>
             <th scope="col" style="width: 15%;">Opciones</th>
           </tr>
           {%endblock%}
@@ -51,22 +51,12 @@
           {%block rows%}
             <div class="col s4">
               <tr>
-                <td>{{ quiz.title }}</td>
-                <td>{{ quiz.due }}</td>
-                <td>{{ quiz.allowed_attemps }}</td>
-                <td>{{ quiz.time_limit_mins }} min</td>
-                <td>{{ quiz.description | safe }}</td>
-                <td>
-                  <div class="col s12">
-                    <ul class="collection with-header">
-                      <!--{% for attempt in  mis_intentos %}
-                        <li class="collection-item">
-                          <a href="#"><h5>Puntuación:{{ attempt.score }}</h5></a>
-                        </li>
-                      {% endfor %}-->    
-                    </ul>  
-                  </div>
-                </td>
+                <td>{{ quiz.name }}</td>
+                <td>{{ quiz.start_date }}</td>
+                <td>{{ quiz.end_date }}</td>
+                <td>{{ quiz.attempts }}</td>
+                <td>{{ quiz.time_limit }} min</td>
+                <td>{{ quiz.description  }}</td>
                 <td>
                   <div class="col s12">
                     <a class="btn" href="{% url 'srea:take-quiz' asignatura_id unidad_id quiz.id %}">Evaluar</a>    

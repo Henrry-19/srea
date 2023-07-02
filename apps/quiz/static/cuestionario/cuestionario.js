@@ -3,7 +3,7 @@ const url = window.location.href
 
 const quizBox=document.getElementById('quiz-box')
 let cont=1
-const scoreBox = document.getElementById('score-box')
+//const scoreBox = document.getElementById('score-box')
 const resultBox = document.getElementById('score-box')
 
 const timerBox = document.getElementById('timer-box')

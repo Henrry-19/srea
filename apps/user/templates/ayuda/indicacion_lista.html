@@ -1,0 +1,52 @@
+{% extends 'base_list.html' %}
+{% load widget_tweaks %}
+{% load static %}
+{%block title%}Lista de Asignaturas{%endblock%}
+{% block head_list %}
+    
+{% endblock %}
+{%block colums%}
+<tr>
+    <th scope="col" style="width: 16%;">Usuario</th>
+    <th scope="col" style="width: 16%;">Titulo</th>
+    <th scope="col" style="width: 20%;">Descripción</th>
+    <th scope="col" style="width: 20%;">Fecha</th>
+    <th scope="col" style="width: 15%;">Opciones</th>
+</tr>
+{%endblock%}
+
+{%block rows%}
+    {% for c in indicacion %}
+    <tr>           
+        <td>{{c.autor}}</td>
+        <td>{{c.titulo}}</td>
+        <td>{{c.descripcion}}</td>
+        <td>{{c.fecha}}</td>  
+        <td>
+        {% for g in request.user.groups.all %}
+            {% if g.name == "Docente" %}
+                <a href="/srea/ad_asignatura/{{c.id}}/" class="btn btn-warning btn-xs btn-flat"><i class="fas fa-edit"></i></a>
+                <a href="/srea/d_asignatura/{{c.id}}" class="btn btn-danger btn-xs"><i class="fas fa-trash-alt"></i></a>
+            {% endif %}
+        {% endfor %}
+        {% if request.user.is_staff %}
+            <a href="/srea/ad_asignatura/{{c.id}}/" class="btn btn-warning btn-xs btn-flat"><i class="fas fa-edit"></i></a>
+            <a href="/srea/d_asignatura/{{c.id}}" class="btn btn-danger btn-xs"><i class="fas fa-trash-alt"></i></a>
+        {% endif %} 
+        <a href="/srea/asignatura/{{c.id}}/user/" class="btn btn-primary btn-xs"><i class="fa fa-search"> Ver</i></a>
+        </td><!--/user/facultad_list/u_facultad/{{f.id}}ddddd{{request.user.id}}-->
+        </tr>
+    {% endfor %}
+{%endblock%}
+
+{% block javascript %}
+<script type="application/javascript">
+    $(function(){
+        $('#data').DataTable({
+          responsive: true,
+          autoWidth: false
+        });
+    });
+</script>
+
+{% endblock  %}

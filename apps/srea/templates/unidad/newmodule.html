@@ -13,6 +13,11 @@
 {% block content %}
     <form method="post" action="" enctype="multipart/form-data" role="form">
         <div class="card card-primary">
+            <div class="card-header">
+                <h3 class="card-title">
+                  {{course}}
+                </h3>
+            </div>
             <div class="card-body">
                 {% csrf_token %} <!--Protección de Django-->
                 {% for field in form.visible_fields %}<!--Recorrer el formulario a través de la propiedad visible_fields se accede a todos los componentes-->

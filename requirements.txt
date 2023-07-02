@@ -7,7 +7,8 @@ html5lib==1.1
 mysqlclient
 Pillow==9.2.0
 xhtml2pdf==0.2.8
-django-crum-0.7.9
-django-jazzmin-2.6.0
+django-crum==0.7.9
+django-jazzmin==2.6.0
 django-auto-logout
-django-ckeditor-6.5.1
+django-ckeditor==6.5.1
+openpyxl

@@ -40,8 +40,6 @@ class UserListView(LoginRequiredMixin,ValidatePermissionRequiredMixin,ListView):
                         data.append(item)#Incrusto cada uno de mis elementos dentro de mi array
                         position+=1
                 if  not request.user.is_staff:
-                     #user=User.objects.filter(pk=request.user.pk)
-                     #user=User.objects.filter(carrera=request.user.carrera.pk)
                      user=User.objects.filter(pk=request.user.pk)
                      for u in user:
                          for c in Ciclo.objects.filter(curso=u.id):

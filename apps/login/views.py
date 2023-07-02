@@ -17,7 +17,6 @@ from django.template.loader import render_to_string
 
 
 
-
 class LoginFormView(LoginView):
     template_name='login.html'
     #success_url= reverse_lazy('login:index1') #Me redirecciona la URL y reverse_lazy->devuelve la ruta de la URL

@@ -7,11 +7,19 @@
     <script src="{% static 'lib/datatables-1.10.20/js/dataTables.bootstrap4.min.js' %}"></script>
     <script src="{% static 'lib/datatables-1.10.20/plugins/responsive-2.2.3/js/dataTables.responsive.min.js' %}"></script>
     <script src="{% static 'lib/datatables-1.10.20/plugins/responsive-2.2.3/js/responsive.bootstrap4.min.js' %}"></script>
+    
+
 
     {% block head_list %}
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="{% static 'css/material-icons.css' %}" rel="stylesheet"><!--Bajar está librería-->
     <link href="{% static 'css/materialize.css' %}" type="text/css" rel="stylesheet" media="screen,projection"/>
     <link href="{% static 'css/style.css' %}" type="text/css" rel="stylesheet" media="screen,projection"/>
+    
+    <!--  Scripts-->
+    <script src="{% static 'js/jquery-2.1.1.min.js'%}"></script><!--Bajar está librería-->
+    <script src="{% static 'js/materialize.js' %}"></script>
+    <script src="{% static 'js/init.js' %}"></script>
+
     {% endblock %}
 
 {% endblock %}
@@ -35,47 +43,56 @@
 
             <div class="col s3">
               <ul class="collection with-header">
-                <li class="collection-header"><h4>Aula</h4></li>
-                <a href="{% url 'srea:course' asigna.id %}" class="collection-item active">Inicio</a>
-                <a href="{% url 'srea:primeraU' asigna.id %}" class="collection-item">Unidad</a>
+                <li class="collection-header"><h4><i class="fas fa-chalkboard"> Aula</i></h4></li>
+                <a href="{% url 'srea:course' asigna.id%}" class="collection-item active"><i class="fas fa-home"> Inicio</i></a>
+                <a href="{% url 'srea:primeraU' asigna.id %}" class="collection-item"><i class="fas fa-folder"> Unidad </i></a>
                 <!--<a href="#" class="collection-item">Submissions</a>
                 <a href="#" class="collection-item">Preguntas</a>-->
-                <a href="{% url 'srea:estudiantes' asigna.id %}" class="collection-item">Participantes</a>
+                <a href="{% url 'srea:estudiantes' asigna.id %}" class="collection-item"><i class="fas fa-users"> Participantes </i></a>
         
-                {% if teacher_mode == True and not request.user.is_staff%}
-                  <li class="collection-header"><h4>Docente</h4></li>
-                  <a href="{% url 'srea:resultado' asigna.id %}" class="collection-item">Resultados</a>
+                
+                {% if  teacher_mode == True or  request.user.is_staff %}
+
+                  <ul class="collapsible">
+                    <li>
+                        <div class="collapsible-header"><i class="fas fa-chalkboard-teacher"></i><b> Docente</b>
+                        </div>
+                        <div class="collapsible-body">
+                          <div class="collection">                                              <!--Aquí se debe cargar el manu-->
+                            <p><a href="{% url 'srea:catalogo' %}" class="collection-item"><i class="fas fa-clipboard-list"> Catálogo </i></a>
+                              <a href="{% url 'srea:catalogo_item' %}" class="collection-item"> <i class="fas fa-info-circle"> Items del catálogo </i></a>
+                              <a href="{% url 'quiz:listar' %}" class="collection-item"><i class="fas fa-paste"> Lista de cuestionarios</i></a>
+                              <a href="{% url 'quiz:docente_quiz' asigna.id %}" class="collection-item"><i class="fas fa-paste"> Evaluación docente</i></a>
+                              
+
+                              {% if request.user.is_staff  %}
+                                <a href="{% url 'srea:matricula-lista' asigna.id user.id  %}" class="collection-item"><i class="fas fa-user-plus"> Registrar usuarios </i></a>
+                              {% endif %}
+                            </p>                                                                                           
+                          </div> 
+                        </div>
+                    </li>
+                  </ul> 
                 {% endif %}
-                
-                {% if request.user.is_staff %}
-                  <li class="collection-header"><h4>Docente</h4></li>
-                  <a href="{% url 'srea:resultado' %}" class="collection-item">Resultados</a>
-                  <a href="{% url 'srea:matricula-lista' asigna.id user.id  %}" class="collection-item">Matrícular</a>
-                  <a href="{% url 'quiz:categoria' %}" class="collection-item">Categoria</a>
-                  {% endif %}
-                
-                {% if not request.user.is_staff  %}
-                <a href="{% url 'srea:resultado' %}" class="collection-item">Resultados</a>
-                
-                {% endif %}
-                  
+ 
                   
               </ul>
             </div>
 
             <div class="col s9">
-  
-              {% if request.user.is_staff %}
-              <a href="#" class="btn-floating btn-large waves-effect waves-light red right"><i class="material-icons">add</i></a>
-              {% endif %}
-                
               <div class="section">
-                <h4>Anuncios recientes</h4>
+                {% for u in asigna.toJSON.users %}
+                  {% for g in u.groups %}
+                    {% if g.name == "Docente" %}
+                      <span><b> Docente: </b> {{u.firts_name}} {{u.last_name}} </span>
+                    {% endif %}
+                  {% endfor %}
+                {% endfor %}
                 <div class="divider"></div>
                 <div>
-                  <h1>Mensajes</h1>
+                  <img src="{{asigna.get_image}}" class="img-fluid d-block mx-auto" style="width: 500px;height: 300px;">
                 </div>
-                {{ course.syllabus | safe }}
+                {{ course.syllabus | safe }}<!--Aquí se puede cargar los mensajes-->
               </div>
             </div>
           </div> 

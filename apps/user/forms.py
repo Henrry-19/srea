@@ -1,9 +1,11 @@
 from django.forms import*
+from django import forms
 from apps.user.models import *
+from apps.srea.models import *
 
 
-class FichaCreateForm(ModelForm):
-
+class FichaCreateForm(forms.ModelForm):
+    #first_name = forms.CharField(max_length = 50)
     class Meta:
         model=Ficha
         fields= '__all__'
@@ -32,8 +34,91 @@ class FichaCreateForm(ModelForm):
                 'class': 'form-control select2',
                 'style': 'width: 100%',
                 'multiple': 'multiple'
+            }),
+
+            
+            'ocupacion': Select(attrs={
+                'class': 'form-control select2',
+                'style': 'width: 100%',
+                'multiple': 'multiple'
+            }),
+
+            
+            'tecnica_estudio': Select(attrs={
+                'class': 'form-control select2',
+                'style': 'width: 100%',
+                
             })
         }
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        
+        #if self.instance.id and self.instance.user:
+        #    self.fields['user'].widget.attrs.update({'disabled': True})
+
+
+    def __init__(self, *args, **kwargs): ###Filtrado
+        self.request = kwargs.pop("request")
+        super(FichaCreateForm, self).__init__(*args, **kwargs)
+        if not self.request.user.is_staff:
+            self.fields["user"].queryset = User.objects.filter(id=self.request.user.id)
+            
+        #    if self.instance.pk and self.instance.user:
+        #        self.fields['user'].widget.attrs.update({'disabled': True})
+
+
+
+    def save(self, commit=True):
+        data = {}
+        form = super()
+        #ficha = super().save(commit=True)
+        #ficha.user.first_name = first_name
+        try:
+            if form.is_valid():
+                form.save()
+            else:
+                data['error'] = form.errors
+        except Exception as e:
+            data['error'] = str(e)
+        return data
+    
+
+class EditarFichaCreateForm(ModelForm):
+    class Meta:
+        model=Ficha
+        fields= ['dni','birthday','genero', 'direccion', 'ocupacion', 'tecnica_estudio','etnia','nacionalidad','estado_civil']
+        exclude =['user']
+
+        widgets = {
+            'genero': Select(attrs={
+                'class': 'form-control select2',
+                'style': 'width: 100%',
+            }),
+
+            'etnia': Select(attrs={
+                'class': 'form-control select2',
+                'style': 'width: 100%',
+            }),
+
+            'estado_civil': Select(attrs={
+                'class': 'form-control select2',
+                'style': 'width: 100%',
+            }),
+
+            'nacionalidad': Select(attrs={
+                'class': 'form-control select2',
+                'style': 'width: 100%',
+                'multiple': 'multiple'
+            })
+        }
+    
+    #def __init__(self, *args, **kwargs):
+    #    super().__init__(*args, **kwargs)
+        
+    #    if self.instance.pk and self.instance.user:
+    #        self.fields['user'].widget.attrs.update({'disabled': True})
+
 
     def save(self, commit=True):
         data = {}
@@ -241,3 +326,51 @@ class UserCreateForm2(ModelForm):
         except Exception as e:
             data['error'] = str(e)
         return data
+
+
+class IndicacionCreateForm(ModelForm):
+
+    class Meta:
+        model=Indicacion
+        fields= '__all__'
+
+        widgets = {
+            'user': Select(attrs={
+                'class': 'form-control select2',
+                'style': 'width: 100%',
+            }),
+            'genero': Select(attrs={
+                'class': 'form-control select2',
+                'style': 'width: 100%',
+            }),
+
+            'etnia': Select(attrs={
+                'class': 'form-control select2',
+                'style': 'width: 100%',
+            }),
+
+            'estado_civil': Select(attrs={
+                'class': 'form-control select2',
+                'style': 'width: 100%',
+            }),
+
+            'nacionalidad': Select(attrs={
+                'class': 'form-control select2',
+                'style': 'width: 100%',
+                'multiple': 'multiple'
+            })
+        }
+    
+
+    def save(self, commit=True):
+        data = {}
+        form = super()
+        try:
+            if form.is_valid():
+                form.save()
+            else:
+                data['error'] = form.errors
+        except Exception as e:
+            data['error'] = str(e)
+        return data
+    

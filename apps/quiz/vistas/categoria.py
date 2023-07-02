@@ -10,7 +10,7 @@ from django.utils.decorators import method_decorator #importando el método deco
 from django.views.decorators.csrf import csrf_exempt
 
 class CategoriaListView(LoginRequiredMixin,ValidatePermissionRequiredMixin,ListView): #Primera vista basada en clase ListView, permite sobrescribir métodos
-    model= Categoria#Primero se indica el modelo o entidad
+    model= Catalog#Primero se indica el modelo o entidad
     template_name = 'categoria/categoria_lista.html' #Indicarle cual es la plantilla
     permission_required='view_categoria'
     
@@ -25,7 +25,7 @@ class CategoriaListView(LoginRequiredMixin,ValidatePermissionRequiredMixin,ListV
             if action == 'searchdata':
                 data=[]
                 position = 1
-                for i in Categoria.objects.all():
+                for i in Catalog.objects.all():
                         item= i.toJSON()
                         item['position']=position
                         data.append(item)#Incrusto cada uno de mis elemntos dentro de mi array

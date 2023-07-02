@@ -1,7 +1,4 @@
 {% load static %}
-<!DOCTYPE html>
-<html>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <style>
     .img-invoice {
         width: 50px;
@@ -35,8 +32,9 @@
     }
 </style>
 <body>
-<img src="/media/{{sale.get_image}}" class="img-invoice">
-{{sale.get_image}}<!--Colocar Imagen en ficha-->
+<img src="{{sale.user.get_image}}" class="img-invoice" />
+
+
 <p class="head">
     <b>{{ comp.name|upper }}</b><br>
 </p>
@@ -103,14 +101,20 @@
     <!--Datos personales-->
         <br> 3. Estilos de Aprendizaje
         <tr style="border: 1px solid blanchedalmond;" >
-            <th style="border: 1px solid blanchedalmond;">Modelo de evaluación</th>
-            <th style="border: 1px solid blanchedalmond;">Estilo dominante</th>
+            <th style="border: 1px solid blanchedalmond;">Modelo de evaluación: <th style="border: 1px solid blanchedalmond;">
+                {% for q in numeros_unicos %}
+                    {{q}}<br>
+                {% endfor %}
+            </th></th></th>
+            <th style="border: 1px solid blanchedalmond;">Estilo dominante:</th><th style="border: 1px solid blanchedalmond;">
+                {{estilo_dominate_usuario}}<br>
+            </th>
         </tr>
     </thead>
     <tbody>
         <tr style="border: 1px solid blanchedalmond;" >
-            <td>------</td>
-            <td>------</td>
+            <td></td>
+            <td></td>
         </tr>
     </tbody>
 </table>
@@ -126,4 +130,3 @@
     </thead>
 </table>
 </body>
-</html>

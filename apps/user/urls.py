@@ -3,6 +3,7 @@ from apps.user.views import *
 from apps.srea.vistas.facultad import*
 from apps.user.vistas.carerra import*
 from apps.user.vistas.ficha import*
+from apps.user.vistas.indicacion import*
 
 
 from django.contrib.auth.decorators import login_required
@@ -36,11 +37,18 @@ urlpatterns = [
     #-------------------------Ficha---------------------------------------
     path('ficha_list/',(FichaListView.as_view()), name="ficha_list"),
     path('ficha/', (FichaCreateView.as_view()), name="ficha"),
-    path('ficha_list/u_ficha/<int:pk>/',FichaUpdateView.as_view(), name="u_ficha"),
-    path('ficha_list/d_ficha/<int:pk>/', FichaDeleteView.as_view(), name="d_ficha"),
+    path('ficha_list/u_ficha/<str:uuid>/',FichaUpdateView.as_view(), name="u_ficha"),
+     path('ficha_list/actualizar_ficha/<str:uuid>/',FichaUsuarioView.as_view(), name="usuario_ficha"),
+    path('ficha_list/d_ficha/<str:uuid>/', FichaDeleteView.as_view(), name="d_ficha"),
 
     ###################################PDF###########################################
-     path('ficha_list/pdf/<int:pk>/', FichaPdfView.as_view(), name="ficha_pdf"),
+     path('ficha_list/pdf/<str:uuid>/', FichaPdfView.as_view(), name="ficha_pdf"),
+
+     ###################################Inicaciones###########################################
+     path('indicacion/', IndicacionListView.as_view(), name="ayuda"),
+
+    #path('indicacion/<indicacion_id>', AyudaLista, name="lista-ayuda"),
+
 
 ]
 

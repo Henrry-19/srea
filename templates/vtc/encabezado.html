@@ -20,7 +20,7 @@
             <li class="nav-item d-none d-sm-inline-block">
                 <a href="#" class="nav-link">Administrador</a>
             </li>
-        {% endif %}
+        {% endif %} 
 
     </ul>
     <ul class="navbar-nav ml-auto">
@@ -33,7 +33,7 @@
                         style="left: 0px; right: inherit;">
                         {% for g in request.user.groups.all %} <!--Iterar los objetos-->
                             {% if g.id != request.session.group.id %}
-                                <li><a href="{% url 'user:user_change_group' g.id %}" 
+                                <li><a href="{% url 'user:user_change_group' g.id %}"
                                        class="dropdown-item">{{ g.name }} </a></li> <!--Obtener el nombre del perfil-->
                             {% endif %}
                         {% endfor %}

@@ -30,10 +30,18 @@
           <img src="{{c.get_image}}" class="img-fluid d-block mx-auto" style="width: 30px;height: 30px;">
         </td>    
         <td>
-        <a href="/srea/ad_asignatura/{{c.id}}/" class="btn btn-warning btn-xs btn-flat"><i class="fas fa-edit"></i></a>
-        <a href="/srea/d_asignatura/{{c.id}}" class="btn btn-danger btn-xs"><i class="fas fa-trash-alt"></i></a>
-        <a href="/srea/asignatura/{{c.id}}" class="btn btn-primary btn-xs"><i class="fa fa-search"> Ver</i></a>
-        </td><!--/user/facultad_list/u_facultad/{{f.id}}-->
+        {% for g in request.user.groups.all %}
+            {% if g.name == "Docente" %}
+                <a href="/srea/ad_asignatura/{{c.id}}/" class="btn btn-warning btn-xs btn-flat"><i class="fas fa-edit"></i></a>
+                <a href="/srea/d_asignatura/{{c.id}}" class="btn btn-danger btn-xs"><i class="fas fa-trash-alt"></i></a>
+            {% endif %}
+        {% endfor %}
+        {% if request.user.is_staff %}
+            <a href="/srea/ad_asignatura/{{c.id}}/" class="btn btn-warning btn-xs btn-flat"><i class="fas fa-edit"></i></a>
+            <a href="/srea/d_asignatura/{{c.id}}" class="btn btn-danger btn-xs"><i class="fas fa-trash-alt"></i></a>
+        {% endif %} 
+        <a href="/srea/asignatura/{{c.id}}/user/" class="btn btn-primary btn-xs"><i class="fa fa-search"> Ver</i></a>
+        </td><!--/user/facultad_list/u_facultad/{{f.id}}ddddd{{request.user.id}}-->
         </tr>
     {% endfor %}
 {%endblock%}

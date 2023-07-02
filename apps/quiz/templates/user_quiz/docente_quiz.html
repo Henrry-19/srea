@@ -1,0 +1,79 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% block head %}
+    {% block head_list %}
+        <link href="{% static 'css/material-icons.css' %}" rel="stylesheet"><!--Bajar está librería-->
+
+        <!--  Scripts-->
+
+    <link rel="stylesheet" href="{% static 'lib/datatables-1.10.20/css/dataTables.bootstrap4.min.css' %}"/>
+    <link rel="stylesheet" href="{% static 'lib/datatables-1.10.20/plugins/responsive-2.2.3/css/responsive.bootstrap4.min.css' %}"/>
+    <script src="{% static 'lib/datatables-1.10.20/js/jquery.dataTables.js' %}"></script>
+    <script src="{% static 'lib/datatables-1.10.20/js/dataTables.bootstrap4.min.js' %}"></script>
+    <script src="{% static 'lib/datatables-1.10.20/plugins/responsive-2.2.3/js/dataTables.responsive.min.js' %}"></script>
+    <script src="{% static 'lib/datatables-1.10.20/plugins/responsive-2.2.3/js/responsive.bootstrap4.min.js' %}"></script>
+
+    {% endblock %}
+
+{% endblock %}
+
+{% block content %}
+    <div class="card card-primary">
+        <div class="card-header">
+        <h3 class="card-title">
+            {{title}}/ {{date_now}}
+        </h3>
+    </div>
+    <div class="card-body">
+        <table id="data">
+            <thead>
+            {%block colums%}
+                <tr>
+                    <th scope="col" style="width: 15%;">Quiz</th>
+                    <th scope="col" style="width: 12%;">Fecha de inicio</th>
+                    <th scope="col" style="width: 12%;">Fecha de Finalización</th>
+                </tr>
+            {%endblock%}
+            </thead>
+            <tbody>
+            {%block rows%}
+                {% for c in request.user.users_quiz.all %}
+                    <tr>
+                        <td>  
+                            <a href="{% url 'srea:quiz-detail-user' course.id  c.quiz.id %}" class="collection-item"><i class="material-icons">fact_check</i>
+                                {{c}}  
+                            </a>  
+                        </td>
+                        <td>
+                            {{c.quiz.start_date}} 
+                        </td>
+                        <td>
+                            {{c.quiz.end_date}} 
+                        </td>      
+                    </tr>  
+                {% endfor %}  
+            {%endblock%}
+            </tbody>
+        </table>
+        <div class="card-footer">
+            {% block buttons_list %}
+            <a href="{% url 'srea:course' asignatura_id %}" class="btn btn-primary btn-flat btnTest">
+            <i class="fas fa-book-reader"></i> Regresar
+            </a>
+        {% endblock%}
+        </div>
+    </div>
+
+    <script type="application/javascript">
+        $(function(){
+            $('#data').DataTable({
+              responsive: true,
+              autoWidth: false
+            });
+        });
+      </script>
+    
+{% endblock %}
+
+
+

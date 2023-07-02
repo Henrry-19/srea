@@ -1,0 +1,54 @@
+{% extends 'base_list.html' %}
+{% load widget_tweaks %}
+{% load static %}
+{%block title%}Lista de Items de catálogo{%endblock%}
+{% block head_list %}
+    
+{% endblock %}
+{%block colums%}
+<tr>
+    <th scope="col" style="width: 20%;">Orden</th>
+    <th scope="col" style="width: 16%;">Estado</th>
+    <th scope="col" style="width: 20%;">Código</th>
+    <th scope="col" style="width: 20%;">Nombre</th>
+    <th scope="col" style="width: 20%;">Descripción</th>
+    <th scope="col" style="width: 15%;">Opciones</th>
+</tr>
+{%endblock%}
+
+{%block rows%}
+    {% for c in cat_item %}
+    <tr>           
+        <td>{{c.order}}</td> 
+        <td>{{c.active}}</td> 
+        <td>{{c.code}}</td> 
+        <td>{{c.name}}</td>
+        <td>{{c.description}}</td> 
+         
+        <td>
+        {% for g in request.user.groups.all %}
+            {% if g.name == "Docente" %}
+                <a href="/srea/catalogo/catalogo_item_edit/{{c.id}}/" class="btn btn-warning btn-xs btn-flat"><i class="fas fa-edit"></i></a>
+                <a href="/srea/catalogo/catalogo_item_delete/{{c.id}}" class="btn btn-danger btn-xs"><i class="fas fa-trash-alt"></i></a>
+            {% endif %}
+        {% endfor %}
+        {% if request.user.is_staff %}
+            <a href="/srea/catalogo/catalogo_item_edit/{{c.id}}/" class="btn btn-warning btn-xs btn-flat"><i class="fas fa-edit"></i></a>
+            <a href="/srea/catalogo/catalogo_item_delete/{{c.id}}" class="btn btn-danger btn-xs"><i class="fas fa-trash-alt"></i></a>
+        {% endif %}
+        </td>
+        </tr>
+    {% endfor %}
+{%endblock%}
+
+{% block javascript %}
+<script type="application/javascript">
+    $(function(){
+        $('#data').DataTable({
+          responsive: true,
+          autoWidth: false
+        });
+    });
+</script>
+
+{% endblock  %}

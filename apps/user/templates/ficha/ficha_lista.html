@@ -21,6 +21,20 @@
 
 {%endblock%}
 
+{% block buttons_list %}
+
+    {% if not request.user.userF %}
+    <a href="{{url_create}}" class="btn btn-primary btn-flat btnTest">
+    <i class="fas fa-plus"></i>Nuevo registro 
+    </a>
+    {% endif %}
+    <a href="{{url_list}}" class="btn btn-success btn-flat">
+    <i class="fas fa-sync"></i> Actualizar
+    </a>
+
+{% endblock %}
+
+
 
 {% block javascript %}
     <!-- Modal -->

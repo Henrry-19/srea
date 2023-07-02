@@ -38,18 +38,18 @@
   </div>
   <div class="card-footer">
     {% block buttons_list %}
-    {% if request.user.is_staff %}
+
+
+  
     <a href="{{url_create}}" class="btn btn-primary btn-flat btnTest">
       <i class="fas fa-plus"></i>Nuevo registro
-    </a>
+  
     <a href="{{url_list}}" class="btn btn-success btn-flat">
       <i class="fas fa-sync"></i> Actualizar
     </a>
-    {% else %}
-    <a href="{{url_list}}" class="btn btn-success btn-flat">
-      <i class="fas fa-sync"></i> Actualizar
-    </a>
-    {% endif %}  
+   
+    
+
     {% endblock%}
   </div>
 </div>

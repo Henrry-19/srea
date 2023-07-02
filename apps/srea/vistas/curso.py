@@ -79,7 +79,7 @@ class CursoCreateViewP(LoginRequiredMixin,ValidatePermissionRequiredMixin,Create
 
     def get_context_data(self, **kwargs): #Método que devuelve un diccionario que representa el contexto de la plantilla
         context = super().get_context_data(**kwargs) #Obtengo el diccionario que devuelve el método
-        context['title']='Creación de un curso' #Puedo enviar variables
+        context['title']='Creación de un ciclo' #Puedo enviar variables
         context['modelo']='Curso'#Nombre de identidad
         context['list_url']=reverse_lazy('srea:curso')#Ruta absoluta lista de asignatura
         context['action']='add'#Enviar variable action
@@ -169,7 +169,7 @@ class CursoUpdateView(LoginRequiredMixin,ValidatePermissionRequiredMixin,UpdateV
         
     def get_context_data(self, **kwargs): #Método que devuelve un diccionario que representa el contexto de la plantilla
         context = super().get_context_data(**kwargs) #Obtengo el diccionario que devuelve el método
-        context['title']='Actualización de un curso' #Puedo enviar variables
+        context['title']='Actualización de un ciclo' #Puedo enviar variables
         context['modelo']='Curso'#Nombre de identidad
         context['url_list']=reverse_lazy('srea:curso')#Ruta abosluta lista de asignatura
         context['action']='edit'#Enviar variable action
@@ -200,21 +200,3 @@ class CursoDeleteView(LoginRequiredMixin,ValidatePermissionRequiredMixin,DeleteV
         context['url_list'] = reverse_lazy('srea:curso')
         return context
 
-
-@login_required
-def CursoList(request):
-        user = request.user
-        #print(user)
-        if request.user.is_staff :  
-            courses = Ciclo.objects.all()
-            #print(courses)
-        else:
-            courses = Ciclo.objects.filter(users=user)
-            #courses = Asignatura.objects.all()
-            #print(courses)
-        context = {
-                'courses': courses,
-                'url_create':reverse_lazy('srea:r_curso'),
-                'title':'Ciclos' #Puedo enviar variables
-        }
-        return render(request, 'curso/curso_lista.html', context)
